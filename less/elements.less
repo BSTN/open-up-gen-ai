@@ -1,0 +1,135 @@
+@import '@/less/reset.less';
+@import '@/less/transitions.less';
+@import '@/less/typography.less';
+@import '@/less/themes.less';
+
+html, body {
+  font-family: 'Inter', 'helvetica neue', Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  background: var(--bg);
+  color:var(--fg);
+  line-height: 1.4em;
+  @media (max-width: 1200px) {
+    font-size: 18px;
+  }
+}
+
+* {
+  font-family: inherit;
+  letter-spacing: inherit;
+  font-size: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scrollbar-color: var(--fg) var(--fg);
+  scrollbar-width: thin;
+}
+
+a:focus, button:focus { outline: none; }
+button::-moz-focus-inner { border: 0; }
+
+i, em {
+  font-style:italic;
+}
+b, strong {
+  font-weight: 500;
+}
+
+a {
+  color: inherit;
+  outline: 0;
+  &:hover {
+    color: var(--link);
+  }
+}
+
+input {
+  padding: 0.5em .75em;
+  border: none;
+  border-radius: 0.25em;
+  width: 100%;
+  background: var(--bg1);
+  color:inherit;
+  line-height: inherit;
+  &:focus {
+    background: var(--bg2);
+  }
+  &::selection {
+    background:var(--fg2);
+    color:var(--link);
+  }
+}
+
+textarea {
+  background: var(--bg1);
+  color: inherit;
+  width: 100%;
+  border: none;
+  border-radius: 0.25em;
+  padding: 0.5em;
+}
+
+button {
+  background: var(--bg);
+  border: none;
+  // border: 1px solid var(--fg);
+  border-radius: 0.25em;
+  color:inherit;
+  padding: var(--buttonpadding);
+  margin: 0 0.25em 0.25em 0.25em;
+  font-weight: inherit;
+  cursor: pointer;
+  &:hover {
+    background: var(--fg);
+    color: var(--bg);
+  }
+}
+
+label {
+  display: block;
+  font-size: 0.75em;
+  padding: 0 1em;
+  margin-bottom: .5em;
+}
+
+.page {
+
+  hr {
+    border:0;
+    border-top:1px solid var(--bc);
+    margin: 2rem 0;
+    display: block;
+    .row();
+  }
+  h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin: 1em auto 2em;
+    font-weight: 600;
+    width: var(--pwidth);
+  }
+  h2 {
+    font-size: 1.5rem;
+    text-align: left;
+    margin: 2em auto 1em;
+    font-weight: 600;
+    width: var(--pwidth);
+    a {
+      text-decoration: none;
+    }
+  }
+  ul, ol {
+    width: 32rem;
+    margin: 0 auto;
+  }
+  ul {
+    list-style: disc;
+    list-style-position: inside;
+  }
+  ol {
+    list-style: disc;
+  }
+}
+

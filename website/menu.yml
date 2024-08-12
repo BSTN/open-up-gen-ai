@@ -1,0 +1,13 @@
+left:
+  - link: /
+    icon: ic:twotone-circle
+  - name: Compare
+    link: /compare
+  - name: Guides
+    link: /guides
+right:
+  - name: Contribute
+    link: /contribute
+  - link: https://github.com/opening-up-chatgpt/opening-up-chatgpt.github.io
+    target: _blank
+    icon: bi:github
