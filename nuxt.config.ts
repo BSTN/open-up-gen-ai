@@ -15,7 +15,8 @@ export default defineNuxtConfig({
   },
   modules: [
     './modules/github.module.ts',
-    '@nuxt/content'
+    '@nuxt/content',
+    '@pinia/nuxt'
   ],
   github: [{
     owner: 'opening-up-chatgpt',

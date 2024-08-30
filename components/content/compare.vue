@@ -12,9 +12,10 @@
       </div>
     </div>
     <div class="projectlist">
-      <div class="project" v-for="item in projectsSorted" :key="item.path">
+      <div class="project" v-for="item in models" :key="item.path">
         <div class="info">
           <NuxtLink :to="item.project.link" class="name">{{ item.project.name || '(undefined)' }}</NuxtLink>
+          <NuxtLink :to="item.org.link" class="org">by {{ item.org.name }}</NuxtLink>
           <!-- <div class="notes">{{ item.project.notes }}</div>
           <NuxtLink :to="item.org.link" class="org">{{ item.org.name }}</NuxtLink>
           <div class="llmbase">{{ item.project.llmbase }}</div>
@@ -48,67 +49,13 @@
 </template>
 
 <script lang="ts" setup>
-import categories from '@/website/categories.yml'
 import openIcon from '@/assets/icons/open.svg?raw'
 import closedIcon from '@/assets/icons/closed.svg?raw'
 import partialIcon from '@/assets/icons/partial.svg?raw'
-import debounce from "lodash/debounce";
-const rand = ref('random')
 
-const projectsList = import.meta.glob('@/repos/opening-up-chatgpt-opening-up-chatgpt.github.io/projects/*.yaml')
-let projects = ref<Array<any>>([])
-for (const path in projectsList) {
-  projectsList[path]().then((mod) => {
-    const project = mod.default
-    project.path = path
-    project.filename = path.split('/').pop()
-    if (!path.match("A_sample.yaml")) projects.value.push(project)
-  })
-}
+const { models, categories, sortModels } = useModels()
 
-const projectsSorted = ref(projects)
 
-watch([rand], debounce(() => {
-  sortProjects()
-}, 500), { deep: true })
-
-function sortProjects() {
-  // copy
-  const prs = JSON.parse(JSON.stringify(projects.value))
-  // add weights
-  prs.map(x => {
-    x.categories = {}
-    x.params = {}
-    categories.map(cat => {
-      x.categories[cat.ref] = 0
-      cat.params.map(param => {
-        let weight = 0
-        if (x[param.ref].class === 'open') {
-          weight = 1
-        }
-        if (x[param.ref].class === 'partial') {
-          weight = 0.5
-        }
-        if (x[param.ref].class === 'closed') {
-          weight = 0
-        }
-        x.params[param.ref] = weight
-      })
-      // calculate categories (average of params)
-      x.categories[cat.ref] = Object.values(x.params).reduce((a, b) => a + b) / Object.keys(x.params).length
-    })
-    // calculate total average
-    x.score = Object.values(x.categories).reduce((a, b) => a + b) / Object.keys(x.categories).length
-  })
-  // sort
-  prs.sort((a, b) => a.score > b.score ? -1 : 1)
-  // copy to object
-  projectsSorted.value = prs
-}
-
-onMounted(() => {
-  setTimeout(sortProjects, 500)
-})
 </script>
 
 <style lang="less" scoped>
@@ -126,10 +73,15 @@ onMounted(() => {
     .info {
       width: @namesize;
       min-width: @namesize;
+      padding-bottom: 0.5rem;
     }
 
     .data {
       flex: 1;
+
+      &:before {
+        // content: "";
+      }
     }
 
     .name {
@@ -140,9 +92,13 @@ onMounted(() => {
       display: block;
       text-decoration: none;
       padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
       max-width: calc(100% - 1rem);
       line-height: 1.2;
+    }
+
+    .org {
+      font-size: 0.75rem;
+      text-decoration: none;
     }
 
     .notes {
@@ -179,6 +135,7 @@ onMounted(() => {
 
         .param {
           white-space: nowrap;
+          width: 4rem;
         }
       }
     }
@@ -203,6 +160,7 @@ onMounted(() => {
       cursor: pointer;
       overflow: visible;
       padding: 0.5rem 0;
+      width: 4rem;
 
       .param-name {
         position: absolute;

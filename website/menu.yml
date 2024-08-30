@@ -1,8 +1,13 @@
 left:
   - link: /
-    icon: ic:twotone-circle
-  - name: Compare
+    # icon: ic:twotone-circle
+    icon: ic:baseline-arrow-back
+  - name: List
     link: /compare
+  - name: Grid
+    link: /grid
+  - name: List
+    link: /list
   - name: Guides
     link: /guides
 right:
