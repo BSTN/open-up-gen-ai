@@ -4,18 +4,17 @@
       <table>
         <thead>
           <tr>
-            <td class="fold"></td>
+            <td class="score">Score</td>
             <td class="name">Name</td>
             <td class="org">Organisation</td>
-            <td class="score">Score</td>
+            <td class="fold"></td>
           </tr>
         </thead>
         <tbody class="model" v-for="(item, k) in models" :class="{ active: store.selected.includes(item.filename) }"
           @click="toggleFold(item.filename)">
           <tr :style="bg(item.score)">
-            <td class="fold">
-              <Icon icon="ic:round-arrow-drop-down" v-if="folded.includes(item.filename)"></Icon>
-              <Icon icon="ic:round-arrow-right" v-else></Icon>
+            <td class="score">
+              <span>{{ item.score.toFixed(2) }}</span>
             </td>
             <td class="name">
               {{ item.project.name || '(undefined)' }}
@@ -23,11 +22,14 @@
             <td class="org">
               {{ item.org.name || '(undefined)' }}
             </td>
-            <td class="score">{{ item.score.toFixed(2) }}</td>
             <!-- <td class="checkbox" @click="store.toggle(item.filename)">
               <Icon icon="ion:checkbox" v-if="store.selected.includes(item.filename)"></Icon>
               <Icon icon="carbon:checkbox" v-else></Icon>
             </td> -->
+            <td class="fold">
+              <Icon icon="ic:round-arrow-drop-up" v-if="folded.includes(item.filename)"></Icon>
+              <Icon icon="ic:round-arrow-drop-down" v-else></Icon>
+            </td>
           </tr>
           <tr v-if="folded.includes(item.filename)" class="info">
             <td colspan="10">
@@ -57,6 +59,7 @@ function toggleFold(filename: string) {
 <style lang="less" scoped>
 .models {
   .row();
+  margin: 4rem auto;
 }
 
 table {
@@ -93,7 +96,7 @@ table {
     }
 
     &.score {
-      width: 4rem;
+      width: 5rem;
     }
   }
 }
@@ -134,7 +137,19 @@ table {
     }
   }
 
-  .score {}
+  .score {
+    text-align: left;
+
+    span {
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25em;
+      background: var(--bg);
+      color: var(--score);
+
+      background: rgba(#000, 0.1);
+      color: var(--bg);
+    }
+  }
 
   .fold {
     position: relative;
@@ -170,8 +185,7 @@ table {
 
 .info {
   color: var(--fg);
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--fg);
+  border-bottom: 1rem solid var(--bc);
 
   td {
     padding: 0;

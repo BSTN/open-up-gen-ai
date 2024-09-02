@@ -1,20 +1,20 @@
 <template>
-  <div class="model-info">
+  <div class="model-info" @click.stop>
     <div class="frame" v-if="model">
       <div class="info">
         <div class="sub">
-          <label>Notes for the model:</label>
+          <label>About the model:</label>
           <div class="notes" v-if="model.project.notes">{{ model.project.notes }}</div>
-          <div class="notes" v-else>(No notes available)</div>
+          <div class="notes" v-else>(Not available)</div>
           <label>Link to the model:</label>
           <NuxtLink :to="model.project.link">
             <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.project.link }}
           </NuxtLink>
         </div>
         <div class="sub">
-          <label>Notes for the organisation:</label>
+          <label>About the organisation:</label>
           <div class="notes" v-if="model.org.notes">{{ model.org.notes }}</div>
-          <div class="notes" v-else>(No notes available)</div>
+          <div class="notes" v-else>(Not available)</div>
           <label>Link to the organisation:</label>
           <NuxtLink :to="model.org.link">
             <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.org.link }}
@@ -39,7 +39,8 @@
                 </div>
               </div>
               <div class="param-info">
-                <div class="param-name">{{ param.name }}</div>
+                <div class="param-name">{{ param.name }} <Icon icon="mage:tag-question-mark-fill"></Icon>
+                </div>
                 <div class='notes' v-html="model[param.ref].notes">
                 </div>
                 <NuxtLink :to="model[param.ref].link">{{ model[param.ref].link }}</NuxtLink>
@@ -79,8 +80,9 @@ const model = computed(() => {
   border-right: 1px solid var(--bc);
   display: flex;
   gap: 0rem;
-  padding-left: 1.5rem;
+  padding-left: 3.5rem;
   font-size: 0.75rem;
+  background: var(--bc);
 
   >div {
     padding: 2rem 2rem;
@@ -127,12 +129,15 @@ const model = computed(() => {
   display: flex;
   border-top: 1px solid var(--bc);
   border-bottom: 1px solid var(--bc);
-  margin-bottom: 1rem;
 
   .category {
     flex: 1;
     border-left: 1px solid var(--bc);
     padding-top: 1rem;
+    padding-bottom: 2rem;
+    flex-shrink: 0;
+    flex-grow: 1;
+    width: calc(100%/3);
 
     &:last-child {
       border-right: 1px solid var(--bc);
@@ -182,6 +187,16 @@ const model = computed(() => {
     padding-right: 2rem;
     padding-left: 1rem;
 
+    .param-info {
+      &:hover {
+        .param-name {
+          :deep(svg) {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
     .icon-frame {
       width: 2rem;
       text-align: left;
@@ -196,6 +211,12 @@ const model = computed(() => {
     .param-name {
       font-weight: 600;
       margin-bottom: 0.5rem;
+
+      :deep(svg) {
+        transition: 0.2s ease;
+        color: var(--fg2);
+        opacity: 0;
+      }
     }
 
     .notes {
@@ -212,6 +233,7 @@ const model = computed(() => {
       font-size: 0.75rem;
       line-height: 1.4;
       color: var(--fg2);
+      word-break: break-all;
 
       &:hover {
         color: var(--link);

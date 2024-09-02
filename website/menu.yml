@@ -2,7 +2,7 @@ left:
   - link: /
     # icon: ic:twotone-circle
     icon: ic:baseline-arrow-back
-  - name: List
+  - name: Compare
     link: /compare
   - name: Grid
     link: /grid

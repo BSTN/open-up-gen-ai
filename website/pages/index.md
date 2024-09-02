@@ -1,33 +1,25 @@
-:gradient
+## What is the Open AI index?
+The Open AI index is an evidence-based framework to evaluate the openness of generative AI systems.
 
-# Why is openness important?
+## Why is openness important?
+An open and critical context where knowledge is shared, is crucial to fuel innovation in the (still early stages) of complex and impactful technologies like (generative) AI. Openness can help making sure innovation is not only serving commercial interests, but can push beyond to serve us all with its full potential.
 
-Open research is the lifeblood of cumulative progress in science and engineering. Openness is key for fundamental research, for fostering critical computational literacy, and for making informed choices for or against deployment of instruction-tuned LLM architectures. The closed & proprietary nature of ChatGPT and kin makes them fundamentally unfit for responsible use in research and education.
+[Read more](/readmore)
 
-Open alternatives provide ways to build reproducible workflows, chart resource costs, and lessen reliance on corporate whims. One aim of our work here is to provide tools to track openness, transparency and accountability in the fast-evolving landscape of instruction-tuned text generators. Read more in the paper (PDF) or contribute to the repo.
+## What has openness to do with international regulations?
+In 2024, the AI landscape will be shaken up by the EU's AI Act, the world's first comprehensive AI law, with a projected impact comparable to GDPR. To keep space for innovation, the Act includes exemptions for models released under open licenses. The problem of the Act is that ‘open’ is not defined and outsourced to a (yet to be established) EU AI Office.
 
-## TL;DR
+[Read more](/readmore)
 
-## Our paper makes the following contributions:
+## What are the risks when the definition of ‘open’ is still _open_?
+The big risk is that companies will claim to be open (by ie. using an open source license for a single aspect) to benefit from the exemptions on all aspects of their activities. This is called ‘open-washing’. There are numerous examples of this happening.
 
-- We review the risks of relying on proprietary software
-- We review best practices for open, transparent and accountable 'AI'
-- We find over 40 ChatGPT alternatives at varying degrees of openness, development and documentation
-- We argue that tech is never a fait accompli unless we make it so, and that openness enables critical computational literacy
+[Read more](/readmore)
 
-## We find the following recurrent patterns:
+## What did we do?
+We created an evidence-based framework that distinguishes 14 dimensions of openness, from training datasets to scientific and technical documentation and from licensing to access methods. We published our research in a [paper](/paper). The data is continuously updated and publicly available via our [GitHub repository](/github). More importantly: [**contributions are encouraged**](/contribute). The website you’re currently reading is providing a user-friendly interface for the data from the Github repository and gives extra contextual information to a wider audience.
 
-- Many projects inherit data of dubious legality
-- Few projects share the all-important instruction-tuning
-- Preprints are rare, peer-reviewed papers even rarer
-- Synthetic instruction-tuning data is on the rise, with unknown consequences that are in need of research
+[Read more](/readmore)
 
-## We conclude as follows:
-
-``` Openness is not the full solution to the scientific and ethical challenges of conversational text generators. Open data will not mitigate the harmful consequences of thoughtless deployment of large language models, nor the questionable copyright implications of scraping all publicly available data from the internet. However, openness does make original research possible, including efforts to build reproducible workflows and understand the fundamentals of instruction-tuned LLM architectures. Openness also enables checks and balances, fostering a culture of accountability for data and its curation, and for models and their deployment. We hope that our work provides a small step in this direction. ```
-
-## Papers
-
-Liesenfeld, Andreas, Alianda Lopez, and Mark Dingemanse. 2023. “Opening up ChatGPT: Tracking Openness, Transparency, and Accountability in Instruction-Tuned Text Generators.” In CUI '23: Proceedings of the 5th International Conference on Conversational User Interfaces. July 19-21, Eindhoven. doi: 10.1145/3571884.3604316 (PDF).
-
-Andreas Liesenfeld and Mark Dingemanse. 2024. Rethinking open source generative AI: open washing and the EU AI Act. In The 2024 ACM Conference on Fairness, Accountability, and Transparency (FAccT '24). Association for Computing Machinery, New York, NY, USA, 1774–1787. doi: 10.1145/3630106.3659005
+## Why did we do this?
+Evidence-based openness assessment can help foster a generative AI landscape in which models can be effectively regulated, model providers can be held accountable, scientists can scrutinise generative AI, and end users can make informed decisions.

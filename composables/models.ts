@@ -16,9 +16,9 @@ sortModels(projects.value)
 
 function bg(score) {
   if (score < 0.5) {
-    return { background: `color-mix(in srgb, var(--g1), var(--g2) ${Math.round((score * 2) * 100)}%)` }
+    return { background: `var(--score)`, '--score':  `color-mix(in srgb, var(--g1), var(--g2) ${Math.round((score * 2) * 100)}%)`}
   } else {
-    return { background: `color-mix(in srgb, var(--g2), var(--g3) ${Math.round(((score - 0.5) * 2) * 100)}%)` }
+    return { background: `var(--score)`, '--score': `color-mix(in srgb, var(--g2), var(--g3) ${Math.round(((score - 0.5) * 2) * 100)}%)` }
   }
 }
 
