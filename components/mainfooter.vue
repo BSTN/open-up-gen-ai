@@ -1,10 +1,6 @@
 <template>
   <div class="mainfooter">
-    {{ info.sha }}
-    {{ info.commit.author.name }}
-    {{ info.commit.committer.name }}
-    {{ info.commit.author.date }}
-
+    {{ info }}
     <ContentDoc path="/footer" />
   </div>
 </template>

@@ -14,6 +14,8 @@ async function getRepo({ owner, repo, local }: { owner: string, repo: string, lo
     return
   }
   
+  console.log('get Repo?')
+
   const githubtoken = process.env.githubtoken;
   const rootdir = `./repos`
   const dir = `${rootdir}/${owner}-${repo}`
@@ -21,12 +23,13 @@ async function getRepo({ owner, repo, local }: { owner: string, repo: string, lo
   const octokit = new Octokit({ auth: githubtoken })
 
   // check if update is needed
+  console.log('----- check if update is needed -----')
   const info = await octokit.rest.repos.getCommit({ owner, repo });
 
   if (fs.existsSync(infoPath)) {
     const { hash } = JSON.parse(fs.readFileSync(infoPath, 'utf8'))
     if (info?.data && hash === String(info.data[0].sha)) {
-      console.log(`You have the latest version (${hash})`)
+      console.log(`No update needed (${hash})`)
       return
     }
   }
@@ -68,15 +71,12 @@ async function getRepo({ owner, repo, local }: { owner: string, repo: string, lo
 
   fs.rmSync('./repo.tar')
 
-  const commit = await octokit.rest.repos.getCommit({
-    owner,
-    repo,
-    ref: info.data[0].sha
-  });
-
-  fs.writeFileSync(infoPath, JSON.stringify(commit.data), 'utf8')
+  fs.writeFileSync(infoPath, JSON.stringify({
+    hash: info.data[0].sha,
+    author: info.data[0].author.login
+  }), 'utf8')
   
-  console.log(`Done (${commit.data.sha})`)
+  console.log(`Done (${info.data[0].sha})`)
 }
 
 export default defineNuxtModule({
@@ -84,7 +84,7 @@ export default defineNuxtModule({
     // Usually the npm package name of your module
     name: 'github module',
     // The key in `nuxt.config` that holds your module options
-    configKey: 'github',
+    configKey: 'githuboptions',
     // Compatibility constraints
     compatibility: {
       // Semver version of supported nuxt versions
@@ -102,12 +102,15 @@ export default defineNuxtModule({
     // ...
     nuxt.hook('build:before', async () => {
       // check if github options are defined
-      if (!('github' in nuxt.options) || !nuxt.options.github || !Array.isArray(nuxt.options.github)) return
+      console.log(moduleOptions)
+      // if (!('githuboptions' in nuxt.options) || !nuxt.options.githuboptions || !Array.isArray(nuxt.options.githuboptions)) return
+      if (!('repositories' in moduleOptions) || !Array.isArray(moduleOptions.repositories)) { return }
       // check if .env githubtoken exists
+      console.log('#### check token...', process.env.githubtoken)
       if (!process.env.githubtoken) return
       // loop through repositories
-      for (let i in nuxt.options.github) {
-        await getRepo(nuxt.options.github[i])
+      for (let i in moduleOptions.repositories) {
+        await getRepo(moduleOptions.repositories[i])
       }
     })
   }

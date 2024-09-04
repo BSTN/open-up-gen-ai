@@ -14,14 +14,14 @@ export default defineNuxtConfig({
     }
   },
   modules: [
-    './modules/github.module.ts',
+    ['./modules/github.module', {repositories:[{
+      owner: 'opening-up-chatgpt',
+      repo: 'opening-up-chatgpt.github.io',
+      // local: localRepository
+    }]}],
     '@nuxt/content',
     '@pinia/nuxt'
   ],
-  github: [{
-    owner: 'opening-up-chatgpt',
-    repo: 'opening-up-chatgpt.github.io'
-  }],
   vite: {
     css: {
       preprocessorOptions: {
