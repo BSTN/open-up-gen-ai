@@ -7,6 +7,8 @@
             <td class="score">Score</td>
             <td class="name">Name</td>
             <td class="org">Organisation</td>
+            <!-- <td class="org">LLM Base</td>
+            <td class="org">RL Base</td> -->
             <td class="fold"></td>
           </tr>
         </thead>
@@ -22,6 +24,12 @@
             <td class="org">
               {{ item.org.name || '(undefined)' }}
             </td>
+            <!-- <td class="llmbase">
+              {{ item.project.llmbase || '(undefined)' }}
+            </td>
+            <td class="rlbase">
+              {{ item.project.rlbase || '(undefined)' }}
+            </td> -->
             <!-- <td class="checkbox" @click="store.toggle(item.filename)">
               <Icon icon="ion:checkbox" v-if="store.selected.includes(item.filename)"></Icon>
               <Icon icon="carbon:checkbox" v-else></Icon>

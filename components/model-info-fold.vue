@@ -20,6 +20,12 @@
             <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.org.link }}
           </NuxtLink>
         </div>
+        <div class="sub">
+          <label>LLM Base:</label>
+          <div class="notes">{{ model.project.llmbase || '(undefined)' }}</div>
+          <label>RL Base:</label>
+          <div class="notes">{{ model.project.rlbase || '(undefined)' }}</div>
+        </div>
       </div>
       <div class="categories">
         <div class="category" v-for="category in categories">
@@ -86,10 +92,7 @@ const model = computed(() => {
 
   >div {
     padding: 2rem 2rem;
-
-    &:first-child {
-      width: 20rem;
-    }
+    flex: 1;
 
     a {
       text-decoration: none;
