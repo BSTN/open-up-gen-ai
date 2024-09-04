@@ -31,7 +31,7 @@ const { models, bg } = useModels()
     // box-shadow: 0 0 0 var(--fg);
     cursor: pointer;
     background: var(--fg);
-    color: var(--bg);
+    color: var(--listfg);
     display: flex;
     flex-direction: column;
     // border: 1px solid var(--fg);

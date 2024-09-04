@@ -1,1 +1,1 @@
-Guides
+Here we can have an index of guides for specific use cases.

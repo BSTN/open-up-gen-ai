@@ -102,7 +102,7 @@ table {
 }
 
 .model {
-  color: var(--bg);
+  color: var(--listfg);
   padding: 0.5em 1em;
   margin-bottom: 1px;
   text-decoration: none;
@@ -143,11 +143,11 @@ table {
     span {
       padding: 0.25rem 0.5rem;
       border-radius: 0.25em;
-      background: var(--bg);
-      color: var(--score);
+      // background: var(--bg);
+      // color: var(--score);
 
       background: rgba(#000, 0.1);
-      color: var(--bg);
+      // color: var(--bg);
     }
   }
 
