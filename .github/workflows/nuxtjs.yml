@@ -62,7 +62,7 @@ jobs:
         run: yarn run generate
         env: 
           githubtoken: ${{ secrets.GITHUB_TOKEN }}
-          NUXT_APP_BASE_URL: /widt-retoriek/
+          NUXT_APP_BASE_URL: /open-up-gen-ai/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
