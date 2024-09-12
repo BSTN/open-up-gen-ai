@@ -32,8 +32,8 @@
           <div class="category-bar">
             <div class="category-name">{{ category.name }}</div>
             <div class="category-score" :style="bg(model.categories[category.ref])">{{
-      model.categories[category.ref].toFixed(2)
-    }}</div>
+              model.categories[category.ref].toFixed(2)
+              }}</div>
           </div>
           <div class="params">
             <div class="param" v-for="param in category.params">

@@ -14,8 +14,9 @@
     <div class="projectlist">
       <div class="project" v-for="item in models" :key="item.path">
         <div class="info">
-          <NuxtLink :to="item.project.link" class="name">{{ item.project.name || '(undefined)' }}</NuxtLink>
-          <NuxtLink :to="item.org.link" class="org">by {{ item.org.name }}</NuxtLink>
+          <NuxtLink :to="`/model-info?model=${item.filename}`" class="name">{{ item.project.name || '(undefined)' }}
+          </NuxtLink>
+          <NuxtLink :to="`/model-info?model=${item.filename}`" class="org">by {{ item.org.name }}</NuxtLink>
           <!-- <div class="notes">{{ item.project.notes }}</div>
           <NuxtLink :to="item.org.link" class="org">{{ item.org.name }}</NuxtLink>
           <div class="llmbase">{{ item.project.llmbase }}</div>
