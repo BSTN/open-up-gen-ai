@@ -219,6 +219,8 @@ const model = computed(() => {
       width: 2rem;
       text-align: left;
       padding-left: 1rem;
+      flex-shrink: 0;
+      flex-grow: 0;
 
       .circle-icon {
         flex-shrink: 0;

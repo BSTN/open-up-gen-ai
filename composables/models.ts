@@ -1,6 +1,9 @@
 import debounce from "lodash/debounce";
 import categories from '@/website/categories.yml'
 
+const params = []
+categories.map(x => { x.params.map(xx => params.push(xx))})
+
 const projectsList = import.meta.glob('@/repos/opening-up-chatgpt-opening-up-chatgpt.github.io/projects/*.yaml', { eager: true })
 let projects = ref<Array<any>>([])
 for (const path in projectsList) {
@@ -71,5 +74,5 @@ function sortModels(ppp: any) {
 
 
 export const useModels = () => {
-  return { models, sortModels, categories, bg, color }
+  return { models, sortModels, categories, bg, color, params }
 }
