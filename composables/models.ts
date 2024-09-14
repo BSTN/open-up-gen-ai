@@ -15,10 +15,14 @@ const models = ref()
 sortModels(projects.value)
 
 function bg(score) {
+    return { background: `var(--score)`, '--score': color(score)}
+}
+
+function color(score) {
   if (score < 0.5) {
-    return { background: `var(--score)`, '--score':  `color-mix(in srgb, var(--g1), var(--g2) ${Math.round((score * 2) * 100)}%)`}
+    return `color-mix(in srgb, var(--g1), var(--g2) ${Math.round((score * 2) * 100)}%)`
   } else {
-    return { background: `var(--score)`, '--score': `color-mix(in srgb, var(--g2), var(--g3) ${Math.round(((score - 0.5) * 2) * 100)}%)` }
+    return `color-mix(in srgb, var(--g2), var(--g3) ${Math.round(((score - 0.5) * 2) * 100)}%)`
   }
 }
 
@@ -67,5 +71,5 @@ function sortModels(ppp: any) {
 
 
 export const useModels = () => {
-  return { models, sortModels, categories, bg }
+  return { models, sortModels, categories, bg, color }
 }

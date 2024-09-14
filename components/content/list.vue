@@ -13,10 +13,11 @@
           </tr>
         </thead>
         <tbody class="model" v-for="(item, k) in models" :class="{ active: store.selected.includes(item.filename) }"
-          @click="toggleFold(item.filename)">
+          @click.exact="toggleFold(item.filename)" @click.meta="router.push(`/model/${item.filename}`)">
           <tr :style="bg(item.score)">
             <td class="score">
-              <span>{{ item.score.toFixed(2) }}</span>
+              <scorebar :score="item.score"></scorebar>
+              <!-- <span>{{ item.score.toFixed(2) }}</span> -->
             </td>
             <td class="name">
               {{ item.project.name || '(undefined)' }}
@@ -52,6 +53,7 @@
 
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
+const router = useRouter();
 const { models, bg } = useModels()
 const store = useMyComparisonStore()
 const folded = ref<Array<string>>([])
@@ -147,6 +149,8 @@ table {
 
   .score {
     text-align: left;
+    --fg: var(--listfg);
+    --bg: color-mix(in srgb, var(--bg2) 25%, transparent);
 
     span {
       padding: 0.25rem 0.5rem;

@@ -31,9 +31,12 @@
         <div class="category" v-for="category in categories">
           <div class="category-bar">
             <div class="category-name">{{ category.name }}</div>
-            <div class="category-score" :style="bg(model.categories[category.ref])">{{
+            <!-- <div class="category-score" :style="bg(model.categories[category.ref])">{{
               model.categories[category.ref].toFixed(2)
-              }}</div>
+            }}</div> -->
+            <scorebar :score="model.categories[category.ref]"
+              :style="{ '--fg': color(model.categories[category.ref]) }">
+            </scorebar>
           </div>
           <div class="params">
             <div class="param" v-for="param in category.params">
@@ -67,7 +70,7 @@ import partialIcon from '@/assets/icons/partial.svg?raw'
 
 const { filename } = defineProps(['filename'])
 
-const { models, categories, bg } = useModels()
+const { models, categories, bg, color } = useModels()
 
 const model = computed(() => {
   if (!filename) return false
@@ -82,16 +85,14 @@ const model = computed(() => {
 
 .info {
   text-align: left;
-  border-left: 1px solid var(--bc);
-  border-right: 1px solid var(--bc);
   display: flex;
-  gap: 0rem;
-  padding-left: 3.5rem;
+  gap: 1rem;
   font-size: 0.75rem;
-  background: var(--bc);
+  // background: var(--bc);
+  margin-bottom: 2rem;
 
   >div {
-    padding: 2rem 2rem;
+    padding: 0;
     flex: 1;
 
     a {
@@ -110,13 +111,13 @@ const model = computed(() => {
   h1,
   h2 {
     text-align: left;
-    margin: 0 0 1rem;
+    margin: 0 0 .5rem;
     max-width: 100%;
     line-height: 1.1;
   }
 
   .notes {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     line-height: 1.4;
     max-width: 32em;
   }
@@ -130,17 +131,21 @@ const model = computed(() => {
 
 .categories {
   display: flex;
-  border-top: 1px solid var(--bc);
-  border-bottom: 1px solid var(--bc);
+  // border-top: 1px solid var(--bc);
+  // border-bottom: 1px solid var(--bc);
+  gap: 1rem;
+
 
   .category {
     flex: 1;
-    border-left: 1px solid var(--bc);
+    // border-left: 1px solid var(--bc);
     padding-top: 1rem;
     padding-bottom: 2rem;
     flex-shrink: 0;
     flex-grow: 1;
     width: calc(100%/3);
+    background: var(--bg2);
+    border-radius: 0.25rem;
 
     &:last-child {
       border-right: 1px solid var(--bc);
@@ -162,6 +167,8 @@ const model = computed(() => {
         padding: 0;
         flex: 1;
         text-align: center;
+        margin-bottom: .5rem;
+        font-weight: 600;
       }
 
       .category-score {
@@ -174,6 +181,10 @@ const model = computed(() => {
         position: absolute;
         top: 0;
         right: 1rem;
+      }
+
+      :deep(.scorebar) {
+        --bg: var(--bg3);
       }
     }
   }
@@ -267,5 +278,38 @@ const model = computed(() => {
   &.open-icon {
     color: var(--g3);
   }
+}
+
+@media (max-width: 50rem) {
+
+  .info {
+    display: block;
+    padding: .5rem;
+
+    >div {
+      padding: 1rem;
+    }
+  }
+
+  .categories {
+    display: block;
+
+    .category {
+      width: 100%;
+      border-top: 1px solid var(--bc);
+    }
+  }
+
+  .params {
+    .param {
+      padding: 1rem;
+      gap: 0.75rem;
+
+      .icon-frame {
+        padding-left: 0;
+      }
+    }
+  }
+
 }
 </style>

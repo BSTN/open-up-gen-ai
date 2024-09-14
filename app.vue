@@ -1,16 +1,33 @@
 <template>
-  <div class="app">
+  <div class="app" :class="[{ top: !nottop, nottop }, direction]" :path="$route.path">
     <Mainmenu></Mainmenu>
-    <ContentDoc class="page" />
+    <NuxtPage class="page"></NuxtPage>
     <Mainfooter></Mainfooter>
   </div>
 </template>
+<script setup lang="ts">
+import { useWindowScroll } from '@vueuse/core'
+const direction = ref('')
+const { y } = useWindowScroll()
+let prevy = 0
+const nottop = computed(() => {
+  direction.value = (y.value > prevy) ? 'scroll-down' : 'scroll-up'
+  prevy = y.value
+  return y.value > 150
+})
+</script>
 <style lang="less">
 @import '@/less/elements.less';
 
 .page {
   min-height: calc(100vh - 8rem);
-  padding: 2rem 0 4rem;
+  padding: 0 0 4rem;
+
+  >*:first-child {
+    .app:not([path='/']) & {
+      margin-top: 10rem !important;
+    }
+  }
 
   p {
     width: var(--pwidth);

@@ -15,5 +15,6 @@ import info from '@/repos/opening-up-chatgpt-opening-up-chatgpt.github.io/.info.
   font-size: 0.75rem;
   margin-top: 2rem;
   margin-bottom: 4rem;
+  color: var(--fg2);
 }
 </style>

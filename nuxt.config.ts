@@ -18,7 +18,9 @@ export default defineNuxtConfig({
       owner: 'opening-up-chatgpt',
       repo: 'opening-up-chatgpt.github.io',
       // local: localRepository
-    }]}],
+    }]
+    }],
+    // './modules/extend-pages-module/extendpages.ts',
     '@nuxt/content',
     '@pinia/nuxt'
   ],

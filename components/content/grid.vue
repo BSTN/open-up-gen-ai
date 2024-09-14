@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <div class="models">
-      <NuxtLink :to="`/model-info?model=${item.filename}`" class="model" v-for="item in models" :style="bg(item.score)">
+      <NuxtLink :to="`/model/${item.filename}`" class="model" v-for="item in models" :style="bg(item.score)">
         <div class="name">{{ item.project.name || '(undefined)' }}</div>
         <div class="org">by <span>{{ item.org.name || '(undefined)' }}</span></div>
         <div class="flex"></div>
@@ -17,6 +17,10 @@ const { models, bg } = useModels()
 </script>
 
 <style lang="less" scoped>
+.grid {
+  display: block;
+}
+
 .models {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));

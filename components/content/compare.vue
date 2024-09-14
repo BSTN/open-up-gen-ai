@@ -14,9 +14,9 @@
     <div class="projectlist">
       <div class="project" v-for="item in models" :key="item.path">
         <div class="info">
-          <NuxtLink :to="`/model-info?model=${item.filename}`" class="name">{{ item.project.name || '(undefined)' }}
+          <NuxtLink :to="`/model/${item.filename}`" class="name">{{ item.project.name || '(undefined)' }}
           </NuxtLink>
-          <NuxtLink :to="`/model-info?model=${item.filename}`" class="org">by {{ item.org.name }}</NuxtLink>
+          <NuxtLink :to="`/model/${item.filename}`" class="org">by {{ item.org.name }}</NuxtLink>
           <!-- <div class="notes">{{ item.project.notes }}</div>
           <NuxtLink :to="item.org.link" class="org">{{ item.org.name }}</NuxtLink>
           <div class="llmbase">{{ item.project.llmbase }}</div>
@@ -113,9 +113,18 @@ const { models, categories, sortModels } = useModels()
   top: 0;
   background: var(--bg);
   .row();
-  z-index: 9;
-  margin-bottom: 1rem;
-  padding-top: 0.5rem;
+  z-index: 10;
+  margin-bottom: 0rem;
+  padding-top: 0rem;
+  transition: all 0.2s ease;
+
+  .scroll-up.nottop & {
+    top: 3rem;
+  }
+
+  .nottop & {
+    box-shadow: 0 0 0.5rem var(--shadow);
+  }
 
   .frame {
     width: calc(100% - @namesize);
@@ -123,20 +132,43 @@ const { models, categories, sortModels } = useModels()
     display: flex;
     gap: 2rem;
     background: var(--bg);
+    padding-bottom: .5rem;
+    padding-top: 1rem;
+    overflow: visible;
 
     .category {
-      flex: 1;
+      // flex: 1;
       background: var(--bg);
       font-weight: 600;
+
+      .cat-name {
+        text-align: center;
+        position: relative;
+        padding-bottom: 0.5rem;
+        margin-bottom: .25rem;
+
+        &:after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          width: 100%;
+          height: 0.5rem;
+          left: -3px;
+          border: 1px solid var(--bc);
+          border-width: 1px 3px 0 3px;
+          box-sizing: content-box;
+        }
+      }
 
       .params {
         display: flex;
         font-size: 0.6rem;
-        gap: .5rem;
+        gap: 0rem;
 
         .param {
           white-space: nowrap;
           width: 4rem;
+          text-align: center;
         }
       }
     }
@@ -153,15 +185,15 @@ const { models, categories, sortModels } = useModels()
 
   .params {
     display: flex;
-    gap: .5rem;
+    gap: 0;
 
     .param {
-      flex: 1;
       position: relative;
       cursor: pointer;
       overflow: visible;
       padding: 0.5rem 0;
       width: 4rem;
+      flex: 1;
 
       .param-name {
         position: absolute;
@@ -173,6 +205,7 @@ const { models, categories, sortModels } = useModels()
       .circle-icon {
         width: 2rem;
         height: 2rem;
+        margin: 0 auto;
 
         :deep(svg) {
           width: 100% !important;

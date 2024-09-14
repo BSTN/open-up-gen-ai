@@ -1,18 +1,21 @@
 left:
   - link: /
+    # name: Home
     # icon: ic:twotone-circle
     icon: ic:baseline-arrow-back
-  - name: Compare
-    link: /compare
-  - name: Grid
-    link: /grid
-  - name: List
-    link: /list
-  - name: Guides
-    link: /guides
+  - link: /list
+    name: All models
+  - link: /guides
+    name: Guides
 right:
+  - name: About
+    link: /about
+  # - name: News
+  #   link: /news
+  # - name: Guides
+  #   link: /guides
   - name: Contribute
     link: /contribute
-  - link: https://github.com/opening-up-chatgpt/opening-up-chatgpt.github.io
+  - link: https://github.com/Language-Technology-Assessment/
     target: _blank
     icon: bi:github

@@ -1,25 +1,21 @@
 <template>
   <div class="model-info">
     <div class="frame">
-      <div class="top-info" :style="bg(model.score)">
+      <div class="top-info">
         <h1>{{ model.project.name || '(undefined)' }}</h1>
         <h2>by {{ model.org.name || '(undefined)' }}</h2>
-        <div class="score">Average score: {{ model.score.toFixed(2) }}</div>
+        <scorebar :score="model.score" :style="{ '--fg': color(model.score) }"></scorebar>
       </div>
-      <ModelInfoFold :filename="route.query.model"></ModelInfoFold>
+      <ModelInfoFold :filename="route.params.model"></ModelInfoFold>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import openIcon from '@/assets/icons/open.svg?raw'
-import closedIcon from '@/assets/icons/closed.svg?raw'
-import partialIcon from '@/assets/icons/partial.svg?raw'
-
-const { models, categories, bg } = useModels()
+const { models, categories, bg, color } = useModels()
 const route = useRoute()
 const model = computed(() => {
-  const pad = route.query.model
+  const pad = route.params.model
   return models.value.find(x => x.filename === pad)
 })
 </script>
@@ -32,22 +28,36 @@ const model = computed(() => {
 }
 
 .top-info {
-  padding: 4rem 2rem;
-  // border: 1px solid var(--bc);
-  color: var(--listfg);
+  padding: 0rem 0 2rem;
+  color: var(--fg);
+
+  :deep(.scorebar) {
+    --bg: var(--bg3);
+    --sb-height: 1rem;
+    width: 20rem;
+    max-width: 80%;
+    margin: 0 0 1rem;
+  }
 
   h1 {
-    margin-bottom: 1rem;
-    text-align: center;
+    font-size: 3rem;
+    margin-bottom: .5rem;
+    text-align: left;
+    width: 100%;
   }
 
   h2 {
-    text-align: center;
+    text-align: left;
+    width: 100%;
     margin-top: 0;
+    margin-bottom: 2rem;
+    color: var(--fg2);
   }
 
   .score {
     text-align: center;
+    color: var(--fg2);
+    font-size: 0.75rem;
   }
 }
 </style>
