@@ -1,12 +1,10 @@
 <template>
-  <div class="partners">
-    <label>Partners</label>
+  <div class="news">
+    <label>Latest news</label>
     <div class="frame">
       <NuxtLink to="/list">A</NuxtLink>
       <NuxtLink to="/old-list">B</NuxtLink>
       <NuxtLink to="/compare">C</NuxtLink>
-      <NuxtLink to="/compare">D</NuxtLink>
-      <NuxtLink to="/compare">E</NuxtLink>
     </div>
   </div>
 </template>
@@ -16,7 +14,7 @@
 </script>
 
 <style lang="less" scoped>
-.partners {
+.news {
   display: block;
   .row();
   padding: 2rem 0 2rem;
@@ -27,7 +25,7 @@
 
   .frame {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 4rem;
 
     a {

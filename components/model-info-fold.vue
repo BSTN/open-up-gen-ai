@@ -91,9 +91,16 @@ const model = computed(() => {
   // background: var(--bc);
   margin-bottom: 2rem;
 
-  >div {
-    padding: 0;
+  .sub {
+    padding: 1.5rem 2rem 1.5rem 2rem;
     flex: 1;
+    border: 1px solid var(--bc);
+    border-radius: 0.25rem;
+    color: var(--fg2);
+
+    label {
+      color: var(--fg);
+    }
 
     a {
       text-decoration: none;
@@ -147,10 +154,6 @@ const model = computed(() => {
     background: var(--bg2);
     border-radius: 0.25rem;
 
-    &:last-child {
-      border-right: 1px solid var(--bc);
-    }
-
     .category-bar {
       display: flex;
       flex-direction: column;
@@ -185,6 +188,7 @@ const model = computed(() => {
 
       :deep(.scorebar) {
         --bg: var(--bg3);
+        --sb-height: 0.35rem;
       }
     }
   }
@@ -284,10 +288,11 @@ const model = computed(() => {
 
   .info {
     display: block;
-    padding: .5rem;
+    margin-bottom: 1rem;
 
-    >div {
+    >.sub {
       padding: 1rem;
+      margin-bottom: .5rem;
     }
   }
 
@@ -296,7 +301,7 @@ const model = computed(() => {
 
     .category {
       width: 100%;
-      border-top: 1px solid var(--bc);
+      margin-bottom: .5rem;
     }
   }
 
@@ -304,6 +309,7 @@ const model = computed(() => {
     .param {
       padding: 1rem;
       gap: 0.75rem;
+      margin-bottom: 0rem;
 
       .icon-frame {
         padding-left: 0;

@@ -19,7 +19,7 @@
 .as-seen-in {
   display: block;
   .row();
-  padding: 4rem 0;
+  padding: 2rem 0 2rem;
 
   label {
     margin-bottom: 2rem;

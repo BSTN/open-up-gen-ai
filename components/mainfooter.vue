@@ -1,6 +1,5 @@
 <template>
   <div class="mainfooter">
-    {{ info }}
     <ContentDoc path="/footer" />
   </div>
 </template>

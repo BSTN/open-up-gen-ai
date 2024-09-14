@@ -33,24 +33,25 @@ const model = computed(() => {
 
   :deep(.scorebar) {
     --bg: var(--bg3);
-    --sb-height: 1rem;
-    width: 20rem;
+    --sb-height: .75rem;
+    width: 16rem;
     max-width: 80%;
-    margin: 0 0 1rem;
+    margin: 0 auto 4rem;
   }
 
   h1 {
     font-size: 3rem;
     margin-bottom: .5rem;
-    text-align: left;
+    text-align: center;
     width: 100%;
   }
 
   h2 {
-    text-align: left;
+    text-align: center;
     width: 100%;
     margin-top: 0;
     margin-bottom: 2rem;
+    font-weight: 400;
     color: var(--fg2);
   }
 
@@ -58,6 +59,18 @@ const model = computed(() => {
     text-align: center;
     color: var(--fg2);
     font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .top-info {
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1rem;
+    }
   }
 }
 </style>

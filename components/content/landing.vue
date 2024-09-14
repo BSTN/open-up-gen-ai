@@ -41,7 +41,6 @@ const { height } = useWindowSize()
     position: relative;
     z-index: 2;
     overflow: visible;
-    padding-bottom: 4rem;
     .row();
 
     .animation-frame {

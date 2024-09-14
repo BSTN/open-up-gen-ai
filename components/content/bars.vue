@@ -1,17 +1,17 @@
 <template>
-  <div class="bars">
-    <div class="filters">
-      <!-- <div class="group">
-        <button>High to low</button>
-        <button>Low to high</button>
-      </div> -->
-      <Div class="group">
-        Showing {{ models.length }} of {{ models.length }} AI models
-      </Div>
+  <div class="bars" ref="el" :class="{ sticky: isvisible }">
+    <div class="meta">
+      <div class="models-info">{{ models.length }}/{{ models.length }} Generative AI Models</div>
+      <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
+        <div>Version 14-04-2024</div>
+        <Icon icon="iconamoon:link-external-fill"></Icon>
+      </NuxtLink>
+    </div>
+    <!-- <div class="filters">
       <div class="group">
         <button>+ Add a custom filter</button>
       </div>
-      <!-- <div class="cats group">
+      <div class="cats group">
         <label>Required:</label>
         <div class="cat" v-for="cat in categories">
           <div class="cat-name">{{ cat.name }}</div>
@@ -21,8 +21,8 @@
             </div>
           </div>
         </div>
-      </div> -->
-    </div>
+      </div>
+    </div> -->
     <div class="models">
       <div class="model" v-for="(item, k) in models" :class="{ active: store.selected.includes(item.filename) }"
         @click="router.push(`/model/${item.filename}`)">
@@ -48,7 +48,11 @@
 </template>
 
 <script lang="ts" setup>
+import { useElementBounding } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
+const el = ref(null)
+const { y } = useElementBounding(el)
+const isvisible = computed(() => y.value < 0)
 const router = useRouter();
 const { models, color, categories } = useModels()
 const store = useMyComparisonStore()
@@ -65,8 +69,51 @@ function toggleFold(filename: string) {
 <style lang="less" scoped>
 .bars {
   .row();
+  // display: flex;
+  // gap: 4rem;
+  width: 50rem;
+  border: 1px solid var(--bc);
+  padding: 0rem;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+.meta {
+  position: sticky;
+  top: 0;
+  background: var(--bc);
+  left: 0;
+  width: 100%;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  padding: 0.5em 1em;
+  line-height: 1;
+  color: var(--fg2);
   display: flex;
-  gap: 4rem;
+  gap: 1em;
+  z-index: 9;
+  align-items: center;
+
+  .models-info {
+    flex: 1;
+  }
+
+  .source {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    :deep(svg) {
+      flex-shrink: 0;
+    }
+  }
+
+  .nottop.scroll-up & {
+    transition-delay: 0.15s;
+    top: 3.2rem;
+  }
+
 }
 
 label {
@@ -74,15 +121,17 @@ label {
 }
 
 .filters {
-  width: 30%;
+  // width: 30%;
   flex-shrink: 0;
   position: sticky;
-  top: 2rem;
+  top: 0rem;
   max-height: calc(100vh - 4rem);
   background: var(--bg2);
   padding: 2rem;
   align-self: flex-start;
   border-radius: 0.25rem;
+  z-index: 9;
+  margin-bottom: 2rem;
 
   .group {
     margin-bottom: 1rem;
@@ -126,8 +175,8 @@ label {
 }
 
 .models {
-  .row();
   margin: 0 auto;
+  padding: 3rem 4rem;
 }
 
 .model {
@@ -218,6 +267,39 @@ label {
         text-decoration: underline;
       }
     }
+  }
+}
+
+@media (max-width: 40rem) {
+  .models {
+    padding: 2rem;
+
+    .model {
+      margin-bottom: 1rem;
+
+      .info {
+        position: relative;
+        display: block;
+
+        .checkbox {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+
+    }
+  }
+}
+
+@media (max-width: 30rem) {
+  .bars {
+    max-width: 100%;
+    border: 0;
+  }
+
+  .models {
+    padding: 2rem;
   }
 }
 </style>

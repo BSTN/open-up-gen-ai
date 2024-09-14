@@ -23,7 +23,9 @@ guides:
 ---
 ::
 
-::partners
+:news
+
+::as-seen-in
 ---
 list:
   - image: image
@@ -33,7 +35,7 @@ list:
 ---
 ::
 
-::as-seen-in
+::partners
 ---
 list:
   - image: image

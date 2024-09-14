@@ -106,7 +106,6 @@ export default defineNuxtModule({
       // if (!('githuboptions' in nuxt.options) || !nuxt.options.githuboptions || !Array.isArray(nuxt.options.githuboptions)) return
       if (!('repositories' in moduleOptions) || !Array.isArray(moduleOptions.repositories)) { return }
       // check if .env githubtoken exists
-      console.log('#### check token...', process.env.githubtoken)
       if (!process.env.githubtoken) return
       // loop through repositories
       for (let i in moduleOptions.repositories) {
