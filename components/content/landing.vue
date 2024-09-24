@@ -65,6 +65,23 @@ const { height } = useWindowSize()
       width: 28em;
     }
 
+    :deep(.animation-frame > p > a) {
+      background: var(--fg2);
+      color: var(--bg);
+      text-decoration: none;
+      border-radius: 0.25rem;
+      padding: 0.25em 0.75em;
+      margin-top: 0.5em;
+      display: inline-block;
+      margin-right: 1em;
+      font-size: 0.75rem;
+      font-weight: 600;
+
+      &:hover {
+        background: var(--fg);
+      }
+    }
+
     :deep(.note) {
       margin: 4rem 0 0 0;
     }

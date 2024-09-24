@@ -11,6 +11,7 @@
 <style lang="less" scoped>
 .note {
   width: var(--pwidth);
+  max-width: var(--maxwidth);
   font-size: 0.75rem;
   margin: 0 auto 1em;
   border-radius: 0.25em;

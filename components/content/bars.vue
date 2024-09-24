@@ -1,43 +1,78 @@
 <template>
   <div class="bars" ref="el" :class="{ sticky: isvisible }">
     <div class="meta">
-      <div class="models-info">{{ models.length }}/{{ models.length }} Generative AI Models</div>
+      <div class="models-info">
+        <!-- {{ models.length }}/{{ models.length }} Generative AI Models -->
+      </div>
       <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
         <div>Version 14-04-2024</div>
         <Icon icon="iconamoon:link-external-fill"></Icon>
       </NuxtLink>
     </div>
-    <div class="models">
-      <div class="model" v-for="(item, k) in models" :class="{ active: store.selected.includes(item.filename) }"
-        @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
-        @mouseleave="open = false; openParam = false">
-        <div class="info">
-          <div class="name">
-            {{ item.project.name || '(undefined)' }}
-          </div>
-          <div class="org">
-            by {{ item.org.name || '(undefined)' }}
-          </div>
+    <div class="filters">
+      <div class="select">
+        Active filters
+      </div>
+      <div class="show-hide">
+        Compare {{ store.selected.length }}
+      </div>
+    </div>
+    <div class="search">
+      <div class="searchbox" :class="{ searchFocus }">
+        <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
+          placeholder="Search...">
+        <button class="icon">
+          <Icon icon="iconamoon:search-bold"></Icon>
+        </button>
+        <button class="icon">
+          <Icon icon="mage:filter-fill"></Icon>
+        </button>
+      </div>
+    </div>
+    <div class="models" :class="{ somethingisopen: open }">
+      <div class="model" v-for="(item, k) in models"
+        :class="{ active: store.selected.includes(item.filename), open: item === open }">
+        <div class="compare">
           <button class="checkbox" @click.stop="store.toggle(item.filename)"
+            :class="{ active: store.selected.includes(item.filename) }">
+            <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
+            <Icon icon="mdi:plus" v-else></Icon>
+          </button>
+        </div>
+        <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
+          @mouseleave="open = false; openParam = false">
+          <div class="info">
+            <div class="name">
+              {{ item.project.name || '(undefined)' }}
+            </div>
+            <div class="org">
+              by {{ item.org.name || '(undefined)' }}
+            </div>
+            <!-- <button class="checkbox" @click.stop="store.toggle(item.filename)"
             :class="{ active: store.selected.includes(item.filename) }">
             <Icon icon="mingcute:checkbox-fill" v-if="store.selected.includes(item.filename)"></Icon>
             <Icon icon="mdi:plus-box" v-else></Icon>
-          </button>
-        </div>
-        <div class="score" :class="{ open: open === item }">
-          <scorebar :score="item.score" :style="{ '--fg': color(item.score) }"></scorebar>
-          <div class="subscore" v-if="open === item">
-            <div class="params" @mouseleave="openParam = false">
-              <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
-                <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon"></div>
-                <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
+          </button> -->
+          </div>
+          <div class="score" :class="{ open: open === item }">
+            <scorebar :score="item.score" :style="{ '--fg': color(item.score) }"></scorebar>
+            <div class="subscore" v-if="open === item">
+              <div class="params" @mouseleave="openParam = false">
+                <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
+                  <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon"></div>
+                  <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
+                  </div>
+                  <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'" v-html="partialIcon">
+                  </div>
                 </div>
-                <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'" v-html="partialIcon">
+                <div class="param-info" v-if="openParam">
+                  <div class="name">
+                    <div class="cat-name">{{ getCatName() }}:</div>
+                    <div class="param-name">{{ params.find(x => x.ref === openParam).name }}</div>
+                  </div>
+                  <div class="param-notes" v-if="item[openParam].notes">{{ item[openParam].notes }}</div>
+                  <div class="param-notes" v-else>(undefined)</div>
                 </div>
-              </div>
-              <div class="param-info" v-if="openParam">
-                <div class="param-name">{{ params.find(x => x.ref === openParam).name }}</div>
-                <div class="param-notes" v-if="item[openParam].notes">{{ item[openParam].notes }}</div>
               </div>
             </div>
           </div>
@@ -60,9 +95,27 @@ const el = ref(null)
 const { y } = useElementBounding(el)
 const isvisible = computed(() => y.value < 0)
 const router = useRouter();
-const { models, color, params } = useModels()
-const store = useMyComparisonStore()
+const { models: originalModels, color, params, categories } = useModels()
 
+const models = computed(() => {
+  if (searchQuery.value.length > 0) {
+    return originalModels.value.filter(x => {
+      if (!x.project?.name || !x.org?.name) return false
+      const regex = new RegExp(searchQuery.value, 'i')
+      return x.project.name.match(regex) || x.org.name.match(regex)
+    })
+  }
+  // if (filters.value) {}
+  return originalModels.value
+})
+
+const searchQuery = ref('')
+const searchFocus = ref(false)
+const store = useMyComparisonStore()
+function getCatName() {
+  const catref = params.find(x => x.ref === openParam.value).category
+  return categories.find(x => x.ref === catref).name
+}
 </script>
 
 <style lang="less" scoped>
@@ -108,20 +161,79 @@ const store = useMyComparisonStore()
     }
   }
 
-  .nottop.scroll-up & {
-    transition-delay: 0.15s;
-    top: 3.2rem;
+  @media (min-width: 50rem) {
+    .nottop.scroll-up & {
+      transition-delay: 0.15s;
+      top: 3.2rem;
+    }
   }
 
 }
 
-label {
-  margin-bottom: 2rem;
+.filters {
+  display: flex;
+  gap: 2rem;
+  color: var(--fg2);
+  padding: 2rem 4rem 0;
+  font-size: 0.75rem;
+
+  display: none;
+
+  >div {
+    background: var(--bc);
+    flex: 1;
+    padding: 0.75em 1em;
+    border-radius: 0.25rem;
+  }
+}
+
+.search {
+  padding: 3rem 4rem 0;
+
+  .searchbox {
+    display: flex;
+    border: 1px solid var(--bc);
+    border-radius: 0.25rem;
+    overflow: hidden;
+
+    &.searchFocus {
+      background: var(--bg3);
+    }
+
+    input {
+      flex: 1;
+      font-weight: inherit;
+      border-radius: 0;
+
+      &:focus {
+        background: var(--bg3);
+      }
+    }
+
+    >.icon {
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      line-height: 0;
+      padding: 0 1rem 0 0;
+      margin: 0;
+      border-radius: 0;
+      // border-left: 1px solid var(--bc);
+      color: var(--fg2);
+      background: transparent;
+
+      &:hover {
+        background: transparent;
+        color: var(--fg);
+      }
+    }
+  }
 }
 
 .models {
   margin: 0 auto;
-  padding: 3rem 4rem;
+  padding: 2rem 4rem;
 }
 
 .model {
@@ -131,31 +243,62 @@ label {
   align-items: center;
   user-select: none;
 
-  .info {
-    display: flex;
-    margin-bottom: .5rem;
-    align-items: center;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  .models.somethingisopen & {
+    opacity: 0.3;
+    transition: all ease 1s;
+  }
+
+  &.open {
+    opacity: 1 !important;
+  }
+
+
+  .compare {
+    font-size: 1.5rem;
 
     .checkbox {
-      color: var(--fg2);
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 100%;
+      background: var(--bg3);
+      color: var(--bg2);
       padding: 0;
       margin-right: 0.5rem;
       line-height: 0;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       transform: translateY(0.125rem);
-      opacity: 0;
+      opacity: 1;
       transition: all 0.2s ease;
 
       &:hover {
-        background: transparent;
+        background: var(--bg3);
         color: var(--fg2);
       }
 
       &.active {
-        color: var(--fg);
-        opacity: 1;
+        background: var(--fg2);
+        color: var(--bg3);
+
+        &:hover {
+          background: var(--fg);
+          color: var(--bg3);
+        }
       }
     }
+  }
+
+  .content {
+    flex: 1;
+  }
+
+  .info {
+    display: flex;
+    margin-bottom: .5rem;
+    align-items: center;
 
     .name {
       margin-right: .5rem;
@@ -183,12 +326,6 @@ label {
       }
     }
 
-    &:hover {
-      .checkbox {
-        opacity: 1;
-      }
-    }
-
   }
 
 
@@ -198,6 +335,14 @@ label {
     text-align: left;
     --fg: var(--listfg);
     --bg: var(--bg3);
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      height: 0.5rem;
+      width: 100%;
+    }
 
     :deep(.scorebar) {
       width: 100%;
@@ -211,7 +356,7 @@ label {
     }
   }
 
-  &:hover {
+  .content:hover {
     cursor: pointer;
 
     .info {
@@ -224,7 +369,8 @@ label {
 
 .subscore {
   position: absolute;
-  top: 0rem;
+  top: 0;
+  // top: 1.25rem;
   z-index: 2;
   width: 100%;
   border-radius: 0.5rem;
@@ -245,8 +391,10 @@ label {
     padding: 0;
     overflow: hidden;
     border-radius: 0.25rem;
+    background: var(--bg3);
 
     &:hover {
+      border-radius: 0.25rem 0.25rem 0 0;
 
       .param {
         .circle-icon {
@@ -266,23 +414,22 @@ label {
     border-left: 1px solid var(--bg2);
     background: var(--bg3);
 
-    &:hover {
-      .circle-icon {
-        opacity: 1 !important;
-      }
-    }
-
     &:first-child {
       border-left: 0;
     }
 
     transform: translateY(-2rem);
 
-
     @keyframes paramin {
       100% {
         opacity: 1;
         transform: translateX(0rem);
+      }
+    }
+
+    &:hover {
+      .circle-icon {
+        opacity: 1 !important;
       }
     }
 
@@ -317,14 +464,21 @@ label {
     position: absolute;
     top: calc(1.5rem + 1px);
     left: 0;
-    padding: 1rem 1rem 2rem;
+    padding: 1rem 1.5rem 2rem;
     background: var(--bg3);
-    border-radius: 0.25rem;
+    border-radius: 0 0 0.25rem 0.25rem;
     font-size: 0.75rem;
     width: 100%;
 
-    .param-name {
+    .name {
       font-weight: 600;
+
+      >div {
+        display: inline;
+        margin-right: 0.5rem;
+      }
+
+      .param-name {}
     }
 
     .param-notes {
@@ -340,9 +494,21 @@ each(range(1, 30, 1), {
   }
 });
 
+
 @media (max-width: 40rem) {
+  .bars {
+    width: 100%;
+    max-width: 100%;
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .search {
+    padding: 1rem;
+  }
+
   .models {
-    padding: 2rem;
+    padding: 2rem 1rem;
 
     .model {
       margin-bottom: 1rem;

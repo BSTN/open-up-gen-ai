@@ -4,7 +4,7 @@
     <div class="frame">
       <NuxtLink to="/list">Generative AI: an overview</NuxtLink>
       <NuxtLink to="/old-list">Generative AI: a list</NuxtLink>
-      <NuxtLink to="/compare">Quick comparison</NuxtLink>
+      <NuxtLink to="/old-grid">Quick comparison</NuxtLink>
     </div>
   </div>
 </template>
@@ -28,6 +28,14 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 4rem;
 
+    @media (max-width: 70rem) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 40rem) {
+      display: block;
+    }
+
     a {
       aspect-ratio: 4/5;
       background: var(--bc);
@@ -36,6 +44,7 @@
       font-size: 1.5rem;
       border-radius: 0.25rem;
       line-height: 1.4;
+      display: block;
     }
   }
 }

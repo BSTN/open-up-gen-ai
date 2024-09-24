@@ -2,7 +2,12 @@ import debounce from "lodash/debounce";
 import categories from '@/website/categories.yml'
 
 const params = []
-categories.map(x => { x.params.map(xx => params.push(xx))})
+categories.map(x => {
+  x.params.map(xx => {
+    xx.category = x.ref
+    return params.push(xx)
+  })
+})
 
 const projectsList = import.meta.glob('@/repos/opening-up-chatgpt-opening-up-chatgpt.github.io/projects/*.yaml', { eager: true })
 let projects = ref<Array<any>>([])
@@ -13,7 +18,7 @@ for (const path in projectsList) {
   if (!path.match("A_sample.yaml")) projects.value.push(project)
 }
 
-const models = ref()
+const models: Ref<Array[any]> = ref()
 
 sortModels(projects.value)
 

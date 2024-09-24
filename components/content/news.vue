@@ -28,6 +28,15 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 4rem;
 
+    @media (max-width: 60rem) {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 40rem) {
+      display: block;
+    }
+
     a {
       aspect-ratio: 4/2;
       background: var(--bc);
@@ -35,6 +44,7 @@
       padding: 2rem;
       font-size: 1.5rem;
       border-radius: 0.25rem;
+      display: block;
     }
   }
 }

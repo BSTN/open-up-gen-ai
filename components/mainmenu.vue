@@ -1,6 +1,9 @@
 <template>
-  <div class="mainmenu" ref="menuelement" :class="{ active, afteractive }">
-    <div class="frame">
+  <div class="mainmenu" ref="menuelement" :class="{ active, afteractive, menuopen }">
+    <button class="menubutton" @click="menuopen = !menuopen">
+      Menu
+    </button>
+    <div class="frame" @click="menuopen = false">
       <div class='left'>
         <NuxtLink :to="item.link" v-for="item in menu.left" :target="item.target" :class="{ withIcon: !!item.icon }">
           <span v-if="item.name">{{ item.name }}</span>
@@ -12,7 +15,7 @@
           <span v-if="item.name">{{ item.name }}</span>
           <Icon :icon="item.icon" v-if="item.icon"></Icon>
         </NuxtLink>
-        <button class="darkmode" @click="toggleDark()">
+        <button class="darkmode" @click.stop="toggleDark()">
           <Icon class="light-icon" icon="ic:baseline-light-mode"></Icon>
           <Icon class="dark-icon" icon="ic:round-dark-mode"></Icon>
         </button>
@@ -25,6 +28,7 @@
 import { useDark, useToggle } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
 import menu from '@/website/menu.yml'
+const menuopen = ref(false)
 const active = ref(false)
 const afteractive = ref(false)
 const isDark = useDark()
@@ -92,6 +96,13 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 3rem;
+}
+
+button.menubutton {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: none;
 }
 
 button.darkmode {
@@ -170,6 +181,92 @@ a {
     .app[path="/"] & {
       display: none;
     }
+  }
+}
+
+@media (max-width: 50rem) {
+
+  button.menubutton {
+    display: block;
+    margin: 2rem 2rem;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    color: var(--fg);
+    background: transparent;
+    // border: 1px solid var(--bc);
+    z-index: 99;
+    font-size: 1.25rem;
+
+    &:hover {
+      background: var(--bg);
+      color: var(--link);
+    }
+  }
+
+  .mainmenu {
+    .scroll-up.nottop & {
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+
+  .mainmenu .frame {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mainmenu a {
+    transform: translateX(0);
+    opacity: 0;
+    transition: all 1s @easeInOutExpo;
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 2rem;
+  }
+
+  .mainmenu.menuopen {
+    opacity: 1 !important;
+    left: 0;
+    padding: 0;
+
+    .frame {
+      position: fixed;
+      display: block;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      max-width: 100%;
+      height: 100vh;
+      padding: 8rem 3rem 3rem;
+      background: var(--bg3);
+      overflow: auto;
+      opacity: 1;
+      pointer-events: auto;
+
+      .left,
+      .right {
+        display: block;
+
+        a {}
+      }
+    }
+  }
+
+  .mainmenu a {
+    &[href="/"] {
+      display: none !important;
+    }
+
+  }
+
+  .mainmenu.menuopen a {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  button.darkmode {
+    position: fixed;
+    top: 2.5rem;
   }
 }
 </style>

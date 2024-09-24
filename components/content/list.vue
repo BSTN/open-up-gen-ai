@@ -199,6 +199,10 @@ table {
   color: var(--fg);
   border-bottom: 1rem solid var(--bc);
 
+  .model-info {
+    padding-top: 2rem !important;
+  }
+
   td {
     padding: 0;
   }
