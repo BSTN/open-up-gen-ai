@@ -4,34 +4,26 @@
     <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
     </FilterScreen>
     <!-- content -->
+    <div class="search">
+      <div class="searchbox" :class="{ searchFocus }">
+        <button class="icon search">
+          <Icon icon="iconamoon:search-bold"></Icon>
+        </button>
+        <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
+          placeholder="Filter...">
+        <button class="icon" @click="filterscreenOpen = true">
+          <Icon icon="mage:filter-fill"></Icon>
+        </button>
+      </div>
+    </div>
     <div class="meta">
       <div class="models-info">
-        {{ models.length }}/{{ originalModels.length }} Generative AI Models
+        Showing {{ models.length }}/{{ originalModels.length }} models
       </div>
       <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
         <div>Version 14-04-2024</div>
         <Icon icon="iconamoon:link-external-fill"></Icon>
       </NuxtLink>
-    </div>
-    <div class="filters">
-      <div class="select">
-        Active filters
-      </div>
-      <div class="show-hide">
-        Compare {{ store.selected.length }}
-      </div>
-    </div>
-    <div class="search">
-      <div class="searchbox" :class="{ searchFocus }">
-        <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
-          placeholder="Search...">
-        <button class="icon">
-          <Icon icon="iconamoon:search-bold"></Icon>
-        </button>
-        <button class="icon" @click="filterscreenOpen = true">
-          <Icon icon="mage:filter-fill"></Icon>
-        </button>
-      </div>
     </div>
     <div class="models" :class="{ somethingisopen: !!open }">
       <div class="model" v-for="(item, k) in models" :key="item.filename"
@@ -56,7 +48,8 @@
               :class="{ active: store.selected.includes(item.filename) }">
               <div>Compare</div>
               <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
-              <Icon icon="mdi:plus" v-else></Icon>
+              <!-- <Icon icon="mdi:plus" v-else></Icon> -->
+              <Icon icon="basil:plus-outline" v-else></Icon>
             </button>
           </div>
           <div class="score" :class="{ open: !!open && open.filename === item.filename }">
@@ -103,6 +96,7 @@ import cloneDeep from 'lodash/cloneDeep'
 
 import { useElementBounding } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
+const props = defineProps(['filters', 'version'])
 const open = ref()
 const openParam = ref()
 const el = ref(null)
@@ -171,6 +165,12 @@ function clearSelection() {
     store.selected = []
   }
 }
+
+onMounted(() => {
+  if (props.filters) {
+    filters.value = props.filters
+  }
+})
 </script>
 
 <style lang="less" scoped>
@@ -183,6 +183,7 @@ function clearSelection() {
   padding: 0rem;
   border-radius: 0.25rem;
   position: relative;
+  margin-bottom: 4rem;
 }
 
 .meta {
@@ -193,7 +194,7 @@ function clearSelection() {
   width: 100%;
   font-size: 0.65rem;
   letter-spacing: 0.05em;
-  padding: 0.5em 1em;
+  padding: 0.5em 1rem;
   line-height: 1;
   color: var(--fg2);
   display: flex;
@@ -225,31 +226,18 @@ function clearSelection() {
 
 }
 
-.filters {
-  display: flex;
-  gap: 2rem;
-  color: var(--fg2);
-  padding: 2rem 4rem 0;
-  font-size: 0.75rem;
-
-  display: none;
-
-  >div {
-    background: var(--bc);
-    flex: 1;
-    padding: 0.75em 1em;
-    border-radius: 0.25rem;
-  }
-}
-
 .search {
-  padding: 3rem 4rem 0;
+  background: var(--bc);
+  padding: .5rem .5rem 0;
 
   .searchbox {
     display: flex;
     border: 1px solid var(--bc);
     border-radius: 0.25rem;
     overflow: hidden;
+    background: var(--bg2);
+    font-size: 0.75rem;
+    padding: 0 0.75rem;
 
     &.searchFocus {
       background: var(--bg3);
@@ -259,6 +247,8 @@ function clearSelection() {
       flex: 1;
       font-weight: inherit;
       border-radius: 0;
+      background: var(--bg2);
+      padding: 0.25rem 0.5rem 0.25rem 0.5rem;
 
       &:focus {
         background: var(--bg3);
@@ -271,7 +261,7 @@ function clearSelection() {
       align-items: center;
       padding: 0;
       line-height: 0;
-      padding: 0 1rem 0 0;
+      padding: 0;
       margin: 0;
       border-radius: 0;
       // border-left: 1px solid var(--bc);
