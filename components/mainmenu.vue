@@ -1,8 +1,10 @@
 <template>
   <div class="mainmenu" ref="menuelement" :class="{ active, afteractive, menuopen }">
-    <button class="menubutton" @click="menuopen = !menuopen">
-      Menu
+    <!-- mobile button -->
+    <button class="menubutton" @click="menuopen = !menuopen" :class="{ open: menuopen }">
+      <Icon icon="mingcute:close-fill" v-if="menuopen"></Icon>
     </button>
+    <!-- content -->
     <div class="frame" @click="menuopen = false">
       <div class='left'>
         <NuxtLink :to="item.link" v-for="item in menu.left" :target="item.target" :class="{ withIcon: !!item.icon }">
@@ -191,7 +193,7 @@ a {
     display: block;
     margin: 1rem 1rem;
     border-radius: 0.5rem;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     color: var(--fg);
     background: var(--bg);
     // border: 1px solid var(--bc);
@@ -201,6 +203,22 @@ a {
     text-transform: uppercase;
     box-shadow: 0 0 1rem var(--shadow);
     pointer-events: auto;
+    line-height: 1;
+
+    :deep(svg) {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    &:before {
+      content: "Menu";
+    }
+
+    &.open {
+      &:before {
+        content: none;
+      }
+    }
 
     &:hover {
       background: var(--bg);
