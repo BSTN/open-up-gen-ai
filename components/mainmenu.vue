@@ -200,6 +200,7 @@ a {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     box-shadow: 0 0 1rem var(--shadow);
+    pointer-events: auto;
 
     &:hover {
       background: var(--bg);
@@ -208,6 +209,8 @@ a {
   }
 
   .mainmenu {
+
+    pointer-events: none;
 
     .scroll-up.nottop & {
       background: transparent;

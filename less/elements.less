@@ -133,17 +133,18 @@ label {
     }
   }
   ul, ol {
-    width: 32rem;
+    width: 30rem;
+    max-width: calc(var(--maxwidth) - 2rem);
     margin: 0 auto 1rem;
     color: var(--fg2);
   }
   ul {
     list-style: disc;
-    list-style-position: inside;
+    // list-style-position: inside;
   }
   ol {
     list-style: decimal;
-    list-style-position: inside;
+    // list-style-position: inside;
   }
   strong, b {
     font-weight: 700;

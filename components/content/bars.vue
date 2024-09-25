@@ -650,7 +650,7 @@ div.stickycompare {
   }
 
   .models {
-    padding: 2rem 1rem;
+    padding: 2rem;
 
     .model {
       margin-bottom: 1rem;
