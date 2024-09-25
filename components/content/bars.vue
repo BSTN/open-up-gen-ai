@@ -1,8 +1,12 @@
 <template>
   <div class="bars" ref="el" :class="{ sticky: isvisible }">
+    <!-- filter screen -->
+    <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
+    </FilterScreen>
+    <!-- content -->
     <div class="meta">
       <div class="models-info">
-        <!-- {{ models.length }}/{{ models.length }} Generative AI Models -->
+        {{ models.length }}/{{ originalModels.length }} Generative AI Models
       </div>
       <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
         <div>Version 14-04-2024</div>
@@ -24,21 +28,21 @@
         <button class="icon">
           <Icon icon="iconamoon:search-bold"></Icon>
         </button>
-        <button class="icon">
+        <button class="icon" @click="filterscreenOpen = true">
           <Icon icon="mage:filter-fill"></Icon>
         </button>
       </div>
     </div>
-    <div class="models" :class="{ somethingisopen: open }">
-      <div class="model" v-for="(item, k) in models"
-        :class="{ active: store.selected.includes(item.filename), open: item === open }">
-        <div class="compare">
+    <div class="models" :class="{ somethingisopen: !!open }">
+      <div class="model" v-for="(item, k) in models" :key="item.filename"
+        :class="{ active: store.selected.includes(item.filename), open: !!open && item.filename === open.filename }">
+        <!-- <div class="compare">
           <button class="checkbox" @click.stop="store.toggle(item.filename)"
             :class="{ active: store.selected.includes(item.filename) }">
             <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
             <Icon icon="mdi:plus" v-else></Icon>
           </button>
-        </div>
+        </div> -->
         <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
           @mouseleave="open = false; openParam = false">
           <div class="info">
@@ -48,16 +52,17 @@
             <div class="org">
               by {{ item.org.name || '(undefined)' }}
             </div>
-            <!-- <button class="checkbox" @click.stop="store.toggle(item.filename)"
-            :class="{ active: store.selected.includes(item.filename) }">
-            <Icon icon="mingcute:checkbox-fill" v-if="store.selected.includes(item.filename)"></Icon>
-            <Icon icon="mdi:plus-box" v-else></Icon>
-          </button> -->
+            <button class="checkbox" @click.stop="store.toggle(item.filename)"
+              :class="{ active: store.selected.includes(item.filename) }">
+              <div>Compare</div>
+              <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
+              <Icon icon="mdi:plus" v-else></Icon>
+            </button>
           </div>
-          <div class="score" :class="{ open: open === item }">
+          <div class="score" :class="{ open: !!open && open.filename === item.filename }">
             <scorebar :score="item.score" :style="{ '--fg': color(item.score) }"></scorebar>
-            <div class="subscore" v-if="open === item">
-              <div class="params" @mouseleave="openParam = false">
+            <div class="subscore" v-if="!!open && open.filename === item.filename" @mouseleave="openParam = false">
+              <div class="params">
                 <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
                   <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon"></div>
                   <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
@@ -65,19 +70,27 @@
                   <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'" v-html="partialIcon">
                   </div>
                 </div>
-                <div class="param-info" v-if="openParam">
-                  <div class="name">
-                    <div class="cat-name">{{ getCatName() }}:</div>
-                    <div class="param-name">{{ params.find(x => x.ref === openParam).name }}</div>
-                  </div>
-                  <div class="param-notes" v-if="item[openParam].notes">{{ item[openParam].notes }}</div>
-                  <div class="param-notes" v-else>(undefined)</div>
+              </div>
+              <div class="param-info" v-if="openParam">
+                <div class="name">
+                  <div class="cat-name">{{ getCatName() }}:</div>
+                  <div class="param-name">{{ params.find(x => x.ref === openParam).name }}</div>
                 </div>
+                <div class="param-notes" v-if="item[openParam].notes">{{ item[openParam].notes }}</div>
+                <div class="param-notes" v-else>(undefined)</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <!-- compare -->
+    <div class="stickycompare" v-if="store.selected.length > 0">
+      <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon>
+      <div class="txt" @click="openComparison()">
+        Compare selected models ({{ store.selected.length }})
+      </div>
+      <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon>
     </div>
   </div>
 </template>
@@ -86,6 +99,7 @@
 import openIcon from '@/assets/icons/open.svg?raw'
 import closedIcon from '@/assets/icons/closed.svg?raw'
 import partialIcon from '@/assets/icons/partial.svg?raw'
+import cloneDeep from 'lodash/cloneDeep'
 
 import { useElementBounding } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
@@ -95,18 +109,49 @@ const el = ref(null)
 const { y } = useElementBounding(el)
 const isvisible = computed(() => y.value < 0)
 const router = useRouter();
+const filters = ref({})
+const filterscreenOpen = ref(false)
 const { models: originalModels, color, params, categories } = useModels()
 
 const models = computed(() => {
-  if (searchQuery.value.length > 0) {
-    return originalModels.value.filter(x => {
-      if (!x.project?.name || !x.org?.name) return false
-      const regex = new RegExp(searchQuery.value, 'i')
-      return x.project.name.match(regex) || x.org.name.match(regex)
+  const llms = cloneDeep(originalModels.value)
+  const ffs = cloneDeep(filters.value)
+  if (searchQuery.value.length > 0 || (filters.value && Object.keys(filters.value).length > 0)) {
+    return llms.filter(x => {
+
+      // filter with searchquery
+      if (searchQuery.value.length > 0) {
+        const regex = new RegExp(searchQuery.value, 'i')
+        if (!x.project?.name || !x.org?.name) return false
+        if (!(x.project.name.match(regex) || x.org.name.match(regex))) {
+          return false
+        }
+      }
+
+      // filter with filters
+      if (ffs && Object.keys(ffs).length > 0) {
+
+        // check if model is in models list
+        if (ffs.models && ffs.models.length > 0 && searchQuery.value.length < 1) {
+          if (!ffs.models.includes(x.filename)) {
+            return false
+          }
+        }
+
+        // check if param value is value
+        for (let paramname in ffs) {
+          if (paramname in x && 'class' in x[paramname] && paramname !== 'models') {
+            console.log('hello')
+            if (x[paramname].class === 'closed' && !ffs[paramname].includes(0)) return false
+            if (x[paramname].class === 'open' && !ffs[paramname].includes(1)) return false
+            if (x[paramname].class === 'partial' && !ffs[paramname].includes(0.5)) return false
+          }
+        }
+      }
+      return true
     })
   }
-  // if (filters.value) {}
-  return originalModels.value
+  return llms
 })
 
 const searchQuery = ref('')
@@ -115,6 +160,16 @@ const store = useMyComparisonStore()
 function getCatName() {
   const catref = params.find(x => x.ref === openParam.value).category
   return categories.find(x => x.ref === catref).name
+}
+
+function openComparison() {
+  router.push(`/compare?models=${store.selected.join(',')}`)
+}
+function clearSelection() {
+  const sure = confirm('Are you sure you want to clear the selected models?')
+  if (sure) {
+    store.selected = []
+  }
 }
 </script>
 
@@ -237,7 +292,7 @@ function getCatName() {
 }
 
 .model {
-  padding: 0.5em 0 1.5rem;
+  padding: 0.5em 0 2rem;
   margin-bottom: 1px;
   text-decoration: none;
   align-items: center;
@@ -275,12 +330,12 @@ function getCatName() {
       transition: all 0.2s ease;
 
       &:hover {
-        background: var(--bg3);
-        color: var(--fg2);
+        background: var(--fg2);
+        color: var(--bg3);
       }
 
       &.active {
-        background: var(--fg2);
+        background: var(--fg);
         color: var(--bg3);
 
         &:hover {
@@ -326,6 +381,46 @@ function getCatName() {
       }
     }
 
+    .checkbox {
+      color: var(--fg2);
+      padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      opacity: 0;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      line-height: 1;
+
+      div {
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.75em;
+        opacity: 0;
+        transform: translateX(1em);
+        transition: all 0.5s @easeInOutExpo;
+      }
+
+      :deep(svg) {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        background: var(--bg3);
+        border-radius: 0.25rem;
+      }
+
+      &.active {
+        color: var(--fg2);
+        opacity: 1;
+
+        :deep(svg) {
+          color: var(--bg3);
+          background: var(--fg);
+        }
+      }
+
+
+    }
+
   }
 
 
@@ -361,7 +456,16 @@ function getCatName() {
 
     .info {
       .name {
-        text-decoration: underline;
+        // text-decoration: underline;
+      }
+
+      .checkbox {
+        opacity: 1;
+
+        div {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
     }
   }
@@ -370,12 +474,11 @@ function getCatName() {
 .subscore {
   position: absolute;
   top: 0;
-  // top: 1.25rem;
+  // top: 1.5rem;
   z-index: 2;
   width: 100%;
   border-radius: 0.5rem;
-  height: 1.5rem;
-  display: flex;
+  // display: flex;
   animation: subscorein .4s @easeInOutExpo 0s 1 forwards;
   opacity: 0;
 
@@ -386,12 +489,14 @@ function getCatName() {
   }
 
   .params {
+    height: 1.5rem;
     display: flex;
     flex: 1;
     padding: 0;
     overflow: hidden;
     border-radius: 0.25rem;
     background: var(--bg3);
+    margin-bottom: 1px;
 
     &:hover {
       border-radius: 0.25rem 0.25rem 0 0;
@@ -461,9 +566,9 @@ function getCatName() {
   }
 
   .param-info {
-    position: absolute;
-    top: calc(1.5rem + 1px);
-    left: 0;
+    position: relative;
+    // top: calc(1.5rem + 1px);
+    // left: 0;
     padding: 1rem 1.5rem 2rem;
     background: var(--bg3);
     border-radius: 0 0 0.25rem 0.25rem;
@@ -493,6 +598,53 @@ each(range(1, 30, 1), {
     animation-delay: @value * 0.02s;
   }
 });
+
+div.stickycompare {
+  position: sticky;
+  bottom: 0;
+  // left: 0;
+  margin: 0;
+  padding: .75rem 1rem;
+  // font-size: 0.75rem;
+  background: var(--bc);
+  color: var(--fg2);
+  border-radius: 0;
+  display: flex;
+  gap: 1rem;
+  z-index: 99;
+  width: 100%;
+  align-items: center;
+
+  :deep(svg) {
+    font-size: 1.25rem;
+    margin: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--fg);
+    }
+  }
+
+
+  @media(max-width: 50rem) {}
+
+  div {
+    flex: 1;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--fg);
+      text-decoration: underline;
+    }
+  }
+
+  button {
+    background: var(--bg2);
+    color: var(--fg2);
+    padding: 0.25rem 0.75rem;
+    margin: 0;
+  }
+}
 
 
 @media (max-width: 40rem) {

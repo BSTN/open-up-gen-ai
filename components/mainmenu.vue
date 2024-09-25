@@ -187,12 +187,13 @@ a {
 @media (max-width: 50rem) {
 
   button.menubutton {
+    position: fixed;
     display: block;
     margin: 2rem 2rem;
     border-radius: 0.5rem;
     padding: 0.25rem 0.75rem;
     color: var(--fg);
-    background: transparent;
+    background: var(--bg);
     // border: 1px solid var(--bc);
     z-index: 99;
     font-size: 1.25rem;
@@ -204,6 +205,7 @@ a {
   }
 
   .mainmenu {
+
     .scroll-up.nottop & {
       background: transparent;
       box-shadow: none;
@@ -234,7 +236,7 @@ a {
       display: block;
       top: 0;
       left: 0;
-      width: 100vw;
+      width: 100%;
       max-width: 100%;
       height: 100vh;
       padding: 8rem 3rem 3rem;

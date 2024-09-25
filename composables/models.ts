@@ -9,7 +9,7 @@ categories.map(x => {
   })
 })
 
-const projectsList = import.meta.glob('@/repos/opening-up-chatgpt-opening-up-chatgpt.github.io/projects/*.yaml', { eager: true })
+const projectsList = import.meta.glob('@/repos/data/projects/*.yaml', { eager: true })
 let projects = ref<Array<any>>([])
 for (const path in projectsList) {
   const project = projectsList[path].default

@@ -1,17 +1,19 @@
 <template>
   <div class="compare">
-    <div class="frame">
-      <div class="names">
-        <div class="model-name" v-for="(model, k) in modelsList">
-          <div class="count">{{ k + 1 }}/{{ modelsList.length }}</div>
-          <NuxtLink :to="`/model/${model.filename}`" class="name">{{ model.project.name }}</NuxtLink>
-          <div class="org">by {{ model.org.name || '(undefined)' }}</div>
+    <ClientOnly>
+      <div class="frame">
+        <div class="names">
+          <div class="model-name" v-for="(model, k) in modelsList">
+            <div class="count">{{ k + 1 }}/{{ modelsList.length }}</div>
+            <NuxtLink :to="`/model/${model.filename}`" class="name">{{ model.project.name || '(undefined)' }}</NuxtLink>
+            <div class="org">by {{ model.org.name || '(undefined)' }}</div>
+          </div>
+        </div>
+        <div class="category" v-for="cat in categories">
+          <category class="model-category" :category="cat" :model="model" v-for="model in modelsList"></category>
         </div>
       </div>
-      <div class="category" v-for="cat in categories">
-        <category class="model-category" :category="cat" :model="model" v-for="model in modelsList"></category>
-      </div>
-    </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -36,13 +38,15 @@ function getModel(filename: string) {
 </script>
 
 <style lang="less" scoped>
-.compare {}
+.compare {
+  max-width: 100%;
+  // overflow: auto;
+}
 
 .frame {
   .row();
   display: table;
   padding: 2rem;
-  border-top: 1px solid var(--bc);
   border-radius: 0;
 
   >div {
@@ -73,15 +77,20 @@ function getModel(filename: string) {
 
 .model-name {
   background: var(--bg2);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 0.25rem;
   border-bottom: 2px solid var(--bg);
-
+  font-size: 1.25rem;
+  position: relative;
 
   .count {
     float: right;
     color: var(--fg2);
     font-size: 0.75rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0.25rem 0.75rem;
   }
 
   a {

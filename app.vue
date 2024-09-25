@@ -3,8 +3,6 @@
     <Mainmenu></Mainmenu>
     <NuxtPage class="page"></NuxtPage>
     <Mainfooter></Mainfooter>
-    <button class="compare" @click="openComparison()" v-if="store.selected.length > 0">Compare {{
-      store.selected.length }} models</button>
   </div>
 </template>
 <script setup lang="ts">
@@ -22,9 +20,7 @@ const nottop = computed(() => {
 })
 // end
 
-function openComparison() {
-  router.push(`/compare?models=${store.selected.join(',')}`)
-}
+
 </script>
 <style lang="less">
 @import '@/less/elements.less';
@@ -48,21 +44,6 @@ function openComparison() {
     ;
     max-width: var(--maxwidth);
     margin: 0 auto 1rem;
-  }
-}
-
-button.compare {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  margin: 2rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--fg);
-  color: var(--bg);
-
-  &:hover {
-    background: var(--link);
-    color: var(--bg);
   }
 }
 </style>

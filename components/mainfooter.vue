@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import info from '@/repos/opening-up-chatgpt-opening-up-chatgpt.github.io/.info.json';
+import info from '@/repos/data/.info.json';
 </script>
 
 <style lang="less" scoped>

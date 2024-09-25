@@ -1,4 +1,4 @@
-import { defineNuxtModule } from '@nuxt/kit'
+import { defineNuxtModule, addPluginTemplate, createResolver } from '@nuxt/kit'
 import { Octokit } from 'octokit'
 import { pipeline } from "node:stream/promises";
 import fs from "fs";
@@ -6,7 +6,7 @@ import * as tar from 'tar'
 import dotenv from 'dotenv';
 dotenv.config();
 
-async function getRepo({ owner, repo, local }: { owner: string, repo: string, local: string }) {
+async function getRepo({ owner, repo, local, name }: { owner: string, repo: string, local?: string, name: string }) {
 
   // do nothing if local folder is used
   if (local && process.env.local) {
@@ -14,11 +14,9 @@ async function getRepo({ owner, repo, local }: { owner: string, repo: string, lo
     return
   }
   
-  console.log('get Repo?')
-
   const githubtoken = process.env.githubtoken;
   const rootdir = `./repos`
-  const dir = `${rootdir}/${owner}-${repo}`
+  const dir = `${rootdir}/${name}`
   const infoPath = `${dir}/.info.json`
   const octokit = new Octokit({ auth: githubtoken })
 
@@ -99,10 +97,12 @@ export default defineNuxtModule({
   },
   // The function holding your module logic, it can be asynchronous
   setup(moduleOptions, nuxt) {
+
+    const { resolve } = createResolver(import.meta.url)
     // ...
     nuxt.hook('build:before', async () => {
       // check if github options are defined
-      console.log(moduleOptions)
+      console.log(JSON.stringify(moduleOptions,null,' '))
       // if (!('githuboptions' in nuxt.options) || !nuxt.options.githuboptions || !Array.isArray(nuxt.options.githuboptions)) return
       if (!('repositories' in moduleOptions) || !Array.isArray(moduleOptions.repositories)) { return }
       // check if .env githubtoken exists

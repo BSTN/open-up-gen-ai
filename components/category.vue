@@ -58,7 +58,7 @@ const { model, category } = defineProps(['model', 'category'])
     gap: .25rem;
     padding: 2rem 1rem 1rem;
     border-radius: 0.25rem;
-    font-size: 1.25rem;
+    font-size: 1rem;
     line-height: 1.4;
     position: relative;
 
@@ -101,6 +101,10 @@ h2 {
   padding-right: 2rem;
   padding-left: 1.5rem;
 
+  padding: 1rem 1.5rem 1rem 1rem;
+  gap: 0.75rem;
+  margin-bottom: 0rem;
+
   .param-info {
     &:hover {
       .param-name {
@@ -117,6 +121,7 @@ h2 {
     padding-left: 1rem;
     flex-shrink: 0;
     flex-grow: 0;
+    padding-left: 0;
 
     .circle-icon {
       flex-shrink: 0;
@@ -187,17 +192,9 @@ h2 {
     width: 100%;
     margin-bottom: .5rem;
   }
-}
 
-.params {
-  .param {
-    padding: 1rem;
-    gap: 0.75rem;
-    margin-bottom: 0rem;
-
-    .icon-frame {
-      padding-left: 0;
-    }
+  .params {
+    .param {}
   }
 }
 </style>

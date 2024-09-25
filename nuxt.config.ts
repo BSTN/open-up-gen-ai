@@ -14,10 +14,15 @@ export default defineNuxtConfig({
     }
   },
   modules: [
-    ['./modules/github.module', {repositories:[{
+    ['./modules/github.module', {
+      repositories: [{
+      name: 'data',
       owner: 'opening-up-chatgpt',
       repo: 'opening-up-chatgpt.github.io',
-      // local: localRepository
+      }, {
+      name: 'website',
+      owner: 'BSTN',
+      repo: 'open-up-gen-ai',
     }]
     }],
     // './modules/extend-pages-module/extendpages.ts',
