@@ -81,7 +81,7 @@
     <div class="stickycompare" v-if="store.selected.length > 0">
       <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon>
       <div class="txt" @click="openComparison()">
-        Compare selected models ({{ store.selected.length }})
+        Compare {{ store.selected.length }} models
       </div>
       <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon>
     </div>
