@@ -63,7 +63,9 @@ const model = computed(() => {
 }
 
 @media (max-width: 40rem) {
+
   .top-info {
+
     h1 {
       font-size: 2rem;
     }

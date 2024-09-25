@@ -189,14 +189,17 @@ a {
   button.menubutton {
     position: fixed;
     display: block;
-    margin: 2rem 2rem;
+    margin: 1rem 1rem;
     border-radius: 0.5rem;
-    padding: 0.25rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     color: var(--fg);
     background: var(--bg);
     // border: 1px solid var(--bc);
     z-index: 99;
-    font-size: 1.25rem;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: 0 0 1rem var(--shadow);
 
     &:hover {
       background: var(--bg);

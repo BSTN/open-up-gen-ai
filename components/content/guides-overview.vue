@@ -41,6 +41,7 @@ guides.sort((a, b) => new Date(a.props.date).getTime() < new Date(a.props.date).
   display: block;
   text-decoration: none;
   aspect-ratio: 8/3;
+  padding-bottom: 4rem;
 
   .date {
     text-align: right;
@@ -48,7 +49,7 @@ guides.sort((a, b) => new Date(a.props.date).getTime() < new Date(a.props.date).
 
   .title {
     font-size: 2rem;
-    line-height: 1.4;
+    line-height: 1.2;
   }
 }
 </style>
