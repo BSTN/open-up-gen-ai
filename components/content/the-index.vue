@@ -1,5 +1,5 @@
 <template>
-  <div class="the-index" ref="el" :class="{ sticky: isvisible }">
+  <div class="the-index" ref="el" :class="{ sticky: isvisible, filtershidden: props.hideFilters }">
     <div class="meta">
       <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
         <div>Version 14-04-2024</div>
@@ -9,14 +9,14 @@
           Showing {{ models.length }}/{{ originalModels.length }} models
         </div> -->
     </div>
-    <div class="context">
+    <div class="context" v-if="!props.hideFilters">
       <!-- filter screen -->
       <!-- <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
       </FilterScreen> -->
       <div class="search">
         <div class="searchbox" :class="{ searchFocus }">
           <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
-            placeholder="Filter...">
+            placeholder="Search...">
           <div class="models-count">
             {{ models.length }}/{{ originalModels.length }}
           </div>
@@ -30,18 +30,34 @@
         </div>
       </div>
       <div class="filter-by">
-        <button>Filter by parameter...</button>
-        <button>Select models...</button>
+        <label>Model output:</label>
+        <div class="types">
+          <button class="filterbutton">Text</button>
+          <button class="filterbutton">Image</button>
+          <button class="filterbutton">Video</button>
+          <button class="filterbutton">Sound</button>
+        </div>
+      </div>
+      <!-- <div class="filter-by">
+        <label>Active models:</label>
+        <button class="filterbutton">No filter active...</button>
+      </div> -->
+      <div class="filter-by">
+        <label>Filters by Parameter:</label>
+        <button class="filterbutton">No parameter filter active.</button>
       </div>
       <!-- compare -->
-      <div class="stickycompare" v-if="store.selected.length > 0">
-        <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon>
-        <div class="txt" @click="openComparison()">
-          Compare {{ store.selected.length }} model{{ store.selected.length > 1 ? 's' : '' }}
+      <div class="filter-by" v-if="store.selected.length > 0">
+        <label>Compare models: <span @click.stop="clearSelection()">Clear</span></label>
+        <div class="stickycompare">
+          <!-- <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon> -->
+          <Icon class="checkbox" icon="uil:check" @click="openComparison()"></Icon>
+          <div class="txt" @click="openComparison()">
+            Compare {{ store.selected.length }} model{{ store.selected.length > 1 ? 's' : '' }}
+          </div>
+          <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon>
         </div>
-        <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon>
       </div>
-
     </div>
     <!-- content -->
     <div class="content">
@@ -77,7 +93,8 @@
               <div class="subscore" v-if="!!open && open.filename === item.filename" @mouseleave="openParam = false">
                 <div class="params">
                   <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
-                    <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon"></div>
+                    <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon">
+                    </div>
                     <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
                     </div>
                     <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'"
@@ -114,7 +131,7 @@ import cloneDeep from 'lodash/cloneDeep'
 
 import { useElementBounding } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
-const props = defineProps(['filters', 'version'])
+const props = defineProps(['filters', 'version', 'hideFilters'])
 const open = ref()
 const openParam = ref()
 const el = ref(null)
@@ -189,12 +206,15 @@ onMounted(() => {
   }
 })
 </script>
-
+<style lang="less">
+p+.the-index {
+  margin-top: 4rem !important;
+}
+</style>
 <style lang="less" scoped>
 .the-index {
   .row();
   display: flex;
-  // width: 50rem;
   border-radius: 0.5rem;
   // border: 1px solid var(--bc);
   padding: 0rem;
@@ -204,18 +224,38 @@ onMounted(() => {
   align-items: flex-start;
   padding: 5rem 3rem 5rem;
   gap: 4rem;
-  overflow: hidden;
+
+  &.filtershidden {
+    width: 50rem;
+  }
 
   >.context {
     flex: 1;
-    max-width: calc(100%/3);
+    max-width: 20rem;
+    min-width: 20rem;
     padding: 0;
     position: sticky;
-    top: 0;
+    top: 2rem;
+    transition: all 0.3s ease;
+
+    .nottop.scroll-up & {
+      top: 5rem;
+    }
   }
 
   >.content {
     flex: 1;
+  }
+
+  @media (max-width: 50rem) {
+    display: block;
+
+    >.context {
+      margin-bottom: 4rem;
+      width: 100%;
+      max-width: none;
+      position: relative;
+    }
   }
 }
 
@@ -233,6 +273,7 @@ onMounted(() => {
   position: absolute;
   top: 0;
   opacity: 0.5;
+  border-radius: 0.5rem 0.5rem 0 0;
 
   >* {
     padding: 0.25rem .5rem;
@@ -272,7 +313,7 @@ onMounted(() => {
 .search {
   background: var(--bg2);
   padding: 0;
-  margin-bottom: .5rem;
+  margin-bottom: 1rem;
 
   .searchbox {
     display: flex;
@@ -328,33 +369,66 @@ onMounted(() => {
 
     &:hover {
       background: var(--bg);
+
+      &.searchFocus {
+        background: var(--bg3);
+      }
     }
   }
 }
 
-.filter-by {
+.types {
   display: flex;
-  // flex-direction: column;
-  padding: 0.5rem 0;
-  gap: .75rem;
+  flex-direction: column;
+  gap: 0.5rem;
 
   button {
-    flex: 1;
-    line-height: 1.4rem;
-    text-align: left;
-    padding: 0.5rem 0.75rem;
-    margin: 0;
+    display: block;
+  }
+}
+
+.filter-by {
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+
+  label {
     font-size: 0.75rem;
     color: var(--fg2);
-    border-radius: 0.25rem;
-    border: 1px solid var(--bg3);
-    background: transparent;
+    opacity: 0.5;
+    padding: 0 0.75rem;
+    margin-bottom: .75rem;
+  }
 
-    // background: var(--bg);
-    &:hover {
-      color: var(--link);
-      background: var(--bg);
+  .types {
+    gap: .5rem;
+    display: flex;
+    flex-direction: row;
+
+    button {
+      text-align: center;
     }
+  }
+
+}
+
+button.filterbutton {
+  flex: 1;
+  line-height: 1.4rem;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--fg2);
+  border-radius: 0.25rem;
+  border: 1px solid var(--bg3);
+  background: transparent;
+  display: block;
+  width: 100%;
+
+  // background: var(--bg);
+  &:hover {
+    color: var(--link);
+    background: var(--bg);
   }
 }
 
@@ -689,9 +763,9 @@ div.stickycompare {
   bottom: 0;
   // left: 0;
   margin: 0;
-  padding: .75rem 1rem;
+  padding: .5rem .75rem;
   // font-size: 0.75rem;
-  // background: var(--bg3);
+  background: transparent;
   border: 1px solid var(--bg3);
   color: var(--fg2);
   border-radius: 0;
@@ -701,6 +775,7 @@ div.stickycompare {
   width: 100%;
   align-items: center;
   border-radius: 0.25rem;
+  cursor: pointer;
 
   :deep(svg) {
     font-size: 1.25rem;
@@ -710,15 +785,17 @@ div.stickycompare {
     &:hover {
       color: var(--fg);
     }
+
+    &.checkbox {
+      background: var(--fg);
+      color: var(--bg3);
+      border-radius: 0.25rem;
+    }
   }
-
-
-  @media(max-width: 50rem) {}
 
   div {
     flex: 1;
     cursor: pointer;
-    color: var(--fg);
 
     &:hover {
       color: var(--link);
@@ -732,23 +809,34 @@ div.stickycompare {
     padding: 0.25rem 0.75rem;
     margin: 0;
   }
+
+  &:hover {
+    color: var(--link);
+
+    .clear {
+      color: var(--fg2);
+
+      &:hover {
+        color: var(--link);
+      }
+    }
+
+    div {
+      text-decoration: underline;
+    }
+  }
 }
 
 
 @media (max-width: 40rem) {
-  .bars {
+  .the-index {
     width: 100%;
     max-width: 100%;
     border-right: 0;
     border-left: 0;
   }
 
-  .search {
-    padding: 1rem;
-  }
-
   .models {
-    padding: 2rem;
 
     .model {
       margin-bottom: 1rem;
@@ -769,13 +857,10 @@ div.stickycompare {
 }
 
 @media (max-width: 30rem) {
-  .bars {
+  .the-index {
     max-width: 100%;
     border: 0;
   }
 
-  .models {
-    padding: 2rem;
-  }
 }
 </style>
