@@ -1,5 +1,5 @@
 <template>
-  <div class="guides">
+  <section class="guides" id="guides">
     <div class="content-frame">
       <div class="context">
         <label>Guides</label>
@@ -13,7 +13,7 @@
         </ContentList>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts" setup>

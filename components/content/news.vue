@@ -1,5 +1,5 @@
 <template>
-  <section class="news">
+  <section class="news" id="news">
     <div class="content-frame">
       <div class="context">
         <label>Latest news</label>

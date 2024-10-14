@@ -26,7 +26,7 @@ const finalPath = asyncComputed(async () => {
 const element = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-  if (element.value) element.value.setAttribute('path', route.fullPath)
+  if (element.value) element.value.setAttribute('path', route.path)
 })
 
 definePageMeta({

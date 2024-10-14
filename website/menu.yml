@@ -4,17 +4,15 @@ left:
     icon: ic:baseline-arrow-back
   - link: /the-index
     name: The Index
-  # - link: /guides
-  #   name: Guides
-  - name: Contribute
-    link: /contribute
+  - name: Guides
+    link: /#guides
+  - name: News
+    link: /#news
 right:
   - name: About
     link: /about
-  # - name: News
-  #   link: /news
-  # - name: Guides
-  #   link: /guides
+  - name: Contribute
+    link: /contribute
   - link: https://github.com/Language-Technology-Assessment/
     target: _blank
     icon: bi:github

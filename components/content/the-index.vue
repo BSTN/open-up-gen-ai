@@ -43,7 +43,7 @@
         <button class="filterbutton">No filter active...</button>
       </div> -->
       <div class="filter-by">
-        <label>Filters by Parameter:</label>
+        <label>Filter by Parameter:</label>
         <button class="filterbutton">No parameter filter active.</button>
       </div>
       <!-- compare -->

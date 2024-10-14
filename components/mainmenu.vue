@@ -171,7 +171,7 @@ a {
   line-height: 1;
 
   &.router-link-active {
-    text-decoration: underline;
+    // text-decoration: underline;
   }
 
   &:not(.withIcon) {

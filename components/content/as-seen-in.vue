@@ -1,5 +1,5 @@
 <template>
-  <div class="as-seen-in">
+  <section class="as-seen-in" id="as-seen-in">
     <div class="content-frame">
       <div class="context">
         <label>As seen in</label>
@@ -18,7 +18,7 @@
         </NuxtLink>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts" setup>

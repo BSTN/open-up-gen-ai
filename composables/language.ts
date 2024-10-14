@@ -5,8 +5,8 @@ export const useLanguage = () => {
     return locale.value === 'en' ? '' : locale.value
   })
   const markdownPath = computed(() => {
-    const pad = route.fullPath === '/' ? '/index' : route.fullPath
-    return languageCode.value ? pad + '.' + languageCode.value : route.fullPath
+    const pad = route.path === '/' ? '/index' : route.path
+    return languageCode.value ? pad + '.' + languageCode.value : route.path
   })
   return {
     markdownPath
