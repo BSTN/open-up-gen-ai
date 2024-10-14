@@ -65,6 +65,7 @@ const { height } = useWindowSize()
       width: 9.55em;
       text-align: left;
       margin: 0 0 2rem;
+      font-family: 'InterDisplay', 'Georgia';
     }
 
     :deep(p) {
