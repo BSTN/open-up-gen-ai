@@ -67,10 +67,8 @@ onMounted(() => {
 
   .nottop & {
     transition: all 0.2s ease !important;
-    background: var(--bg);
     padding-top: 1rem;
     padding-bottom: 1rem;
-    box-shadow: 0 0 .25rem var(--shadow);
   }
 
   .scroll-down.nottop & {
@@ -79,8 +77,12 @@ onMounted(() => {
     pointer-events: none;
   }
 
-  .scroll-up & {
+  .scroll-up & {}
+
+  .scroll-up.nottop & {
     transform: translateY(0);
+    background: var(--bg);
+    box-shadow: 0 0 .25rem var(--shadow);
   }
 
   .frame {

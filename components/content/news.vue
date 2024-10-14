@@ -1,50 +1,54 @@
 <template>
-  <div class="news">
-    <label>Latest news</label>
-    <div class="frame">
-      <NuxtLink to="/list">A</NuxtLink>
-      <NuxtLink to="/old-list">B</NuxtLink>
-      <NuxtLink to="/compare">C</NuxtLink>
+  <section class="news">
+    <div class="content-frame">
+      <div class="context">
+        <label>Latest news</label>
+      </div>
+      <div class="content" v-visiblecontainer>
+        <ContentList :query="query" v-slot="{ list }">
+          <NuxtLink :to="article._path" v-for="article in list" :key="article._path">
+            <div class="date">{{ toDate(article.date) }}</div>
+            <div class="title">{{ article.title }}</div>
+            <!-- <div class="description">{{ article.description }}</div> -->
+          </NuxtLink>
+        </ContentList>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts" setup>
-
+import moment from 'moment'
+import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
+const query: QueryBuilderParams = { path: '/news', limit: 10, sort: [{ date: -1 }] }
+function toDate(time: string) {
+  return moment(time, 'DD-MM-YYYY').format('LL')
+}
 </script>
 
 <style lang="less" scoped>
 .news {
-  display: block;
-  .row();
-  padding: 2rem 0 2rem;
+  padding: 0 0 4rem;
 
-  label {
-    margin-bottom: 2rem;
-  }
-
-  .frame {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 4rem;
-
-    @media (max-width: 60rem) {
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-
-    @media (max-width: 40rem) {
-      display: block;
-    }
+  .content {
+    flex: 1;
+    // padding-left: calc(33% + 2rem);
 
     a {
-      aspect-ratio: 4/2;
-      background: var(--bc);
-      text-decoration: none;
-      padding: 2rem;
-      font-size: 1.5rem;
-      border-radius: 0.25rem;
       display: block;
+      margin-bottom: 2rem;
+      text-decoration: none;
+      border-top: 1px solid var(--bc);
+      padding-top: .5rem;
+
+      .date {
+        color: var(--fg2);
+        font-size: 1rem;
+      }
+
+      .title {
+        font-size: 1.5rem;
+      }
     }
   }
 }

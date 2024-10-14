@@ -9,7 +9,7 @@ html, body {
   font-size: 20px;
   background: var(--bg);
   color:var(--fg);
-  line-height: 1.4em;
+  line-height: 1.4;
   @media (max-width: 1200px) {
     font-size: 18px;
   }
@@ -99,7 +99,11 @@ label {
   // font-size: 0.75em;
   // padding: 0 1em;
   margin-bottom: .5em;
+  color: var(--fg);
+  
+  text-transform: none;
   color: var(--fg2);
+  letter-spacing: 0.05em;
 }
 
 .page {
@@ -157,3 +161,19 @@ label {
   }
 }
 
+.content-frame {
+  display:flex;
+  .row();
+  .context {
+    flex:1;
+    max-width: calc(100%/3);
+    label {
+      position: sticky;
+      top: 1rem;
+      text-transform: none;
+    }
+  }
+  .content {
+    flex:1;
+  }
+}

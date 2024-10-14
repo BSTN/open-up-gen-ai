@@ -10,10 +10,8 @@ Evaluating ‘open-source’ generative AI systems based on European Union regul
 
 [Read more](/about) [Explore the index](/list)
 
-::note
+#notes
 The index is maintained by [Andreas Liesenfeld](https://www.ru.nl/en/people/liesenfeld-a){:target="_blank"} and [Mark Dingemanse](https://markdingemanse.net){:target="_blank"} and affiliated to the [Centre of Language and Speech Technology, Radboud University, The Netherlands](https://www.ru.nl/en/cls/clst){:target="_blank"}.
-::
-
 ::
 
 ::guides

@@ -1,12 +1,13 @@
 left:
   - link: /
     # name: Home
-    # icon: ic:twotone-circle
     icon: ic:baseline-arrow-back
   - link: /list
-    name: All models
-  - link: /guides
-    name: Guides
+    name: The Index
+  # - link: /guides
+  #   name: Guides
+  - name: Contribute
+    link: /contribute
 right:
   - name: About
     link: /about
@@ -14,8 +15,6 @@ right:
   #   link: /news
   # - name: Guides
   #   link: /guides
-  - name: Contribute
-    link: /contribute
   - link: https://github.com/Language-Technology-Assessment/
     target: _blank
     icon: bi:github

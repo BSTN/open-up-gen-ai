@@ -70,3 +70,54 @@
     }
   }
 }
+
+.invisible, .visible {
+  transition: all 1s @easeInOutExpo;
+}
+
+.visible {
+  each(range(0,20,1), {
+    &:nth-child(@{value}) {
+      transition-delay: @value * 0.1s;
+    }
+  })
+}
+
+.invisible {
+  opacity: 0;
+  transform: translateY(3rem);
+}
+.visible {
+  opacity: 1;
+  transform: translateY(0rem);
+}
+
+
+.invisible-container, .visible-container {
+  > * {
+    transition: all 1.5s @easeInOutExpo;
+  }
+}
+
+.visible-container {
+  > * {
+    each(range(0,20,1), {
+      &:nth-child(@{value}) {
+      transition-delay: @value * 0.05s;
+    }
+  })
+  }
+}
+
+.invisible-container {
+  > * {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+}
+.visible-container {
+  > * {
+    opacity: 1;
+    transform: translateY(0rem);
+  }
+}

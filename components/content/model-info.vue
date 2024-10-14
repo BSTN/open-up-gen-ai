@@ -2,8 +2,8 @@
   <div class="model-info">
     <div class="frame">
       <div class="top-info">
-        <h1>{{ model.project.name || '(undefined)' }}</h1>
-        <h2>by {{ model.org.name || '(undefined)' }}</h2>
+        <h1>{{ model.org.name || '(undefined)' }}</h1>
+        <h2>{{ model.project.name || '(undefined)' }}</h2>
         <scorebar :score="model.score" :style="{ '--fg': color(model.score) }"></scorebar>
       </div>
       <ModelInfoFold :filename="route.params.model"></ModelInfoFold>
@@ -12,11 +12,20 @@
 </template>
 
 <script lang="ts" setup>
+import { Octokit } from 'octokit';
 const { models, categories, bg, color } = useModels()
 const route = useRoute()
 const model = computed(() => {
   const pad = route.params.model
   return models.value.find(x => x.filename === pad)
+})
+
+const octokit = new Octokit()
+
+onMounted(async () => {
+  const d = await octokit.request(`/repos/opening-up-chatgpt/opening-up-chatgpt.github.io/commits?path=/projects/${model.value.filename}.yaml`)
+  console.log(d)
+  // console.log(model.value.filename)
 })
 </script>
 

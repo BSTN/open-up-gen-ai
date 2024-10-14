@@ -69,6 +69,8 @@ const model = computed(() => {
 
     label {
       color: var(--fg);
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     a {

@@ -5,6 +5,11 @@
         <slot></slot>
       </div>
     </div>
+    <div class="notesframe" :style="{ opacity: 1 - (y / height * 2) }">
+      <div class="notes">
+        <ContentSlot :use="$slots.notes"></ContentSlot>
+      </div>
+    </div>
     <!-- <div class="globe" v-html="globe"></div> -->
   </div>
 </template>
@@ -27,14 +32,16 @@ const { height } = useWindowSize()
 }
 
 .landing {
-  height: 90vh;
+  height: calc(100vh - 4rem);
+  margin-bottom: 4rem;
   position: relative;
   background: var(--bg3);
   margin-top: 0 !important;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  // align-items: center;
   justify-content: center;
+  padding-top: 8rem;
 
   .frame {
     display: block;
@@ -66,11 +73,11 @@ const { height } = useWindowSize()
     }
 
     :deep(.animation-frame > p > a) {
-      background: var(--fg2);
+      background: var(--fg);
       color: var(--bg);
       text-decoration: none;
       border-radius: 0.25rem;
-      padding: 0.25em 0.75em;
+      padding: 0.5em 1em;
       margin-top: 0.5em;
       display: inline-block;
       margin-right: 1em;
@@ -78,12 +85,30 @@ const { height } = useWindowSize()
       font-weight: 600;
 
       &:hover {
-        background: var(--fg);
+        background: var(--link);
       }
     }
 
     :deep(.note) {
       margin: 4rem 0 0 0;
+    }
+  }
+}
+
+.notesframe {
+  position: absolute;
+  left: 0;
+  bottom: 2rem;
+  font-size: 0.75rem;
+  width: 100%;
+
+  .notes {
+    .row();
+    color: var(--fg2);
+
+    :deep(p) {
+      margin: 0;
+      width: 26rem;
     }
   }
 }

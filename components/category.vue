@@ -2,9 +2,6 @@
   <div class="category">
     <div class="category-bar">
       <div class="category-name">{{ category.name }}</div>
-      <!-- <div class="category-score" :style="bg(model.categories[category.ref])">{{
-              model.categories[category.ref].toFixed(2)
-            }}</div> -->
       <scorebar :score="model.categories[category.ref]" :style="{ '--fg': color(model.categories[category.ref]) }">
       </scorebar>
     </div>
@@ -30,6 +27,7 @@
 </template>
 
 <script lang="ts" setup>
+import { Icon } from '@iconify/vue'
 import openIcon from '@/assets/icons/open.svg?raw'
 import closedIcon from '@/assets/icons/closed.svg?raw'
 import partialIcon from '@/assets/icons/partial.svg?raw'
@@ -41,7 +39,6 @@ const { model, category } = defineProps(['model', 'category'])
 <style lang="less" scoped>
 .category {
   flex: 1;
-  // border-left: 1px solid var(--bc);
   padding-top: 1rem;
   padding-bottom: 2rem;
   flex-shrink: 0;
@@ -142,7 +139,6 @@ h2 {
 
   .notes {
     color: var(--fg2);
-    // width: 32em;
     max-width: 100%;
     font-size: 0.75rem;
     line-height: 1.4;

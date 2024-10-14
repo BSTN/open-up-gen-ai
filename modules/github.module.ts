@@ -71,7 +71,9 @@ async function getRepo({ owner, repo, local, name }: { owner: string, repo: stri
 
   fs.writeFileSync(infoPath, JSON.stringify({
     hash: info.data[0].sha,
-    author: info.data[0].author.login
+    author: info.data[0].author.login,
+    date: info.data[0].commit.author.date,
+    url: info.data[0].url.replace('https://api.github.com/repos/', 'https://github.com/')
   }), 'utf8')
   
   console.log(`Done (${info.data[0].sha})`)

@@ -2,11 +2,11 @@
   <div class="partners">
     <label>Partners</label>
     <div class="frame">
-      <NuxtLink to="/list">A</NuxtLink>
-      <NuxtLink to="/old-list">B</NuxtLink>
-      <NuxtLink to="/compare">C</NuxtLink>
-      <NuxtLink to="/compare">D</NuxtLink>
-      <NuxtLink to="/compare">E</NuxtLink>
+      <NuxtLink to="/"></NuxtLink>
+      <NuxtLink to="/"></NuxtLink>
+      <NuxtLink to="/"></NuxtLink>
+      <NuxtLink to="/"></NuxtLink>
+      <NuxtLink to="/"></NuxtLink>
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@
 
     a {
       aspect-ratio: 4/2;
-      background: var(--bc);
+      border: 1px solid var(--bc);
       text-decoration: none;
       padding: 2rem;
       font-size: 1.5rem;

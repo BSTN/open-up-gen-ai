@@ -3,7 +3,6 @@
     <ContentList path="/guides/" v-slot="{ list }">
       <NuxtLink class="guide" :to="article._path" v-for="article in list" :key="article._path">
         <div class="title">{{ article.title }}</div>
-        <div class="date">{{ article.date }}</div>
       </NuxtLink>
     </ContentList>
     <!-- <NuxtLink :to="`/guide/${item.link}`" class="guide" v-for="item in guides">
@@ -35,7 +34,7 @@ guides.sort((a, b) => new Date(a.props.date).getTime() < new Date(a.props.date).
   margin: 0 auto 4rem;
   width: 40rem;
   max-width: 100%;
-  background: var(--bg2);
+  border: 1px solid var(--bc);
   padding: 1.5rem 2rem;
   border-radius: 0.5rem;
   display: block;

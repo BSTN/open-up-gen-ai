@@ -13,22 +13,21 @@ export default defineNuxtConfig({
       }
     }
   },
-  modules: [
-    ['./modules/github.module', {
-      repositories: [{
-      name: 'data',
-      owner: 'opening-up-chatgpt',
-      repo: 'opening-up-chatgpt.github.io',
-      }, {
-      name: 'website',
-      owner: 'BSTN',
-      repo: 'open-up-gen-ai',
-    }]
-    }],
-    // './modules/extend-pages-module/extendpages.ts',
-    '@nuxt/content',
-    '@pinia/nuxt'
-  ],
+  modules: [['./modules/github.module', {
+    repositories: [{
+    name: 'data',
+    owner: 'opening-up-chatgpt',
+    repo: 'opening-up-chatgpt.github.io',
+    }, {
+    name: 'website',
+    owner: 'BSTN',
+    repo: 'open-up-gen-ai',
+  }]
+  }], // './modules/extend-pages-module/extendpages.ts',
+    '@nuxt/content', '@pinia/nuxt', '@nuxt/image'],
+  image: {
+    dir: 'website',
+  },
   vite: {
     css: {
       preprocessorOptions: {

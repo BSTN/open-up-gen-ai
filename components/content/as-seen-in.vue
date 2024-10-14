@@ -1,52 +1,90 @@
 <template>
   <div class="as-seen-in">
-    <label>As seen in</label>
-    <div class="frame">
-      <NuxtLink to="/list">A</NuxtLink>
-      <NuxtLink to="/old-list">B</NuxtLink>
-      <NuxtLink to="/compare">C</NuxtLink>
-      <NuxtLink to="/compare">D</NuxtLink>
-      <NuxtLink to="/compare">E</NuxtLink>
+    <div class="content-frame">
+      <div class="context">
+        <label>As seen in</label>
+      </div>
+      <div class="content" v-visiblecontainer>
+        <NuxtLink :to="item.url" v-for="item in list.items" target="_blank">
+          <div class="image">
+            <NuxtImg :src="`${item.image}`"></NuxtImg>
+          </div>
+          <div class="info">
+            <div class="source">{{ item.source }} — {{ toDate(item.date) }}</div>
+            <div class="title">{{ item.title }}</div>
+            <!-- <div class="date">{{ item.date }}</div> -->
+            <Icon class="icon" icon="heroicons:arrow-top-right-on-square-20-solid"></Icon>
+          </div>
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-
+import moment from 'moment'
+import list from "@/website/as-seen-in.yml"
+import { Icon } from '@iconify/vue'
+function toDate(notation: string) {
+  return moment(notation, 'DD-MM-YYYY').format('LL')
+}
 </script>
 
 <style lang="less" scoped>
 .as-seen-in {
-  display: block;
-  .row();
-  padding: 2rem 0 2rem;
 
-  label {
-    margin-bottom: 2rem;
-  }
-
-  .frame {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 4rem;
-
-    @media (max-width: 60rem) {
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 2rem;
-    }
-
-    @media (max-width: 40rem) {
-      display: block;
-    }
+  .content {
+    flex: 1;
 
     a {
-      aspect-ratio: 4/2;
-      background: var(--bc);
-      text-decoration: none;
-      padding: 2rem;
-      font-size: 1.5rem;
-      border-radius: 0.25rem;
       display: block;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1.5rem;
+      min-height: 4rem;
+      border-top: 1px solid var(--bc);
+      padding-top: 0.5rem;
+
+      .image {
+
+        img {
+          background: var(--bg2);
+          width: 5rem;
+          border-radius: 0.125rem;
+          aspect-ratio: 2/1;
+          object-fit: contain;
+          border: .5rem solid transparent;
+
+          .dark & {
+            background: var(--fg);
+          }
+        }
+      }
+
+      .info {
+        width: 20rem;
+
+        .title {
+          margin-bottom: 0.25rem;
+        }
+
+        .source {
+          color: var(--fg2);
+          font-size: 0.75rem;
+        }
+
+        .icon {
+          display: none;
+          color: var(--fg2);
+        }
+      }
+
+      &:hover {
+        .title {
+          text-decoration: underline;
+        }
+      }
     }
   }
 }

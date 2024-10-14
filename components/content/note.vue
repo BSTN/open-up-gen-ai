@@ -17,6 +17,8 @@
   border-radius: 0.25em;
   font-weight: 600;
   color: var(--fg2);
+  // position: absolute;
+  // bottom: 0;
 
   :deep(p) {
     max-width: 100%;
