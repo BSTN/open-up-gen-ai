@@ -25,6 +25,9 @@
     "vite-svg-loader": "^5.1.0",
     "vue": "latest"
   },
+  "resolutions": {
+    "string-width": "4.2.3"
+  },
   "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447",
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.0"
