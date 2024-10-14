@@ -1,12 +1,8 @@
 <template>
   <div class="app" :class="[{ top: !nottop, nottop }, direction]" :path="$route.path">
     <Mainmenu></Mainmenu>
-    <transition name="page" mode="out-in">
-      <div class="pageframe" :key="route.fullPath">
-        <NuxtPage class="page"></NuxtPage>
-        <Mainfooter></Mainfooter>
-      </div>
-    </transition>
+    <NuxtPage class="page"></NuxtPage>
+    <Mainfooter></Mainfooter>
   </div>
 </template>
 <script setup lang="ts">
@@ -31,31 +27,4 @@ const nottop = computed(() => {
 </script>
 <style lang="less">
 @import '@/less/elements.less';
-
-.pageframe {
-  position: relative;
-  display: block;
-  opacity: 1;
-}
-
-.page {
-  min-height: calc(100vh - 8rem);
-  padding: 0 0 4rem;
-
-  >*:first-child {
-    .app:not([path='/']) & {
-      margin-top: 10rem !important;
-
-      @media (max-width: 50rem) {
-        margin-top: 6rem !important;
-      }
-    }
-  }
-
-  p {
-    width: var(--pwidth);
-    max-width: var(--maxwidth);
-    margin: 0 auto 1rem;
-  }
-}
 </style>

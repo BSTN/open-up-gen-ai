@@ -108,6 +108,9 @@ label {
 
 .page {
 
+  min-height: calc(100vh - 8rem);
+  padding: 0 0 4rem;
+
   hr {
     border:0;
     border-top:1px solid var(--bc);
@@ -154,6 +157,9 @@ label {
     font-weight: 700;
   }
   p {
+    width: var(--pwidth);
+    max-width: var(--maxwidth);
+    margin: 0 auto 1rem;
     color: var(--fg2);
     + .bars {
       margin-top: 4rem;

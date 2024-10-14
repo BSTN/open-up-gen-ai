@@ -5,6 +5,30 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
+  // app: {
+  //   pageTransition: {
+  //     name: 'page',
+  //     mode: 'out-in',
+  //     onEnter: (el) => {
+  //       console.log(el)
+  //     }
+  //   }
+  // },
+  i18n: {
+    baseUrl: 'http://localhost:4444',
+    strategy: 'no_prefix',
+    defaultLocale: 'en',
+    locales: [
+      {
+        code: 'en',
+        language: 'en-US'
+      },
+      {
+        code: 'nl',
+        language: 'nl-NL'
+      }
+    ]
+  },
   content: {
     sources: {
       content: {
@@ -13,7 +37,8 @@ export default defineNuxtConfig({
       }
     }
   },
-  modules: [['./modules/github.module', {
+  modules: [// './modules/extend-pages-module/extendpages.ts',
+  ['./modules/github.module', {
     repositories: [{
     name: 'data',
     owner: 'opening-up-chatgpt',
@@ -23,8 +48,7 @@ export default defineNuxtConfig({
     owner: 'BSTN',
     repo: 'open-up-gen-ai',
   }]
-  }], // './modules/extend-pages-module/extendpages.ts',
-    '@nuxt/content', '@pinia/nuxt', '@nuxt/image'],
+  }], '@nuxt/content', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n'],
   image: {
     dir: 'website',
   },

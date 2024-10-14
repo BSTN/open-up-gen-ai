@@ -2,7 +2,7 @@ left:
   - link: /
     # name: Home
     icon: ic:baseline-arrow-back
-  - link: /list
+  - link: /the-index
     name: The Index
   # - link: /guides
   #   name: Guides

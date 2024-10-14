@@ -39,6 +39,7 @@ onMounted(() => {
   setTimeout(() => { active.value = true }, 500)
   setTimeout(() => { afteractive.value = true }, 2500)
 })
+const { locale, setLocale } = useI18n()
 </script>
 
 <style lang="less" scoped>

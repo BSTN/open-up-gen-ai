@@ -18,7 +18,13 @@
 
 <script lang="ts" setup>
 import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
-const query: QueryBuilderParams = { path: '/guides/', limit: 3 }
+const query: QueryBuilderParams = {
+  path: '/guides/', limit: 99, where: [{
+    _file: {
+      $not: /\.(.*).md$/
+    }
+  }]
+}
 </script>
 
 <style lang="less" scoped>

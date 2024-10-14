@@ -135,7 +135,6 @@ const models = computed(() => {
         // check if param value is value
         for (let paramname in ffs) {
           if (paramname in x && 'class' in x[paramname] && paramname !== 'models') {
-            console.log('hello')
             if (x[paramname].class === 'closed' && !ffs[paramname].includes(0)) return false
             if (x[paramname].class === 'open' && !ffs[paramname].includes(1)) return false
             if (x[paramname].class === 'partial' && !ffs[paramname].includes(0.5)) return false
