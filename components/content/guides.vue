@@ -28,34 +28,5 @@ const query: QueryBuilderParams = {
 </script>
 
 <style lang="less" scoped>
-.guides {
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-
-  .content {
-
-    >a {
-      display: block;
-      margin-bottom: 2rem;
-      text-decoration: none;
-      border-top: 1px solid var(--bc);
-      width: 100%;
-      padding-top: 0.5rem;
-
-      .title {
-        font-size: 1.5rem;
-      }
-
-      .description {
-        color: var(--fg2);
-      }
-
-      &:hover {
-        .title {
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-}
+.guides {}
 </style>

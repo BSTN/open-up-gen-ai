@@ -1,5 +1,5 @@
 <template>
-  <div class="page" ref="element">
+  <div class="page" ref="element" path="/">
     <ContentDoc :path="finalPath">
       <template #not-found>
         <div class="not-found">Page not found.</div>

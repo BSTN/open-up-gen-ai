@@ -27,29 +27,5 @@ function toDate(time: string) {
 </script>
 
 <style lang="less" scoped>
-.news {
-  padding: 0 0 4rem;
-
-  .content {
-    flex: 1;
-    // padding-left: calc(33% + 2rem);
-
-    a {
-      display: block;
-      margin-bottom: 2rem;
-      text-decoration: none;
-      border-top: 1px solid var(--bc);
-      padding-top: .5rem;
-
-      .date {
-        color: var(--fg2);
-        font-size: 1rem;
-      }
-
-      .title {
-        font-size: 1.5rem;
-      }
-    }
-  }
-}
+.news {}
 </style>
