@@ -1,89 +1,107 @@
 <template>
-  <div class="bars" ref="el" :class="{ sticky: isvisible }">
-    <!-- filter screen -->
-    <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
-    </FilterScreen>
-    <!-- content -->
-    <div class="search">
-      <div class="searchbox" :class="{ searchFocus }">
-        <button class="icon search">
-          <Icon icon="iconamoon:search-bold"></Icon>
-        </button>
-        <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
-          placeholder="Filter...">
-        <button class="icon" @click="filterscreenOpen = true">
-          <Icon icon="mage:filter-fill"></Icon>
-        </button>
-      </div>
-    </div>
+  <div class="the-index" ref="el" :class="{ sticky: isvisible }">
     <div class="meta">
-      <div class="models-info">
-        Showing {{ models.length }}/{{ originalModels.length }} models
-      </div>
       <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
         <div>Version 14-04-2024</div>
         <Icon icon="iconamoon:link-external-fill"></Icon>
       </NuxtLink>
+      <!-- <div class="models-info">
+          Showing {{ models.length }}/{{ originalModels.length }} models
+        </div> -->
     </div>
-    <div class="models" :class="{ somethingisopen: !!open }">
-      <div class="model" v-for="(item, k) in models" :key="item.filename"
-        :class="{ active: store.selected.includes(item.filename), open: !!open && item.filename === open.filename }">
-        <!-- <div class="compare">
+    <div class="context">
+      <!-- filter screen -->
+      <!-- <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
+      </FilterScreen> -->
+      <div class="search">
+        <div class="searchbox" :class="{ searchFocus }">
+          <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
+            placeholder="Filter...">
+          <div class="models-count">
+            {{ models.length }}/{{ originalModels.length }}
+          </div>
+          <button class="icon search">
+            <Icon icon="iconamoon:search-bold"></Icon>
+          </button>
+
+          <!-- <button class="icon" @click="filterscreenOpen = true">
+            <Icon icon="mage:filter-fill"></Icon>
+          </button> -->
+        </div>
+      </div>
+      <div class="filter-by">
+        <button>Filter by parameter...</button>
+        <button>Select models...</button>
+      </div>
+      <!-- compare -->
+      <div class="stickycompare" v-if="store.selected.length > 0">
+        <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon>
+        <div class="txt" @click="openComparison()">
+          Compare {{ store.selected.length }} model{{ store.selected.length > 1 ? 's' : '' }}
+        </div>
+        <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon>
+      </div>
+
+    </div>
+    <!-- content -->
+    <div class="content">
+      <div class="models" :class="{ somethingisopen: !!open }" v-if="models.length > 0">
+        <div class="model" v-for="(item, k) in models" :key="item.filename"
+          :class="{ active: store.selected.includes(item.filename), open: !!open && item.filename === open.filename }">
+          <!-- <div class="compare">
           <button class="checkbox" @click.stop="store.toggle(item.filename)"
             :class="{ active: store.selected.includes(item.filename) }">
             <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
             <Icon icon="mdi:plus" v-else></Icon>
           </button>
         </div> -->
-        <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
-          @mouseleave="open = false; openParam = false">
-          <div class="info">
-            <div class="name">
-              {{ item.project.name || '(undefined)' }}
-            </div>
-            <div class="org">
-              by {{ item.org.name || '(undefined)' }}
-            </div>
-            <button class="checkbox" @click.stop="store.toggle(item.filename)"
-              :class="{ active: store.selected.includes(item.filename) }">
-              <div>Compare</div>
-              <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
-              <!-- <Icon icon="mdi:plus" v-else></Icon> -->
-              <Icon icon="basil:plus-outline" v-else></Icon>
-            </button>
-          </div>
-          <div class="score" :class="{ open: !!open && open.filename === item.filename }">
-            <scorebar :score="item.score" :style="{ '--fg': color(item.score) }"></scorebar>
-            <div class="subscore" v-if="!!open && open.filename === item.filename" @mouseleave="openParam = false">
-              <div class="params">
-                <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
-                  <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon"></div>
-                  <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
-                  </div>
-                  <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'" v-html="partialIcon">
-                  </div>
-                </div>
+          <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
+            @mouseleave="open = false; openParam = false">
+            <div class="info">
+              <div class="org">
+                {{ item.org.name || '(undefined)' }}
               </div>
-              <div class="param-info" v-if="openParam">
-                <div class="name">
-                  <div class="cat-name">{{ getCatName() }}:</div>
-                  <div class="param-name">{{ params.find(x => x.ref === openParam).name }}</div>
+              <div class="name">
+                {{ item.project.name || '(undefined)' }}
+              </div>
+              <button class="checkbox" @click.stop="store.toggle(item.filename)"
+                :class="{ active: store.selected.includes(item.filename) }">
+                <div>Compare</div>
+                <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
+                <!-- <Icon icon="mdi:plus" v-else></Icon> -->
+                <Icon icon="basil:plus-outline" v-else></Icon>
+              </button>
+            </div>
+            <div class="score" :class="{ open: !!open && open.filename === item.filename }">
+              <scorebar :score="item.score" :style="{ '--fg': color(item.score) }"></scorebar>
+              <div class="subscore" v-if="!!open && open.filename === item.filename" @mouseleave="openParam = false">
+                <div class="params">
+                  <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
+                    <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon"></div>
+                    <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
+                    </div>
+                    <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'"
+                      v-html="partialIcon">
+                    </div>
+                  </div>
                 </div>
-                <div class="param-notes" v-if="item[openParam].notes">{{ item[openParam].notes }}</div>
-                <div class="param-notes" v-else>(undefined)</div>
+                <div class="param-info" v-if="openParam">
+                  <div class="name">
+                    <div class="cat-name">{{ getCatName() }}:</div>
+                    <div class="param-name">{{ params.find(x => x.ref === openParam).name }}</div>
+                  </div>
+                  <div class="param-notes" v-if="item[openParam].notes">{{ item[openParam].notes }}</div>
+                  <div class="param-notes" v-else>(undefined)</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- compare -->
-    <div class="stickycompare" v-if="store.selected.length > 0">
-      <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon>
-      <div class="txt" @click="openComparison()">
-        Compare {{ store.selected.length }} models
+      <div class="no-models" v-if="models.length < 1">
+        No models or organisations match your filters.
       </div>
-      <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon>
+
     </div>
   </div>
 </template>
@@ -173,42 +191,68 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
-.bars {
+.the-index {
   .row();
-  // display: flex;
-  // gap: 4rem;
-  width: 50rem;
-  border: 1px solid var(--bc);
+  display: flex;
+  // width: 50rem;
+  border-radius: 0.5rem;
+  // border: 1px solid var(--bc);
   padding: 0rem;
-  border-radius: 0.25rem;
   position: relative;
   margin-bottom: 4rem;
+  background: var(--bg2);
+  align-items: flex-start;
+  padding: 5rem 3rem 5rem;
+  gap: 4rem;
+  overflow: hidden;
+
+  >.context {
+    flex: 1;
+    max-width: calc(100%/3);
+    padding: 0;
+    position: sticky;
+    top: 0;
+  }
+
+  >.content {
+    flex: 1;
+  }
 }
 
 .meta {
-  position: sticky;
-  top: 0;
-  background: var(--bc);
+  background: var(--bg3);
+  // border-bottom: 1px solid var(--bg);
   left: 0;
   width: 100%;
-  font-size: 0.65rem;
-  letter-spacing: 0.05em;
-  padding: 0.5em 1rem;
-  line-height: 1;
+  padding: 0 0;
   color: var(--fg2);
-  display: flex;
   gap: 1em;
+  font-size: 0.65rem;
   z-index: 9;
   align-items: center;
+  position: absolute;
+  top: 0;
+  opacity: 0.5;
 
-  .models-info {
-    flex: 1;
+  >* {
+    padding: 0.25rem .5rem;
+    opacity: 0.5;
+  }
+
+  &:hover {
+    opacity: 1;
+
+    >* {
+      opacity: 1;
+    }
   }
 
   .source {
     text-decoration: none;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    text-align: right;
     gap: 1em;
 
     :deep(svg) {
@@ -226,27 +270,36 @@ onMounted(() => {
 }
 
 .search {
-  background: var(--bc);
-  padding: .5rem .5rem 0;
+  background: var(--bg2);
+  padding: 0;
+  margin-bottom: .5rem;
 
   .searchbox {
     display: flex;
-    border: 1px solid var(--bc);
+    border: 1px solid var(--bg3);
     border-radius: 0.25rem;
     overflow: hidden;
     background: var(--bg2);
-    font-size: 0.75rem;
-    padding: 0 0.75rem;
+    padding: 0 0.75rem 0 0.5rem;
+    align-items: center;
+    gap: 0.75rem;
+
+    .models-count {
+      font-size: 0.75rem;
+      color: var(--fg2);
+      opacity: 0.5;
+    }
 
     &.searchFocus {
       background: var(--bg3);
+      border: 1px solid var(--bg3);
     }
 
     input {
       flex: 1;
       font-weight: inherit;
       border-radius: 0;
-      background: var(--bg2);
+      background: transparent;
       padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 
       &:focus {
@@ -272,16 +325,52 @@ onMounted(() => {
         color: var(--fg);
       }
     }
+
+    &:hover {
+      background: var(--bg);
+    }
   }
+}
+
+.filter-by {
+  display: flex;
+  // flex-direction: column;
+  padding: 0.5rem 0;
+  gap: .75rem;
+
+  button {
+    flex: 1;
+    line-height: 1.4rem;
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--fg2);
+    border-radius: 0.25rem;
+    border: 1px solid var(--bg3);
+    background: transparent;
+
+    // background: var(--bg);
+    &:hover {
+      color: var(--link);
+      background: var(--bg);
+    }
+  }
+}
+
+.no-models {
+  padding: 0;
+  color: var(--fg2);
 }
 
 .models {
   margin: 0 auto;
-  padding: 2rem 4rem;
+  padding: 0;
+  flex: 1;
 }
 
 .model {
-  padding: 0.5em 0 2rem;
+  padding: 0em 0 2.5rem;
   margin-bottom: 1px;
   text-decoration: none;
   align-items: center;
@@ -347,6 +436,11 @@ onMounted(() => {
     .name {
       margin-right: .5rem;
       cursor: pointer;
+      flex: 1;
+      color: var(--fg2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &:hover {
         text-decoration: underline;
@@ -355,8 +449,10 @@ onMounted(() => {
 
     .org {
       // font-size: 0.75rem;
-      color: var(--fg2);
-      flex: 1;
+      margin-right: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .name,
@@ -595,7 +691,8 @@ div.stickycompare {
   margin: 0;
   padding: .75rem 1rem;
   // font-size: 0.75rem;
-  background: var(--bc);
+  // background: var(--bg3);
+  border: 1px solid var(--bg3);
   color: var(--fg2);
   border-radius: 0;
   display: flex;
@@ -603,6 +700,7 @@ div.stickycompare {
   z-index: 99;
   width: 100%;
   align-items: center;
+  border-radius: 0.25rem;
 
   :deep(svg) {
     font-size: 1.25rem;
@@ -620,9 +718,10 @@ div.stickycompare {
   div {
     flex: 1;
     cursor: pointer;
+    color: var(--fg);
 
     &:hover {
-      color: var(--fg);
+      color: var(--link);
       text-decoration: underline;
     }
   }

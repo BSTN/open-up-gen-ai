@@ -35,7 +35,7 @@ const { height } = useWindowSize()
   height: calc(100vh - 4rem);
   margin-bottom: 4rem;
   position: relative;
-  background: var(--bg3);
+  background: var(--bg2);
   margin-top: 0 !important;
   overflow: hidden;
   display: flex;

@@ -1,1 +1,1 @@
-:bars
+:the-index

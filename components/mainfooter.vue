@@ -21,6 +21,6 @@ import info from '@/repos/data/.info.json';
   padding-top: 2rem;
   padding-bottom: 3rem;
   color: var(--fg2);
-  background: var(--bg3);
+  background: var(--bg2);
 }
 </style>

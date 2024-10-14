@@ -3,21 +3,21 @@
     <div class="frame" v-if="model">
       <div class="info">
         <div class="sub">
-          <label>About the model:</label>
-          <div class="notes" v-if="model.project.notes">{{ model.project.notes }}</div>
-          <div class="notes" v-else>(Not available)</div>
-          <label>Link to the model:</label>
-          <NuxtLink :to="model.project.link">
-            <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.project.link }}
-          </NuxtLink>
-        </div>
-        <div class="sub">
           <label>About the organisation:</label>
           <div class="notes" v-if="model.org.notes">{{ model.org.notes }}</div>
           <div class="notes" v-else>(Not available)</div>
           <label>Link to the organisation:</label>
           <NuxtLink :to="model.org.link">
             <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.org.link }}
+          </NuxtLink>
+        </div>
+        <div class="sub">
+          <label>About the model:</label>
+          <div class="notes" v-if="model.project.notes">{{ model.project.notes }}</div>
+          <div class="notes" v-else>(Not available)</div>
+          <label>Link to the model:</label>
+          <NuxtLink :to="model.project.link">
+            <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.project.link }}
           </NuxtLink>
         </div>
         <div class="sub">

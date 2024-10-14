@@ -170,9 +170,11 @@ label {
   display:flex;
   .row();
   margin-bottom: 4rem;
+  border-top:1px solid var(--bc);
   .context {
     flex:1;
     max-width: calc(100%/3);
+    padding-top: 0.5rem;
     label {
       position: sticky;
       top: 1rem;
@@ -188,6 +190,10 @@ label {
       border-top: 1px solid var(--bc);
       width: 100%;
       padding-top: 0.5rem;
+      &:first-child {
+        border-top:0;
+        padding-top: 1rem;
+      }
 
       &.flex {
         display: flex;
