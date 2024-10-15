@@ -242,7 +242,7 @@ p+.the-index {
 
     display: flex;
     gap: 1rem;
-    padding: 3rem 3rem 1rem;
+    padding: 1rem 3rem 1rem;
     background: var(--bg2);
     z-index: 9;
     // border-bottom: 1px solid var(--bg3);
@@ -295,10 +295,11 @@ p+.the-index {
   font-size: 0.65rem;
   z-index: 9;
   align-items: center;
-  position: absolute;
-  top: 0;
+  // position: absolute;
+  // top: 0;
   border-radius: 0.5rem 0.5rem 0 0;
   z-index: 10;
+  margin-bottom: 1rem;
 
   >* {
     padding: 0.25rem .5rem;
@@ -428,6 +429,8 @@ p+.the-index {
 
         &:first-child {
           border-left: 0;
+          background: var(--bg3);
+          color: var(--fg);
         }
       }
     }
