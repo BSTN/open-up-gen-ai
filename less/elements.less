@@ -3,11 +3,14 @@
 @import '@/less/typography.less';
 @import '@/less/themes.less';
 
+html {
+  background: var(--bg);
+}
+
 html, body {
   font-family: 'Inter', 'helvetica neue', Helvetica, sans-serif;
   font-weight: 500;
   font-size: 20px;
-  background: var(--bg);
   color:var(--fg);
   line-height: 1.4;
   scroll-behavior: smooth;
@@ -24,10 +27,11 @@ html, body {
   letter-spacing: inherit;
   font-size: inherit;
   color: inherit;
+  line-height: 1.4;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scrollbar-color: var(--fg) var(--fg);
+  scrollbar-color: var(--bg3) var(--bg3);
   scrollbar-width: thin;
 }
 
@@ -244,6 +248,7 @@ section {
         font-family: 'InterDisplay', 'Inter', 'Helvetica', sans-serif;
         &.small {
           font-size: 1rem;
+          font-family: 'Inter', 'Helvetica', sans-serif;
         }
       }
 

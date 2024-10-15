@@ -70,6 +70,7 @@ const { locale, setLocale } = useI18n()
     transition: all 0.2s ease !important;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    background: var(--bg);
   }
 
   .scroll-down.nottop & {
@@ -112,7 +113,7 @@ button.menubutton {
 
 button.darkmode {
   border-radius: 0.75em;
-  background: var(--bg2);
+  background: var(--bg3);
   position: relative;
   margin: 0;
   height: 1.25em;

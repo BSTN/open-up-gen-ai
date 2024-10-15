@@ -1,7 +1,6 @@
-import debounce from "lodash/debounce";
 import categories from '@/website/categories.yml'
 
-const params = []
+const params: Array<any> = []
 categories.map(x => {
   x.params.map(xx => {
     xx.category = x.ref
@@ -22,11 +21,11 @@ const models: Ref<Array[any]> = ref()
 
 sortModels(projects.value)
 
-function bg(score) {
+function bg(score:number) {
     return { background: `var(--score)`, '--score': color(score)}
 }
 
-function color(score) {
+function color(score:number) {
   if (score < 0.5) {
     return `color-mix(in srgb, var(--g1), var(--g2) ${Math.round((score * 2) * 100)}%)`
   } else {
@@ -79,5 +78,12 @@ function sortModels(ppp: any) {
 
 
 export const useModels = () => {
-  return { models, sortModels, categories, bg, color, params }
+  return {
+    models,
+    sortModels,
+    categories,
+    bg,
+    color,
+    params
+  }
 }

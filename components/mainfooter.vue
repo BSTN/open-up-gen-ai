@@ -14,6 +14,10 @@ import info from '@/repos/data/.info.json';
 .mainfooter {
   .frame {
     .row();
+
+    :deep(p) {
+      width: 32rem;
+    }
   }
 
   margin-top: 2rem;
@@ -22,5 +26,6 @@ import info from '@/repos/data/.info.json';
   padding-bottom: 3rem;
   color: var(--fg2);
   background: var(--bg2);
+  line-height: 1.4;
 }
 </style>

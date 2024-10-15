@@ -1,8 +1,11 @@
 <template>
-  <div class="app" :class="[{ top: !nottop, nottop }, direction]" :path="$route.path">
+  <div class="app" :class="[{ top: !nottop, nottop, mounted }, direction]" :path="$route.path">
+    <!-- menu -->
     <Mainmenu></Mainmenu>
+    <!-- page content -->
     <NuxtPage class="page"></NuxtPage>
-    <Mainfooter></Mainfooter>
+    <!-- footer -->
+    <Mainfooter key="main-footer"></Mainfooter>
   </div>
 </template>
 <script setup lang="ts">
@@ -23,8 +26,41 @@ const nottop = computed(() => {
 })
 // end
 
+const mounted = ref(false)
+
+onMounted(() => {
+  mounted.value = true
+})
 
 </script>
 <style lang="less">
 @import '@/less/elements.less';
+
+.app {
+  &:before {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg2);
+    pointer-events: none;
+    z-index: 999;
+    transition: all 0.5s ease;
+    opacity: 1;
+
+    @media (prefers-color-scheme: dark) {
+      background: #1b1f28;
+    }
+  }
+
+  &.mounted {
+
+    &:before {
+      content: none;
+      opacity: 0;
+    }
+  }
+}
 </style>

@@ -1,5 +1,9 @@
 <template>
   <div class="the-index" ref="el" :class="{ sticky: isvisible, filtershidden: props.hideFilters }">
+    <!-- filter screen -->
+    <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
+    </FilterScreen>
+    <!-- metadata -->
     <div class="meta">
       <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
         <div>Version 14-04-2024</div>
@@ -9,20 +13,19 @@
           Showing {{ models.length }}/{{ originalModels.length }} models
         </div> -->
     </div>
+    <!-- context -->
     <div class="context" v-if="!props.hideFilters">
-      <!-- filter screen -->
-      <!-- <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
-      </FilterScreen> -->
+      <!-- search box -->
       <div class="search">
         <div class="searchbox" :class="{ searchFocus }">
-          <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
-            placeholder="Search...">
-          <div class="models-count">
-            {{ models.length }}/{{ originalModels.length }}
-          </div>
-          <button class="icon search">
+          <button class="icon searchicon">
             <Icon icon="iconamoon:search-bold"></Icon>
           </button>
+          <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
+            placeholder="Search...">
+          <!-- <div class="models-count">
+            {{ models.length }}/{{ originalModels.length }}
+          </div> -->
 
           <!-- <button class="icon" @click="filterscreenOpen = true">
             <Icon icon="mage:filter-fill"></Icon>
@@ -30,8 +33,8 @@
         </div>
       </div>
       <div class="filter-by">
-        <label>Model output:</label>
-        <div class="types">
+        <!-- <label>Type:</label> -->
+        <div class="types multibutton">
           <button class="filterbutton">Text</button>
           <button class="filterbutton">Image</button>
           <button class="filterbutton">Video</button>
@@ -43,20 +46,11 @@
         <button class="filterbutton">No filter active...</button>
       </div> -->
       <div class="filter-by">
-        <label>Filter by Parameter:</label>
-        <button class="filterbutton">No parameter filter active.</button>
-      </div>
-      <!-- compare -->
-      <div class="filter-by" v-if="store.selected.length > 0">
-        <label>Compare models: <span @click.stop="clearSelection()">Clear</span></label>
-        <div class="stickycompare">
-          <!-- <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon> -->
-          <Icon class="checkbox" icon="uil:check" @click="openComparison()"></Icon>
-          <div class="txt" @click="openComparison()">
-            Compare {{ store.selected.length }} model{{ store.selected.length > 1 ? 's' : '' }}
-          </div>
-          <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon>
-        </div>
+        <button class="filterbutton editable" @click="filterscreenOpen = true">
+          <span>Active filters ({{ Object.keys(filters).length
+            }})</span>
+          <Icon icon="fluent:edit-16-filled"></Icon>
+        </button>
       </div>
     </div>
     <!-- content -->
@@ -118,7 +112,17 @@
       <div class="no-models" v-if="models.length < 1">
         No models or organisations match your filters.
       </div>
-
+    </div>
+    <!-- compare -->
+    <div class="filter-by compare-filter" v-if="store.selected.length > 0">
+      <div class="stickycompare">
+        <!-- <Icon class="checkbox" icon="uil:check" @click="openComparison()"></Icon> -->
+        <!-- <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon> -->
+        <div class="txt" @click="openComparison()">
+          Compare selected model{{ store.selected.length > 1 ? 's' : '' }} ({{ store.selected.length }})
+        </div>
+        <Icon class="clear" icon="ic:round-close" @click.stop="clearSelection()"></Icon>
+      </div>
     </div>
   </div>
 </template>
@@ -214,7 +218,7 @@ p+.the-index {
 <style lang="less" scoped>
 .the-index {
   .row();
-  display: flex;
+  // display: flex;
   border-radius: 0.5rem;
   // border: 1px solid var(--bc);
   padding: 0rem;
@@ -222,8 +226,8 @@ p+.the-index {
   margin-bottom: 4rem;
   background: var(--bg2);
   align-items: flex-start;
-  padding: 5rem 3rem 5rem;
   gap: 4rem;
+  width: 50rem;
 
   &.filtershidden {
     width: 50rem;
@@ -231,15 +235,36 @@ p+.the-index {
 
   >.context {
     flex: 1;
-    max-width: 20rem;
-    min-width: 20rem;
     padding: 0;
     position: sticky;
-    top: 2rem;
+    top: 0;
     transition: all 0.3s ease;
 
+    display: flex;
+    gap: 1rem;
+    padding: 3rem 3rem 1rem;
+    background: var(--bg2);
+    z-index: 9;
+    // border-bottom: 1px solid var(--bg3);
+    margin-bottom: 2rem;
+    // background: var(--bg3);
+    border-radius: 0.5rem 0.5rem 0 0;
+    // background: color-mix(in srgb, var(--bg3) 50%, transparent);
+
+    .nottop & {
+      border-bottom: 1px solid var(--bg3);
+    }
+
+    >div {
+      flex: 1;
+    }
+
+    .search {
+      width: 16rem;
+    }
+
     .nottop.scroll-up & {
-      top: 5rem;
+      top: 3.2rem;
     }
   }
 
@@ -260,7 +285,7 @@ p+.the-index {
 }
 
 .meta {
-  background: var(--bg3);
+  // background: color-mix(in srgb, var(--bg3) 50%, transparent);
   // border-bottom: 1px solid var(--bg);
   left: 0;
   width: 100%;
@@ -272,8 +297,8 @@ p+.the-index {
   align-items: center;
   position: absolute;
   top: 0;
-  opacity: 0.5;
   border-radius: 0.5rem 0.5rem 0 0;
+  z-index: 10;
 
   >* {
     padding: 0.25rem .5rem;
@@ -301,21 +326,13 @@ p+.the-index {
     }
   }
 
-  @media (min-width: 50rem) {
-    .nottop.scroll-up & {
-      transition-delay: 0.15s;
-      top: 3.2rem;
-    }
-  }
-
 }
 
 .search {
-  background: var(--bg2);
   padding: 0;
-  margin-bottom: 1rem;
 
   .searchbox {
+    width: 100%;
     display: flex;
     border: 1px solid var(--bg3);
     border-radius: 0.25rem;
@@ -323,7 +340,7 @@ p+.the-index {
     background: var(--bg2);
     padding: 0 0.75rem 0 0.5rem;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.25rem;
 
     .models-count {
       font-size: 0.75rem;
@@ -342,10 +359,8 @@ p+.the-index {
       border-radius: 0;
       background: transparent;
       padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-
-      &:focus {
-        background: var(--bg3);
-      }
+      font-size: 0.75rem;
+      line-height: 1.4;
     }
 
     >.icon {
@@ -368,7 +383,7 @@ p+.the-index {
     }
 
     &:hover {
-      background: var(--bg);
+      background: var(--bg3);
 
       &.searchFocus {
         background: var(--bg3);
@@ -377,26 +392,18 @@ p+.the-index {
   }
 }
 
-.types {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  button {
-    display: block;
-  }
-}
-
 .filter-by {
-  padding: 0.5rem 0;
-  margin-bottom: 1rem;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 
   label {
     font-size: 0.75rem;
     color: var(--fg2);
     opacity: 0.5;
-    padding: 0 0.75rem;
-    margin-bottom: .75rem;
+    padding: 0;
+    margin: 0;
   }
 
   .types {
@@ -405,15 +412,31 @@ p+.the-index {
     flex-direction: row;
 
     button {
-      text-align: center;
+      line-height: 1.4;
+    }
+
+    &.multibutton {
+      gap: 0;
+      border: 1px solid var(--bg3);
+      border-radius: 0.25rem;
+      overflow: hidden;
+
+      >button.filterbutton {
+        border: 0;
+        border-left: 1px solid var(--bg3);
+        border-radius: 0;
+
+        &:first-child {
+          border-left: 0;
+        }
+      }
     }
   }
-
 }
 
 button.filterbutton {
   flex: 1;
-  line-height: 1.4rem;
+  line-height: 1.4;
   text-align: left;
   padding: 0.5rem 0.75rem;
   margin: 0;
@@ -425,21 +448,31 @@ button.filterbutton {
   display: block;
   width: 100%;
 
+  &.editable {
+    display: flex;
+
+    span {
+      flex: 1;
+      align-items: center;
+    }
+  }
+
   // background: var(--bg);
   &:hover {
     color: var(--link);
-    background: var(--bg);
+    background: var(--bg2);
   }
 }
 
 .no-models {
-  padding: 0;
+  padding: 1rem 3rem 3rem;
   color: var(--fg2);
+  text-align: center;
 }
 
 .models {
   margin: 0 auto;
-  padding: 0;
+  padding: 0 3rem;
   flex: 1;
 }
 
@@ -736,6 +769,7 @@ button.filterbutton {
 
     .name {
       font-weight: 600;
+      margin-bottom: 0.25em;
 
       >div {
         display: inline;
@@ -758,17 +792,23 @@ each(range(1, 30, 1), {
   }
 });
 
+.compare-filter {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg3);
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
 div.stickycompare {
   position: sticky;
   bottom: 0;
   // left: 0;
   margin: 0;
-  padding: .5rem .75rem;
+  padding: 1rem 2rem 1rem;
   // font-size: 0.75rem;
   background: transparent;
-  border: 1px solid var(--bg3);
+  border-top: 1px solid var(--bg3);
   color: var(--fg2);
-  border-radius: 0;
   display: flex;
   gap: 1rem;
   z-index: 99;

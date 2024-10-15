@@ -7,7 +7,7 @@
       <div class="content" v-visiblecontainer>
         <NuxtLink :to="item.url" v-for="item in list.items" target="_blank" class="flex">
           <div class="image">
-            <NuxtImg :src="`${item.image}`"></NuxtImg>
+            <NuxtImg :src="`${item.image}`" sizes="300px"></NuxtImg>
           </div>
           <div class="info">
             <div class="source">{{ item.source }} — {{ toDate(item.date) }}</div>

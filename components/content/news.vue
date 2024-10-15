@@ -2,7 +2,7 @@
   <section class="news" id="news">
     <div class="content-frame">
       <div class="context">
-        <label>Latest news</label>
+        <label>News</label>
       </div>
       <div class="content" v-visiblecontainer>
         <ContentList :query="query" v-slot="{ list }">
