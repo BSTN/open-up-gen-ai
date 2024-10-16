@@ -146,7 +146,7 @@ export const useModels = (version?: string) => {
     // use default
     console.log('Latest models')
     models.value = latestModels.value
-    date.value = info.date
+    date.value = moment(info.date).format('DD-MM-YYYY')
   }
 
   return {

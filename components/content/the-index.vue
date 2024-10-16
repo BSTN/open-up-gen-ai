@@ -8,7 +8,8 @@
     <div class="meta">
       <div></div>
       <NuxtLink target="_blank" :to="url" class="source" v-if="!loading">
-        <div><span class='not-latest' v-if="props.version !== latestInfo.hash">⚠️</span> {{ date }}</div>
+        <div><span class='not-latest' v-if="props.version && props.version !== latestInfo.hash">⚠️</span> {{ date }}
+        </div>
         <Icon icon="iconamoon:link-external-fill"></Icon>
       </NuxtLink>
       <!-- <div class="models-info">
