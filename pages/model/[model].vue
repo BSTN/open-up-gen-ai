@@ -1,11 +1,13 @@
 <template>
   <div class="page">
-    <ModelInfo></ModelInfo>
+    <ModelInfo :models="models" :categories="categories"></ModelInfo>
   </div>
 </template>
 
 <script lang="ts" setup>
 const route = useRoute()
+
+const { categories, models } = useModels(String(route.query?.version))
 
 definePageMeta({
   pageTransition: {

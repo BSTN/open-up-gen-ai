@@ -19,8 +19,8 @@
 
 <script lang="ts" setup>
 const store = useMyComparisonStore()
-const { models, categories } = useModels();
 const route = useRoute()
+const { models, categories } = useModels(String(route.query?.version));
 
 const modelsList = computed(() => {
   if (!route.query?.models || typeof route.query.models !== 'string') { return false }

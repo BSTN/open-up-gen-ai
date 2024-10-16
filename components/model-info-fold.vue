@@ -37,13 +37,11 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
 
-const { filename } = defineProps(['filename'])
-
-const { models, categories, bg, color } = useModels()
+const { filename, models, categories } = defineProps(['filename', 'models', 'categories'])
 
 const model = computed(() => {
   if (!filename) return false
-  return models.value.find(x => x.filename === filename)
+  return models.find(x => x.filename === filename)
 })
 </script>
 

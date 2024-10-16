@@ -1,12 +1,14 @@
 <template>
   <div class="the-index" ref="el" :class="{ sticky: isvisible, filtershidden: props.hideFilters }">
     <!-- filter screen -->
-    <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models">
+    <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models"
+      :originalModels="originalModels" :categories="categories">
     </FilterScreen>
     <!-- metadata -->
     <div class="meta">
-      <NuxtLink target="_blank" to="https://github.com/Language-Technology-Assessment/main-database" class="source">
-        <div>Version 14-04-2024</div>
+      <div></div>
+      <NuxtLink target="_blank" :to="url" class="source" v-if="!loading">
+        <div><span class='not-latest' v-if="props.version !== latestInfo.hash">⚠️</span> {{ date }}</div>
         <Icon icon="iconamoon:link-external-fill"></Icon>
       </NuxtLink>
       <!-- <div class="models-info">
@@ -47,15 +49,17 @@
       </div> -->
       <div class="filter-by">
         <button class="filterbutton editable" @click="filterscreenOpen = true">
-          <span>Active filters ({{ Object.keys(filters).length
+          <span>Active filters ({{ filters ? Object.keys(filters).length : ''
             }})</span>
-          <Icon icon="fluent:edit-16-filled"></Icon>
+          <Icon icon="mage:filter-fill"></Icon>
         </button>
       </div>
     </div>
+
     <!-- content -->
     <div class="content">
-      <div class="models" :class="{ somethingisopen: !!open }" v-if="models.length > 0">
+      <Icon icon="eos-icons:three-dots-loading" v-if="loading"></Icon>
+      <div class="models" :class="{ somethingisopen: !!open }" v-if="models && models.length > 0">
         <div class="model" v-for="(item, k) in models" :key="item.filename"
           :class="{ active: store.selected.includes(item.filename), open: !!open && item.filename === open.filename }">
           <!-- <div class="compare">
@@ -109,7 +113,7 @@
           </div>
         </div>
       </div>
-      <div class="no-models" v-if="models.length < 1">
+      <div class="no-models" v-if="!loading && models && models.length < 1">
         No models or organisations match your filters.
       </div>
     </div>
@@ -144,7 +148,8 @@ const isvisible = computed(() => y.value < 0)
 const router = useRouter();
 const filters = ref({})
 const filterscreenOpen = ref(false)
-const { models: originalModels, color, params, categories } = useModels()
+
+const { loading, date, url, error, models: originalModels, color, params, categories, latestInfo } = useModels(props.version)
 
 const models = computed(() => {
   const llms = cloneDeep(originalModels.value)
@@ -297,9 +302,14 @@ p+.the-index {
   align-items: center;
   // position: absolute;
   // top: 0;
+  display: flex;
   border-radius: 0.5rem 0.5rem 0 0;
   z-index: 10;
   margin-bottom: 1rem;
+
+  >div {
+    flex: 1;
+  }
 
   >* {
     padding: 0.25rem .5rem;
@@ -457,6 +467,11 @@ button.filterbutton {
     span {
       flex: 1;
       align-items: center;
+    }
+
+    :deep(svg) {
+      line-height: 1;
+      margin: 0;
     }
   }
 

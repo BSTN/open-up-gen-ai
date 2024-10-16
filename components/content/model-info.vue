@@ -6,14 +6,18 @@
         <h2>{{ model.project.name || '(undefined)' }}</h2>
         <scorebar :score="model.score" :style="{ '--fg': color(model.score) }"></scorebar>
       </div>
-      <ModelInfoFold :filename="route.params.model"></ModelInfoFold>
+      <ModelInfoFold :filename="route.params.model" :models="models" :categories="props.categories"></ModelInfoFold>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { Octokit } from 'octokit';
-const { models, categories, bg, color } = useModels()
+const { color } = useModels()
+const props = defineProps(['models', 'categories'])
+const models = computed(() => {
+  return props.models
+})
 const route = useRoute()
 const model = computed(() => {
   const pad = route.params.model

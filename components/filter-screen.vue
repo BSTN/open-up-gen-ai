@@ -10,7 +10,7 @@
         <div class=" group" v-if="open">
           <label>Filter by parameter score:</label>
           <div class="categories">
-            <div class="category" v-for="cat in categories">
+            <div class="category" v-for="cat in props.categories">
               <div class="cat-name">{{ cat.name }}</div>
               <div class="param" v-for="param in cat.params" @click="toggleParam(param.ref)"
                 :class="{ active: param.ref in filters }">
@@ -33,11 +33,11 @@
         <div class="group" v-if="open">
           <label>
             <div>Select models:</div>
-            <button @click="filters.models = models.map(x => x.filename)">Select all</button>
+            <button @click="filters.models = props.originalModels.map(x => x.filename)">Select all</button>
             <button @click="delete filters.models">Clear</button>
           </label>
           <div class="models">
-            <div class="model" v-for="model in models" @click="toggleModel(model.filename)"
+            <div class="model" v-for="model in props.originalModels" @click="toggleModel(model.filename)"
               :class="{ active: 'models' in filters && filters.models.includes(model.filename) }">
               {{ model.project.name || '(undefined)' }}
             </div>
@@ -56,8 +56,9 @@ import closedIcon from '@/assets/icons/closed.svg?raw'
 import partialIcon from '@/assets/icons/partial.svg?raw'
 import xor from 'lodash/xor'
 const filteredmodels = defineModel('models')
+const props = defineProps(['categories', 'originalModels'])
 const open = defineModel('open')
-const { categories, models } = useModels()
+
 onKeyStroke('Escape', () => {
   open.value = false
 })

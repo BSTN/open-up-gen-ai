@@ -70,6 +70,8 @@ async function getRepo({ owner, repo, local, name }: { owner: string, repo: stri
   fs.rmSync('./repo.tar')
 
   fs.writeFileSync(infoPath, JSON.stringify({
+    owner,
+    repo,
     hash: info.data[0].sha,
     author: info.data[0].author.login,
     date: info.data[0].commit.author.date,
