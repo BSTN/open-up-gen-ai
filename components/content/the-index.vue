@@ -109,12 +109,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="param-info" v-if="openParam">
+                <div class="param-info" v-if="openParam && openParam !== undefined">
                   <div class="name">
                     <div class="cat-name">{{ getCatName() }}:</div>
                     <div class="param-name">{{ params.find(x => x.ref === openParam).name }}</div>
                   </div>
-                  <div class="param-notes" v-if="item[openParam].notes">{{ item[openParam].notes }}</div>
+                  <div class="param-notes" v-if="item[openParam] && item[openParam].notes">{{ item[openParam].notes }}
+                  </div>
                   <div class="param-notes" v-else>(undefined)</div>
                 </div>
               </div>
