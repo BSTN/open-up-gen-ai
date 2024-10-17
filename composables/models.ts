@@ -17,12 +17,12 @@ categories.map(x => {
   })
 })
 
-const projectsList = import.meta.glob('@/repos/data/*.yaml', { eager: true })
+const projectsList = import.meta.glob(['@/repos/data/*.yaml','!@/repos/data/a_submission_template.yaml'], { eager: true })
 let latestProjects = ref<Array<any>>([])
 for (const path in projectsList) {
   const project = projectsList[path].default
   project.path = path
-  project.filename = path.split('/').pop()?.replace('.yaml','')
+  project.filename = path.split('/').pop()?.replace('.yaml', '')
   if (!path.match("a_submission_template.yaml") && !path.match("_parameters.yml")) latestProjects.value.push(project)
 }
 

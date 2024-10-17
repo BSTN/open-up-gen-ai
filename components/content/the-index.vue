@@ -536,12 +536,20 @@ button.filterbutton {
       position: relative;
       height: 1.4rem;
 
+
+
       .titlewrap {
         position: absolute;
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+
+        &:hover {
+          >span {
+            text-decoration: underline;
+          }
+        }
 
         .basemodels {
           font-size: 0.75rem;
@@ -562,10 +570,6 @@ button.filterbutton {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-
-      &:hover {
-        text-decoration: underline;
-      }
     }
 
     .org {
