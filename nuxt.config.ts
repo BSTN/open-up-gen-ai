@@ -41,8 +41,10 @@ export default defineNuxtConfig({
   ['./modules/github.module', {
     repositories: [{
     name: 'data',
-    owner: 'opening-up-chatgpt',
-    repo: 'opening-up-chatgpt.github.io',
+    // owner: 'opening-up-chatgpt',
+    // repo: 'opening-up-chatgpt.github.io',
+    owner: 'Language-Technology-Assessment',
+    repo: 'main-database',
     }, {
     name: 'website',
     owner: 'BSTN',

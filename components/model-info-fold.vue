@@ -13,18 +13,20 @@
         </div>
         <div class="sub">
           <label>About the model:</label>
-          <div class="notes" v-if="model.project.notes">{{ model.project.notes }}</div>
+          <div class="notes" v-if="model.system.notes">{{ model.system.notes }}</div>
           <div class="notes" v-else>(Not available)</div>
           <label>Link to the model:</label>
-          <NuxtLink :to="model.project.link">
-            <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.project.link }}
+          <NuxtLink :to="model.system.link">
+            <Icon icon="iconamoon:link-external-fill"></Icon> {{ model.system.link }}
           </NuxtLink>
         </div>
         <div class="sub">
-          <label>LLM Base:</label>
-          <div class="notes">{{ model.project.llmbase || '(undefined)' }}</div>
-          <label>RL Base:</label>
-          <div class="notes">{{ model.project.rlbase || '(undefined)' }}</div>
+          <label>Base model:</label>
+          <div class="notes">{{ model.system.basemodelname || '(undefined)' }}</div>
+          <label>End model:</label>
+          <div class="notes">{{ model.system.endmodelname || '(undefined)' }}</div>
+          <label>End model license:</label>
+          <div class="notes">{{ model.system.endmodellicense || '(undefined)' }}</div>
         </div>
       </div>
       <div class="categories">

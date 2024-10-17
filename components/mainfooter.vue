@@ -16,7 +16,9 @@ import info from '@/repos/data/.info.json';
     .row();
 
     :deep(p) {
-      width: 32rem;
+      width: var(--pwidth);
+      max-width: var(--maxwidth);
+      margin: 0 auto;
     }
   }
 

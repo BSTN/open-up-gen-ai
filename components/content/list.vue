@@ -20,21 +20,11 @@
               <!-- <span>{{ item.score.toFixed(2) }}</span> -->
             </td>
             <td class="name">
-              {{ item.project.name || '(undefined)' }}
+              {{ item.system.name || '(undefined)' }}
             </td>
             <td class="org">
               {{ item.org.name || '(undefined)' }}
             </td>
-            <!-- <td class="llmbase">
-              {{ item.project.llmbase || '(undefined)' }}
-            </td>
-            <td class="rlbase">
-              {{ item.project.rlbase || '(undefined)' }}
-            </td> -->
-            <!-- <td class="checkbox" @click="store.toggle(item.filename)">
-              <Icon icon="ion:checkbox" v-if="store.selected.includes(item.filename)"></Icon>
-              <Icon icon="carbon:checkbox" v-else></Icon>
-            </td> -->
             <td class="fold">
               <Icon icon="ic:round-arrow-drop-up" v-if="folded.includes(item.filename)"></Icon>
               <Icon icon="ic:round-arrow-drop-down" v-else></Icon>

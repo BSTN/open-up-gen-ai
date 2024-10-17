@@ -73,11 +73,19 @@
           <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
             @mouseleave="open = false; openParam = false">
             <div class="info">
-              <div class="org">
-                {{ item.org.name || '(undefined)' }}
-              </div>
-              <div class="name">
-                {{ item.project.name || '(undefined)' }}
+              <div class="title">
+                <div class="titlewrap">
+                  <span class="org">
+                    {{ item.org.name || '(undefined)' }}
+                  </span>
+                  <span class="name">
+                    {{ item.system.name || '(undefined)' }}
+                  </span>
+                  <span class="basemodels">
+                    {{ item.system.basemodelname }}/{{ item.system.endmodelname
+                    }}
+                  </span>
+                </div>
               </div>
               <button class="checkbox" @click.stop="store.toggle(item.filename)"
                 :class="{ active: store.selected.includes(item.filename) }">
@@ -92,11 +100,11 @@
               <div class="subscore" v-if="!!open && open.filename === item.filename" @mouseleave="openParam = false">
                 <div class="params">
                   <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
-                    <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon">
+                    <div class='circle-icon open-icon' v-if="item[param.ref]?.class === 'open'" v-html="openIcon">
                     </div>
-                    <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
+                    <div class='circle-icon closed-icon' v-if="item[param.ref]?.class === 'closed'" v-html="closedIcon">
                     </div>
-                    <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'"
+                    <div class='circle-icon partial-icon' v-if="item[param.ref]?.class === 'partial'"
                       v-html="partialIcon">
                     </div>
                   </div>
@@ -161,8 +169,8 @@ const models = computed(() => {
       // filter with searchquery
       if (searchQuery.value.length > 0) {
         const regex = new RegExp(searchQuery.value, 'i')
-        if (!x.project?.name || !x.org?.name) return false
-        if (!(x.project.name.match(regex) || x.org.name.match(regex))) {
+        if (!x.system?.name || !x.org?.name) return false
+        if (!(x.system.name.match(regex) || x.org.name.match(regex))) {
           return false
         }
       }
@@ -180,9 +188,9 @@ const models = computed(() => {
         // check if param value is value
         for (let paramname in ffs) {
           if (paramname in x && 'class' in x[paramname] && paramname !== 'models') {
-            if (x[paramname].class === 'closed' && !ffs[paramname].includes(0)) return false
-            if (x[paramname].class === 'open' && !ffs[paramname].includes(1)) return false
-            if (x[paramname].class === 'partial' && !ffs[paramname].includes(0.5)) return false
+            if (x[paramname]?.class === 'closed' && !ffs[paramname].includes(0)) return false
+            if (x[paramname]?.class === 'open' && !ffs[paramname].includes(1)) return false
+            if (x[paramname]?.class === 'partial' && !ffs[paramname].includes(0.5)) return false
           }
         }
       }
@@ -558,6 +566,29 @@ button.filterbutton {
     display: flex;
     margin-bottom: .5rem;
     align-items: center;
+
+    .title {
+      flex: 1;
+      position: relative;
+      height: 1.4rem;
+
+      .titlewrap {
+        position: absolute;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        .basemodels {
+          font-size: 0.75rem;
+          color: var(--fg2);
+
+          &:before {
+            content: "— ";
+          }
+        }
+      }
+    }
 
     .name {
       margin-right: .5rem;

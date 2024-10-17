@@ -1,4 +1,5 @@
-import categories from '@/website/categories.yml'
+import categories from '@/repos/data/_parameters.yml'
+// import categories from '@/website/categories.yml'
 import info from '@/repos/data/.info.json'
 import { Octokit } from 'octokit'
 import yaml from 'js-yaml'
@@ -16,13 +17,13 @@ categories.map(x => {
   })
 })
 
-const projectsList = import.meta.glob('@/repos/data/projects/*.yaml', { eager: true })
+const projectsList = import.meta.glob('@/repos/data/*.yaml', { eager: true })
 let latestProjects = ref<Array<any>>([])
 for (const path in projectsList) {
   const project = projectsList[path].default
   project.path = path
   project.filename = path.split('/').pop()?.replace('.yaml','')
-  if (!path.match("A_sample.yaml")) latestProjects.value.push(project)
+  if (!path.match("a_submission_template.yaml") && !path.match("_parameters.yml")) latestProjects.value.push(project)
 }
 
 const latestModels: Ref<Array[any]> = ref()
@@ -53,16 +54,20 @@ function sortModels(ppp: any) {
       x.categories[cat.ref] = 0
       cat.params.map(param => {
         let weight = 0
-        if (x[param.ref].class === 'open') {
-          weight = 1
+        if (!(param.ref in x) && x[param.ref] && x[param.ref].class) {
+          x.params[param.ref] = 0
+        } else {
+          if (x[param.ref]?.class === 'open') {
+            weight = 1
+          }
+          if (x[param.ref]?.class === 'partial') {
+            weight = 0.5
+          }
+          if (x[param.ref]?.class === 'closed') {
+            weight = 0
+          }
+          x.params[param.ref] = weight
         }
-        if (x[param.ref].class === 'partial') {
-          weight = 0.5
-        }
-        if (x[param.ref].class === 'closed') {
-          weight = 0
-        }
-        x.params[param.ref] = weight
       })
       // calculate categories (average of params)
       x.categories[cat.ref] = cat.params.map(xx => x.params[xx.ref]).reduce((a, b) => a + b) / cat.params.length
@@ -100,7 +105,7 @@ async function downloadData(version: string) {
   
   const downloadProjectsList = []
   for (let i in data) {
-    if (data[i].name !== 'A_sample.yaml' && data[i].name.match(/\.yaml$/)) {
+    if (data[i].name !== 'a_submission_template.yaml' && data[i].name !== "_parameters.yml" && data[i].name.match(/\.yaml$/)) {
       const rawYaml = await fetch(data[i].download_url).then(x => x.text())
       const projectData = yaml.load(rawYaml)
       projectData.path = data[i].name
@@ -140,13 +145,13 @@ export const useModels = (version?: string) => {
       console.warn(err)
       loading.value = false
       error.value = err
-      url.value = `https://github.com/${info.owner}/commit/${info.repo}`
+      url.value = `https://github.com/${info.owner}/${info.repo}/commit/${info.repo}`
     })
   } else {
     // use default
-    console.log('Latest models')
     models.value = latestModels.value
     date.value = moment(info.date).format('DD-MM-YYYY')
+    url.value = `https://github.com/${info.owner}/${info.repo}`
   }
 
   return {

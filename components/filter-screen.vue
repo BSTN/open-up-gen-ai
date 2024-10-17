@@ -39,7 +39,7 @@
           <div class="models">
             <div class="model" v-for="model in props.originalModels" @click="toggleModel(model.filename)"
               :class="{ active: 'models' in filters && filters.models.includes(model.filename) }">
-              {{ model.project.name || '(undefined)' }}
+              {{ model.system.name || '(undefined)' }}
             </div>
           </div>
         </div>

@@ -8,18 +8,18 @@
     <div class="params">
       <div class="param" v-for="param in category.params">
         <div class="icon-frame">
-          <div class='circle-icon open-icon' v-if="model[param.ref].class === 'open'" v-html="openIcon"></div>
-          <div class='circle-icon closed-icon' v-if="model[param.ref].class === 'closed'" v-html="closedIcon">
+          <div class='circle-icon open-icon' v-if="model[param.ref]?.class === 'open'" v-html="openIcon"></div>
+          <div class='circle-icon closed-icon' v-if="model[param.ref]?.class === 'closed'" v-html="closedIcon">
           </div>
-          <div class='circle-icon partial-icon' v-if="model[param.ref].class === 'partial'" v-html="partialIcon">
+          <div class='circle-icon partial-icon' v-if="model[param.ref]?.class === 'partial'" v-html="partialIcon">
           </div>
         </div>
         <div class="param-info">
           <div class="param-name">{{ param.name }} <Icon icon="mage:tag-question-mark-fill"></Icon>
           </div>
-          <div class='notes' v-html="model[param.ref].notes">
+          <div class='notes' v-html="model[param.ref].notes" v-if="model[param.ref]?.notes">
           </div>
-          <NuxtLink :to="model[param.ref].link">{{ model[param.ref].link }}</NuxtLink>
+          <NuxtLink :to="model[param.ref].link" v-if="model[param.ref]?.link">{{ model[param.ref].link }}</NuxtLink>
         </div>
       </div>
     </div>

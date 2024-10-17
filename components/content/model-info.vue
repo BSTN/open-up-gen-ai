@@ -3,15 +3,20 @@
     <div class="frame">
       <div class="top-info">
         <h1>{{ model.org.name || '(undefined)' }}</h1>
-        <h2>{{ model.project.name || '(undefined)' }}</h2>
+        <h2>{{ model.system.name || '(undefined)' }}</h2>
         <scorebar :score="model.score" :style="{ '--fg': color(model.score) }"></scorebar>
       </div>
       <ModelInfoFold :filename="route.params.model" :models="models" :categories="props.categories"></ModelInfoFold>
+      <div class="contribute">
+        <p>Seeing something wrong?</p>
+        <NuxtLink :to="`https://github.com/${info.owner}/${info.repo}`" target="_blank">Contribute here -></NuxtLink>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import info from '@/repos/data/.info.json'
 import { Octokit } from 'octokit';
 const { color } = useModels()
 const props = defineProps(['models', 'categories'])
@@ -72,6 +77,23 @@ onMounted(async () => {
     text-align: center;
     color: var(--fg2);
     font-size: 0.75rem;
+  }
+}
+
+.contribute {
+  padding: 4rem 0;
+  margin: 0 auto;
+  text-align: center;
+
+  a {
+    background: var(--bg2);
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--link);
+      background: var(--bg3);
+    }
   }
 }
 

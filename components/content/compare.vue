@@ -14,14 +14,9 @@
     <div class="projectlist">
       <div class="project" v-for="item in models" :key="item.path">
         <div class="info">
-          <NuxtLink :to="`/model/${item.filename}`" class="name">{{ item.project.name || '(undefined)' }}
+          <NuxtLink :to="`/model/${item.filename}`" class="name">{{ item.system.name || '(undefined)' }}
           </NuxtLink>
           <NuxtLink :to="`/model/${item.filename}`" class="org">by {{ item.org.name }}</NuxtLink>
-          <!-- <div class="notes">{{ item.project.notes }}</div>
-          <NuxtLink :to="item.org.link" class="org">{{ item.org.name }}</NuxtLink>
-          <div class="llmbase">{{ item.project.llmbase }}</div>
-          <div class="rlbase">{{ item.project.rlbase }}</div>
-          <div class="license">{{ item.project.license }}</div> -->
         </div>
         <div class="data">
           <div class="category" v-for="category in categories">
@@ -29,10 +24,10 @@
             <div class="params">
               <div class="param" v-for="param in category.params">
                 <div class="param-name">{{ param.name }}</div>
-                <div class='circle-icon open-icon' v-if="item[param.ref].class === 'open'" v-html="openIcon"></div>
-                <div class='circle-icon closed-icon' v-if="item[param.ref].class === 'closed'" v-html="closedIcon">
+                <div class='circle-icon open-icon' v-if="item[param.ref]?.class === 'open'" v-html="openIcon"></div>
+                <div class='circle-icon closed-icon' v-if="item[param.ref]?.class === 'closed'" v-html="closedIcon">
                 </div>
-                <div class='circle-icon partial-icon' v-if="item[param.ref].class === 'partial'" v-html="partialIcon">
+                <div class='circle-icon partial-icon' v-if="item[param.ref]?.class === 'partial'" v-html="partialIcon">
                 </div>
                 <!-- <div class="hover">
                   <div class="param-hover-name">{{ param.name }}</div>

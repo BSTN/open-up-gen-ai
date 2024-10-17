@@ -2,7 +2,7 @@
   <div class="grid">
     <div class="models">
       <NuxtLink :to="`/model/${item.filename}`" class="model" v-for="item in models" :style="bg(item.score)">
-        <div class="name">{{ item.project.name || '(undefined)' }}</div>
+        <div class="name">{{ item.system.name || '(undefined)' }}</div>
         <div class="org">by <span>{{ item.org.name || '(undefined)' }}</span></div>
         <div class="flex"></div>
         <div class="score">{{ item.score.toFixed(2) }}</div>
