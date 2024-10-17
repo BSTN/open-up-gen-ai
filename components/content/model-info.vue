@@ -8,7 +8,7 @@
       </div>
       <ModelInfoFold :filename="route.params.model" :models="models" :categories="props.categories"></ModelInfoFold>
       <div class="contribute">
-        <p>Seeing something wrong?</p>
+        <p>Is this information not up to date?</p>
         <NuxtLink :to="`https://github.com/${info.owner}/${info.repo}`" target="_blank">Contribute here -></NuxtLink>
       </div>
     </div>
