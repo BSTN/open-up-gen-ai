@@ -12,9 +12,6 @@
         </div>
         <Icon icon="iconamoon:link-external-fill"></Icon>
       </NuxtLink>
-      <!-- <div class="models-info">
-          Showing {{ models.length }}/{{ originalModels.length }} models
-        </div> -->
     </div>
     <!-- context -->
     <div class="context" v-if="!props.hideFilters">
@@ -26,31 +23,25 @@
           </button>
           <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
             placeholder="Search...">
-          <!-- <div class="models-count">
-            {{ models.length }}/{{ originalModels.length }}
-          </div> -->
-
-          <!-- <button class="icon" @click="filterscreenOpen = true">
-            <Icon icon="mage:filter-fill"></Icon>
-          </button> -->
         </div>
       </div>
       <div class="filter-by">
-        <!-- <label>Type:</label> -->
         <div class="types multibutton">
-          <button class="filterbutton">Text</button>
-          <button class="filterbutton">Image</button>
-          <button class="filterbutton">Video</button>
-          <button class="filterbutton">Sound</button>
+          <button class="filterbutton" :class="{ active: !('type' in filters) || filters.type === '' }"
+            @click="delete filters.type">All</button>
+          <button class="filterbutton" :class="{ active: filters?.type === 'text' }"
+            @click="filters.type = 'text'">Text</button>
+          <button class="filterbutton" :class="{ active: filters?.type === 'image' }"
+            @click="filters.type = 'image'">Image</button>
+          <button class="filterbutton" :class="{ active: filters?.type === 'video' }"
+            @click="filters.type = 'video'">Video</button>
+          <button class="filterbutton" :class="{ active: filters?.type === 'sound' }"
+            @click="filters.type = 'sound'">Sound</button>
         </div>
       </div>
-      <!-- <div class="filter-by">
-        <label>Active models:</label>
-        <button class="filterbutton">No filter active...</button>
-      </div> -->
       <div class="filter-by">
         <button class="filterbutton editable" @click="filterscreenOpen = true">
-          <span>Active filters ({{ filters ? Object.keys(filters).length : ''
+          <span>Filters ({{ filters ? Object.keys(filters).length : ''
             }})</span>
           <Icon icon="mage:filter-fill"></Icon>
         </button>
@@ -63,13 +54,6 @@
       <div class="models" :class="{ somethingisopen: !!open }" v-if="models && models.length > 0">
         <div class="model" v-for="(item, k) in models" :key="item.filename"
           :class="{ active: store.selected.includes(item.filename), open: !!open && item.filename === open.filename }">
-          <!-- <div class="compare">
-          <button class="checkbox" @click.stop="store.toggle(item.filename)"
-            :class="{ active: store.selected.includes(item.filename) }">
-            <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
-            <Icon icon="mdi:plus" v-else></Icon>
-          </button>
-        </div> -->
           <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
             @mouseleave="open = false; openParam = false">
             <div class="info">
@@ -82,8 +66,8 @@
                     {{ item.system.name || '(undefined)' }}
                   </span>
                   <span class="basemodels">
-                    {{ item.system.basemodelname }}/{{ item.system.endmodelname
-                    }}
+                    {{ item.system.basemodelname || 'unspecified' }}/{{ item.system.endmodelname
+                      || 'unspecified' }}
                   </span>
                 </div>
               </div>
@@ -91,7 +75,6 @@
                 :class="{ active: store.selected.includes(item.filename) }">
                 <div>Compare</div>
                 <Icon icon="uil:check" v-if="store.selected.includes(item.filename)"></Icon>
-                <!-- <Icon icon="mdi:plus" v-else></Icon> -->
                 <Icon icon="basil:plus-outline" v-else></Icon>
               </button>
             </div>
@@ -130,8 +113,6 @@
     <!-- compare -->
     <div class="filter-by compare-filter" v-if="store.selected.length > 0">
       <div class="stickycompare">
-        <!-- <Icon class="checkbox" icon="uil:check" @click="openComparison()"></Icon> -->
-        <!-- <Icon icon="heroicons:arrow-top-right-on-square-20-solid" @click="openComparison()"></Icon> -->
         <div class="txt" @click="openComparison()">
           Compare selected model{{ store.selected.length > 1 ? 's' : '' }} ({{ store.selected.length }})
         </div>
@@ -155,11 +136,19 @@ const openParam = ref()
 const el = ref(null)
 const { y } = useElementBounding(el)
 const isvisible = computed(() => y.value < 0)
+const route = useRoute();
 const router = useRouter();
+
 const filters = ref({})
 const filterscreenOpen = ref(false)
 
 const { loading, date, url, error, models: originalModels, color, params, categories, latestInfo } = useModels(props.version)
+
+watch(filters, (val) => {
+  if (!props.hideFilters) {
+    router.replace({ query: val })
+  }
+}, { deep: true })
 
 const models = computed(() => {
   const llms = cloneDeep(originalModels.value)
@@ -184,6 +173,10 @@ const models = computed(() => {
           if (!ffs.models.includes(x.filename)) {
             return false
           }
+        }
+
+        if (ffs?.type) {
+          if (x.system.type !== ffs.type) { return false }
         }
 
         // check if param value is value
@@ -222,6 +215,9 @@ function clearSelection() {
 onMounted(() => {
   if (props.filters) {
     filters.value = props.filters
+  }
+  if (!props.hideFilters && route.query) {
+    filters.value = JSON.parse(JSON.stringify(route.query))
   }
 })
 </script>
@@ -363,12 +359,6 @@ p+.the-index {
     align-items: center;
     gap: 0.25rem;
 
-    .models-count {
-      font-size: 0.75rem;
-      color: var(--fg2);
-      opacity: 0.5;
-    }
-
     &.searchFocus {
       background: var(--bg3);
       border: 1px solid var(--bg3);
@@ -442,16 +432,21 @@ p+.the-index {
       border-radius: 0.25rem;
       overflow: hidden;
 
+
+
       >button.filterbutton {
         border: 0;
         border-left: 1px solid var(--bg3);
         border-radius: 0;
 
-        &:first-child {
-          border-left: 0;
+        &.active {
           background: var(--bg3);
           color: var(--fg);
         }
+      }
+
+      >button:first-child {
+        border-left: 0;
       }
     }
   }
@@ -473,6 +468,7 @@ button.filterbutton {
 
   &.editable {
     display: flex;
+    align-items: center;
 
     span {
       flex: 1;
@@ -482,6 +478,8 @@ button.filterbutton {
     :deep(svg) {
       line-height: 1;
       margin: 0;
+      padding: 0;
+      font-size: 1rem;
     }
   }
 
@@ -522,41 +520,6 @@ button.filterbutton {
 
   &.open {
     opacity: 1 !important;
-  }
-
-
-  .compare {
-    font-size: 1.5rem;
-
-    .checkbox {
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 100%;
-      background: var(--bg3);
-      color: var(--bg2);
-      padding: 0;
-      margin-right: 0.5rem;
-      line-height: 0;
-      font-size: 1.25rem;
-      transform: translateY(0.125rem);
-      opacity: 1;
-      transition: all 0.2s ease;
-
-      &:hover {
-        background: var(--fg2);
-        color: var(--bg3);
-      }
-
-      &.active {
-        background: var(--fg);
-        color: var(--bg3);
-
-        &:hover {
-          background: var(--fg);
-          color: var(--bg3);
-        }
-      }
-    }
   }
 
   .content {
