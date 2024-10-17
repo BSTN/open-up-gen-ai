@@ -17,7 +17,6 @@
 
 <script lang="ts" setup>
 import info from '@/repos/data/.info.json'
-import { Octokit } from 'octokit';
 const { color } = useModels()
 const props = defineProps(['models', 'categories'])
 const models = computed(() => {
@@ -29,12 +28,8 @@ const model = computed(() => {
   return models.value.find(x => x.filename === pad)
 })
 
-const octokit = new Octokit()
 
 onMounted(async () => {
-  const d = await octokit.request(`/repos/opening-up-chatgpt/opening-up-chatgpt.github.io/commits?path=/projects/${model.value.filename}.yaml`)
-  console.log(d)
-  // console.log(model.value.filename)
 })
 </script>
 
