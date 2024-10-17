@@ -38,7 +38,7 @@ function getModel(filename: string) {
 
 useHead({
   titleTemplate: () => {
-    return 'Compare ' + (route.query ? route.query.models.split(',').join(', ') : '');
+    return 'Compare ' + (route.query?.models ? route.query.models.split(',').join(', ') : '');
   }
 })
 </script>
