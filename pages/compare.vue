@@ -35,6 +35,12 @@ function getModel(filename: string) {
   if (!filename) return false
   return models.value.find(x => x.filename === filename)
 }
+
+useHead({
+  titleTemplate: () => {
+    return 'Compare ' + (route.query ? route.query.models.split(',').join(', ') : '');
+  }
+})
 </script>
 
 <style lang="less" scoped>
