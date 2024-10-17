@@ -1,11 +1,11 @@
 ---
-title: European Open-Source AI Index 
+title: European Open Source AI Index 
 description: Evaluating ‘open-source’ generative AI systems based on European Union regulation. 
 ---
 
 
 ::landing
-# European Open-Source AI Index 
+# European Open Source AI Index 
 
 Evaluating ‘open-source’ generative AI systems based on European Union regulation. 
 

@@ -65,10 +65,10 @@
                   <span class="name">
                     {{ item.system.name || '(undefined)' }}
                   </span>
-                  <span class="basemodels">
+                  <!-- <span class="basemodels">
                     {{ item.system.basemodelname || 'unspecified' }}/{{ item.system.endmodelname
                       || 'unspecified' }}
-                  </span>
+                  </span> -->
                 </div>
               </div>
               <button class="checkbox" @click.stop="store.toggle(item.filename)"
