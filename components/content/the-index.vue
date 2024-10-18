@@ -789,6 +789,7 @@ button.filterbutton {
 
     .links {
       padding-top: 0.5rem;
+      color: var(--fg2);
     }
   }
 }

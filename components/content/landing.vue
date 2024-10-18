@@ -10,7 +10,7 @@
         <ContentSlot :use="$slots.notes"></ContentSlot>
       </div>
     </div>
-    <!-- <div class="globe" v-html="globe"></div> -->
+    <div class="globe" id="globe" v-html="globe"></div>
   </div>
 </template>
 
@@ -124,6 +124,18 @@ const { height } = useWindowSize()
   opacity: 0.2;
   animation: landin 2s @easeInOutExpo 0.25s 1 forwards;
 
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(var(--g3), var(--g2), var(--g1));
+    z-index: 2;
+    mask: url(#globe);
+  }
+
   :deep(svg) {
     position: absolute;
     left: 0;
@@ -132,8 +144,8 @@ const { height } = useWindowSize()
     height: 100%;
 
     g {
-      fill: var(--bg2);
-      stroke: var(--bg2);
+      fill: var(--bg3);
+      stroke: var(--bg3);
     }
   }
 }
