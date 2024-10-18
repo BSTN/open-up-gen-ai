@@ -24,8 +24,8 @@
           </button>
           <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
             placeholder="Search...">
-          <button class="icon filtericon">
-            <Icon icon="mage:filter-fill" @click="filterscreenOpen = !filterscreenOpen"></Icon>
+          <button class="icon filtericon" @click="filterscreenOpen = !filterscreenOpen">
+            <Icon icon="mage:filter-fill"></Icon>
           </button>
         </div>
       </div>
@@ -294,7 +294,7 @@ p+.the-index {
   display: flex;
   border-radius: 0.5rem 0.5rem 0 0;
   z-index: 10;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   background: transparent;
 
   >div {
@@ -344,8 +344,14 @@ p+.the-index {
     gap: 0.25rem;
 
     &.searchFocus {
-      background: var(--bg3);
-      border: 1px solid var(--bg3);
+      background: var(--bg);
+      border: 1px solid var(--bg);
+
+      .dark & {
+        background: var(--bg3);
+        border: 1px solid var(--bg3);
+      }
+
     }
 
     input {
@@ -378,10 +384,20 @@ p+.the-index {
     }
 
     &:hover {
-      background: var(--bg3);
+      background: var(--bg);
+      border: 1px solid var(--bg);
+
+      .dark & {
+        background: var(--bg3);
+        border: 1px solid var(--bg3);
+      }
 
       &.searchFocus {
-        background: var(--bg3);
+        background: var(--bg);
+
+        .dark & {
+          background: var(--bg3);
+        }
       }
     }
   }

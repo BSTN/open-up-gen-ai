@@ -272,3 +272,37 @@ section {
     }
   }
 }
+
+.content-frame.with-images {
+  display: block;
+  .context {
+    margin-bottom: 2rem;
+  }
+  .images {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 2rem;
+    a {
+      flex:1;
+      position: relative;
+      background: var(--bg2);
+      border-radius: 0.25rem;
+      img {
+        width: 100%;
+        object-fit: contain;
+        object-position: center;
+        aspect-ratio: 2/1;
+        border: 1rem solid transparent;
+        opacity: .5;
+        .dark & {
+          filter: invert() saturate(0.3);
+        }
+      }
+      &:hover {
+        img {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

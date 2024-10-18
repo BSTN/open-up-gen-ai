@@ -1,19 +1,13 @@
 <template>
   <section class="as-seen-in" id="as-seen-in">
-    <div class="content-frame">
+    <div class="content-frame with-images">
       <div class="context">
         <label>As seen in</label>
       </div>
-      <div class="content" v-visiblecontainer>
+      <div class="images" v-visiblecontainer>
         <NuxtLink :to="item.url" v-for="item in list.items" target="_blank" class="flex">
           <div class="image">
-            <NuxtImg :src="`${item.image}`" sizes="300px"></NuxtImg>
-          </div>
-          <div class="info">
-            <div class="source">{{ item.source }} — {{ toDate(item.date) }}</div>
-            <div class="title small">{{ item.title }}</div>
-            <!-- <div class="date">{{ item.date }}</div> -->
-            <Icon class="icon" icon="heroicons:arrow-top-right-on-square-20-solid"></Icon>
+            <NuxtImg :src="`${item.image}`" sizes="300px" :modifiers="{ tint: '#003399' }"></NuxtImg>
           </div>
         </NuxtLink>
       </div>
