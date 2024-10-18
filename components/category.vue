@@ -19,7 +19,12 @@
           </div>
           <div class='notes' v-html="model[param.ref].notes" v-if="model[param.ref]?.notes">
           </div>
-          <NuxtLink :to="model[param.ref].link" v-if="model[param.ref]?.link">{{ model[param.ref].link }}</NuxtLink>
+          <div class="links" @click.stop v-if="model[param.ref]?.link">
+            <NuxtLink :to="model[param.ref].link" target="_blank" v-if="typeof model[param.ref].link === 'string'">{{
+              model[param.ref].link }}</NuxtLink>
+            <NuxtLink :to="link" target="_blank" v-else v-for="link in model[param.ref].link">{{ link }}
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </div>

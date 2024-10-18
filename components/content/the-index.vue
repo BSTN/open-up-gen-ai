@@ -83,6 +83,12 @@
                   <div class="param-notes" v-if="item[openParam] && item[openParam].notes">{{ item[openParam].notes }}
                   </div>
                   <div class="param-notes" v-else>(undefined)</div>
+                  <div class="links" @click.stop v-if="item[openParam] && item[openParam].link">
+                    <NuxtLink :to="item[openParam].link" target="_blank"
+                      v-if="typeof item[openParam].link === 'string'">{{ item[openParam].link }}</NuxtLink>
+                    <NuxtLink :to="link" target="_blank" v-else v-for="link in item[openParam].link">{{ link }}
+                    </NuxtLink>
+                  </div>
                 </div>
               </div>
             </div>
@@ -779,6 +785,10 @@ button.filterbutton {
     .param-notes {
       color: var(--fg2);
       max-width: 30em;
+    }
+
+    .links {
+      padding-top: 0.5rem;
     }
   }
 }
