@@ -46,7 +46,7 @@ definePageMeta({
   margin-top: 10rem !important;
 
   @media (max-width: 50rem) {
-    margin-top: 6rem !important;
+    margin-top: 5rem !important;
   }
 }
 </style>

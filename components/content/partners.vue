@@ -37,6 +37,10 @@
 
     @media (max-width: 40rem) {
       display: block;
+
+      a {
+        margin-bottom: 2rem;
+      }
     }
 
     a {

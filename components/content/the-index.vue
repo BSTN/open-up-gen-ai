@@ -1,9 +1,9 @@
 <template>
   <div class="the-index" ref="el" :class="{ sticky: isvisible, filtershidden: props.hideFilters }">
-    <!-- filter screen -->
-    <FilterScreen v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models"
+    <!-- filter menu -->
+    <FilterMenu v-model:open="filterscreenOpen" v-model:filters="filters" v-model:models="models"
       :originalModels="originalModels" :categories="categories">
-    </FilterScreen>
+    </FilterMenu>
     <!-- metadata -->
     <div class="meta">
       <div></div>
@@ -15,6 +15,7 @@
     </div>
     <!-- context -->
     <div class="context" v-if="!props.hideFilters">
+
       <!-- search box -->
       <div class="search">
         <div class="searchbox" :class="{ searchFocus }">
@@ -23,28 +24,10 @@
           </button>
           <input type="text" v-model="searchQuery" @focus="searchFocus = true" @blur="searchFocus = false"
             placeholder="Search...">
+          <button class="icon filtericon">
+            <Icon icon="mage:filter-fill" @click="filterscreenOpen = !filterscreenOpen"></Icon>
+          </button>
         </div>
-      </div>
-      <div class="filter-by">
-        <div class="types multibutton">
-          <button class="filterbutton" :class="{ active: !('type' in filters) || filters.type === '' }"
-            @click="delete filters.type">All</button>
-          <button class="filterbutton" :class="{ active: filters?.type === 'text' }"
-            @click="filters.type = 'text'">Text</button>
-          <button class="filterbutton" :class="{ active: filters?.type === 'image' }"
-            @click="filters.type = 'image'">Image</button>
-          <button class="filterbutton" :class="{ active: filters?.type === 'video' }"
-            @click="filters.type = 'video'">Video</button>
-          <button class="filterbutton" :class="{ active: filters?.type === 'sound' }"
-            @click="filters.type = 'sound'">Sound</button>
-        </div>
-      </div>
-      <div class="filter-by">
-        <button class="filterbutton editable" @click="filterscreenOpen = true">
-          <span>Filters ({{ filters ? Object.keys(filters).length : ''
-            }})</span>
-          <Icon icon="mage:filter-fill"></Icon>
-        </button>
       </div>
     </div>
 
@@ -312,6 +295,7 @@ p+.the-index {
   border-radius: 0.5rem 0.5rem 0 0;
   z-index: 10;
   margin-bottom: 1rem;
+  background: transparent;
 
   >div {
     flex: 1;
@@ -426,29 +410,7 @@ p+.the-index {
       line-height: 1.4;
     }
 
-    &.multibutton {
-      gap: 0;
-      border: 1px solid var(--bg3);
-      border-radius: 0.25rem;
-      overflow: hidden;
 
-
-
-      >button.filterbutton {
-        border: 0;
-        border-left: 1px solid var(--bg3);
-        border-radius: 0;
-
-        &.active {
-          background: var(--bg3);
-          color: var(--fg);
-        }
-      }
-
-      >button:first-child {
-        border-left: 0;
-      }
-    }
   }
 }
 
@@ -498,7 +460,7 @@ button.filterbutton {
 
 .models {
   margin: 0 auto;
-  padding: 0 3rem;
+  padding: 0 3rem 8rem;
   flex: 1;
 }
 
@@ -535,8 +497,6 @@ button.filterbutton {
       flex: 1;
       position: relative;
       height: 1.4rem;
-
-
 
       .titlewrap {
         position: absolute;
@@ -601,6 +561,7 @@ button.filterbutton {
       align-items: center;
       gap: 0.75rem;
       line-height: 1;
+      position: relative;
 
       div {
         text-transform: uppercase;
@@ -609,6 +570,8 @@ button.filterbutton {
         opacity: 0;
         transform: translateX(1em);
         transition: all 0.5s @easeInOutExpo;
+        position: absolute;
+        right: 100%;
       }
 
       :deep(svg) {
@@ -892,25 +855,74 @@ div.stickycompare {
     max-width: 100%;
     border-right: 0;
     border-left: 0;
+    border-radius: 0;
+    border-top: 1px solid var(--bg3) !important;
+
+    .context {
+      margin: 0;
+      padding: 0 1.5rem;
+      flex-direction: column;
+
+      >* {
+        flex: 1;
+        width: 100%;
+      }
+
+      .search,
+      .multibutton {
+        width: 100%;
+      }
+    }
+  }
+
+  .no-models {
+    padding-top: 2rem;
   }
 
   .models {
+    padding: 1.5rem;
 
     .model {
       margin-bottom: 1rem;
+      padding: 0 0 2rem;
 
       .info {
         position: relative;
         display: block;
 
+        .title {
+          height: auto;
+
+          .titlewrap {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+
+            >* {
+              margin-bottom: 0.25rem;
+            }
+          }
+
+          .name {
+            font-size: 0.75rem;
+          }
+        }
+
         .checkbox {
           position: absolute;
           top: 0;
           right: 0;
+          opacity: 1;
         }
       }
-
     }
+  }
+
+  .compare-filter {
+    border-radius: 0;
+    bottom: 0;
+
+    .stickycompare {}
   }
 }
 

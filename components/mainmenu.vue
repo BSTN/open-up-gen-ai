@@ -2,7 +2,8 @@
   <div class="mainmenu" ref="menuelement" :class="{ active, afteractive, menuopen }">
     <!-- mobile button -->
     <button class="menubutton" @click="menuopen = !menuopen" :class="{ open: menuopen }">
-      <Icon icon="mingcute:close-fill" v-if="menuopen"></Icon>
+      <Icon icon="ic:round-menu" v-if="!menuopen"></Icon>
+      <Icon icon="ic:round-close" v-if="menuopen"></Icon>
     </button>
     <!-- content -->
     <div class="frame" @click="menuopen = false">
@@ -40,6 +41,13 @@ onMounted(() => {
   setTimeout(() => { afteractive.value = true }, 2500)
 })
 const { locale, setLocale } = useI18n()
+watch(menuopen, (val) => {
+  if (val) {
+    document.body.classList.add('scroll-block')
+  } else {
+    document.body.classList.remove('scroll-block')
+  }
+})
 </script>
 
 <style lang="less" scoped>
@@ -171,6 +179,10 @@ a {
   text-decoration: none;
   line-height: 1;
 
+  // text-transform: uppercase;
+  // letter-spacing: 0.05em;
+  // font-size: 0.75rem;
+
   &.router-link-active {
     // text-decoration: underline;
   }
@@ -195,37 +207,26 @@ a {
   button.menubutton {
     position: fixed;
     display: block;
-    margin: 1rem 1rem;
+    margin: 1.5rem 1.5rem;
     border-radius: 0.5rem;
-    padding: 0.75rem 0.75rem;
+    padding: 0;
     color: var(--fg);
-    background: var(--bg);
+    background: transparent;
     // border: 1px solid var(--bc);
     z-index: 99;
-    font-size: 1rem;
+    font-size: 2rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    box-shadow: 0 0 1rem var(--shadow);
     pointer-events: auto;
     line-height: 1;
 
     :deep(svg) {
       margin: 0;
-      font-size: 1rem;
     }
 
-    &:before {
-      content: "Menu";
-    }
-
-    &.open {
-      &:before {
-        content: none;
-      }
-    }
+    &.open {}
 
     &:hover {
-      background: var(--bg);
       color: var(--link);
     }
   }
@@ -246,7 +247,7 @@ a {
   }
 
   .mainmenu a {
-    transform: translateX(0);
+    transform: translateY(2rem);
     opacity: 0;
     transition: all 1s @easeInOutExpo;
     font-size: 1.5rem;
@@ -268,7 +269,7 @@ a {
       max-width: 100%;
       height: 100vh;
       padding: 8rem 3rem 3rem;
-      background: var(--bg3);
+      background: var(--bg);
       overflow: auto;
       opacity: 1;
       pointer-events: auto;
