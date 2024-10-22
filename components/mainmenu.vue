@@ -5,12 +5,23 @@
       <Icon icon="ic:round-menu" v-if="!menuopen"></Icon>
       <Icon icon="ic:round-close" v-if="menuopen"></Icon>
     </button>
+    <!-- mobile logo -->
+    <NuxtLink to="/" class="mobile-logo-link">
+      <logoname class="mobile-logoname"></logoname>
+    </NuxtLink>
     <!-- content -->
     <div class="frame" @click="menuopen = false">
       <div class='left'>
-        <NuxtLink :to="item.link" v-for="item in menu.left" :target="item.target" :class="{ withIcon: !!item.icon }">
+        <NuxtLink :to="item.link" v-for="item in menu.left" :target="item.target"
+          :class="{ withIcon: !!item.icon, exact: $route.fullPath === item.link }">
           <span v-if="item.name">{{ item.name }}</span>
           <Icon :icon="item.icon" v-if="item.icon"></Icon>
+        </NuxtLink>
+      </div>
+      <div class="mid">
+        <NuxtLink to="/">
+          <logo class="logo" />
+          <logoname class="logoname"></logoname>
         </NuxtLink>
       </div>
       <div class='right'>
@@ -29,6 +40,8 @@
 
 <script lang="ts" setup>
 import { useDark, useToggle } from '@vueuse/core'
+import logo from '@/website/images/logo.svg?component'
+import logoname from '@/website/images/logo2-name-c.svg?component';
 import { Icon } from '@iconify/vue'
 import menu from '@/website/menu.yml'
 const menuopen = ref(false)
@@ -37,7 +50,7 @@ const afteractive = ref(false)
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 onMounted(() => {
-  setTimeout(() => { active.value = true }, 500)
+  setTimeout(() => { active.value = true }, 0)
   setTimeout(() => { afteractive.value = true }, 2500)
 })
 const { locale, setLocale } = useI18n()
@@ -109,7 +122,104 @@ watch(menuopen, (val) => {
 .right {
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: 0;
+}
+
+.mobile-logo-link {
+  display: none;
+}
+
+.mid {
+  position: absolute;
+  top: 3rem;
+  width: 10rem;
+  left: calc(50% - 5rem);
+  text-align: center;
+  font-size: 2rem;
+  transition: all 0.3s ease;
+
+  .logo,
+  .logoname {
+    transition: all 0.3s @easeInOutExpo;
+  }
+
+  .logo {
+    width: 2rem;
+    height: 2rem;
+    opacity: 0;
+  }
+
+  .logoname {
+    position: absolute;
+    top: 0;
+    width: 4rem;
+    height: auto;
+    left: calc(50% - 2rem);
+    transition-delay: 0.1s;
+
+    :deep(path) {
+      fill: var(--fg2);
+      transition: all 0.15s ease;
+    }
+
+    div[path="/"] & {
+      top: 4rem;
+      width: 10rem;
+      left: calc(50% - 5rem);
+
+      :deep(path) {
+        fill: var(--fg);
+      }
+    }
+
+    &:hover {
+      :deep(path) {
+        fill: var(--fg);
+      }
+    }
+  }
+
+  .nottop & {
+    top: .25rem;
+
+    .logo {
+      width: 1.5rem;
+      height: 1.5rem;
+      opacity: 1;
+      transition-delay: 0.3s;
+
+      :deep(path) {
+        fill: var(--fg2);
+      }
+    }
+
+    .logoname {
+      opacity: 0;
+      pointer-events: none;
+      transition-delay: 0s;
+      transform: translateY(-3rem);
+    }
+  }
+}
+
+.left {
+  a {
+    margin-right: 3rem;
+
+    &.haslogo {
+      margin-right: 2rem;
+    }
+  }
+}
+
+.right {
+  a {
+    margin-left: 3rem;
+  }
+
+  button {
+    margin-left: 2rem !important;
+  }
 }
 
 button.menubutton {
@@ -178,13 +288,22 @@ button.darkmode {
 a {
   text-decoration: none;
   line-height: 1;
+  color: var(--fg2);
 
-  // text-transform: uppercase;
-  // letter-spacing: 0.05em;
-  // font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+
+  &.exact {
+    color: var(--fg);
+  }
 
   &.router-link-active {
     // text-decoration: underline;
+  }
+
+  &.withIcon {
+    font-size: 1.125rem;
   }
 
   &:not(.withIcon) {
@@ -194,15 +313,22 @@ a {
   &:hover {
     text-decoration: underline;
   }
+}
 
-  &[href="/"] {
-    .app[path="/"] & {
-      display: none;
+.logo {
+
+  :deep(path) {
+    fill: var(--fg);
+  }
+
+  &:hover {
+    :deep(path) {
+      fill: var(--link);
     }
   }
 }
 
-@media (max-width: 50rem) {
+@media (max-width: 60rem) {
 
   button.menubutton {
     position: fixed;
@@ -231,8 +357,56 @@ a {
     }
   }
 
-  .mainmenu {
+  a.mobile-logo-link {
+    display: block;
+    position: absolute;
+    top: 4rem;
+    left: 0;
+    opacity: 1 !important;
+    width: 100%;
+    z-index: 99;
+    transform: none !important;
+    pointer-events: auto;
 
+    .mobile-logoname {
+      width: 6rem;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+
+      :deep(path) {
+        fill: var(--fg);
+      }
+
+      div[path="/"] & {
+        margin-top: 2rem;
+        width: 12rem;
+      }
+
+      .menuopen & {
+        div[path="/"] & {
+          width: 6rem !important;
+        }
+      }
+    }
+
+    .nottop & {
+      opacity: 0 !important;
+      pointer-events: none;
+      transition: all 0.1s;
+    }
+
+    .menuopen & {
+      transform: none !important;
+
+      .nottop & {
+        opacity: 1 !important;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  .mainmenu {
     pointer-events: none;
 
     .scroll-up.nottop & {
@@ -250,9 +424,9 @@ a {
     transform: translateY(2rem);
     opacity: 0;
     transition: all 1s @easeInOutExpo;
-    font-size: 1.5rem;
+    font-size: 1rem;
     display: block;
-    margin-bottom: 2rem;
+    margin: 0 0 2rem;
   }
 
   .mainmenu.menuopen {
@@ -268,7 +442,7 @@ a {
       width: 100%;
       max-width: 100%;
       height: 100vh;
-      padding: 8rem 3rem 3rem;
+      padding: 16rem 1.5rem 1.5rem;
       background: var(--bg);
       overflow: auto;
       opacity: 1;
@@ -278,14 +452,21 @@ a {
       .right {
         display: block;
 
-        a {}
+        a {
+          margin: 0 0 2rem;
+          text-align: center;
+        }
+      }
+
+      .mid {
+        display: none;
       }
     }
   }
 
   .mainmenu a {
     &[href="/"] {
-      display: none !important;
+      // display: none !important;
     }
 
   }
@@ -297,7 +478,9 @@ a {
 
   button.darkmode {
     position: fixed;
-    top: 2.5rem;
+    top: 2rem;
+    margin: 0;
+    margin-left: 0 !important;
   }
 }
 </style>

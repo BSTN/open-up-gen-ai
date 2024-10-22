@@ -5,9 +5,14 @@ description: Evaluating ‘open-source’ generative AI systems based on Europea
 
 
 ::landing
-# European Open Source AI Index 
+---
+action: 
+  text: Explore the index
+  link: /the-index
+---
+<!-- # European Open Source AI Index  -->
 
-Evaluating ‘open-source’ generative AI systems based on European Union regulation. 
+We are evaluating ‘open-source’ _generative_ AI systems based on European Union regulation. 
 
 [Read more](/about) [Explore the index](/the-index)
 

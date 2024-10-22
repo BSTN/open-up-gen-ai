@@ -64,7 +64,22 @@ export default defineNuxtConfig({
     },
     plugins: [
       ViteYaml(),
-      svgLoader(),
+      svgLoader({
+        svgoConfig: {
+          multipass: true,
+          plugins: [
+            {
+              name: 'preset-default',
+              params: {
+                overrides: {
+                  // @see https://github.com/svg/svgo/issues/1128
+                  removeViewBox: false,
+                },
+              },
+            },
+          ],
+        },
+      }),
       ViteMarkdown({mode: ['html']})
     ]
   },

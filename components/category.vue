@@ -108,6 +108,7 @@ h2 {
   margin-bottom: 0rem;
 
   .param-info {
+
     &:hover {
       .param-name {
         :deep(svg) {
@@ -152,7 +153,7 @@ h2 {
 
   a {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     line-height: 1.4;
     color: var(--fg2);
     word-break: break-all;

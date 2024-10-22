@@ -43,10 +43,10 @@ definePageMeta({
 
 <style lang="less">
 .page:not([path='/']) & {
-  margin-top: 10rem !important;
+  margin-top: 14rem !important;
 
-  @media (max-width: 50rem) {
-    margin-top: 5rem !important;
+  @media (max-width: 60rem) {
+    margin-top: 14rem !important;
   }
 }
 </style>

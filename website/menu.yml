@@ -1,7 +1,4 @@
 left:
-  - link: /
-    # name: Home
-    icon: ic:baseline-arrow-back
   - link: /the-index
     name: The Index
   - name: Guides
