@@ -5,15 +5,6 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  // app: {
-  //   pageTransition: {
-  //     name: 'page',
-  //     mode: 'out-in',
-  //     onEnter: (el) => {
-  //       console.log(el)
-  //     }
-  //   }
-  // },
   i18n: {
     baseUrl: 'http://localhost:4444',
     strategy: 'no_prefix',

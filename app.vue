@@ -9,11 +9,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core'
+import { useWindowScroll, useEventListener } from '@vueuse/core'
 const store = useMyComparisonStore()
-
 const route = useRoute()
 const router = useRouter()
+const mouseMoved = useState('mouseMoved', () => false)
+
+useEventListener('mousemove', () => {
+  mouseMoved.value = true
+})
 
 // scroll directions
 const direction = ref('')

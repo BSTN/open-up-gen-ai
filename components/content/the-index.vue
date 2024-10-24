@@ -37,7 +37,7 @@
       <div class="models" :class="{ somethingisopen: !!open }" v-if="models && models.length > 0">
         <div class="model" v-for="(item, k) in models" :key="item.filename"
           :class="{ active: store.selected.includes(item.filename), open: !!open && item.filename === open.filename }">
-          <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="open = item"
+          <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="setOpenParam(item)"
             @mouseleave="open = false; openParam = false">
             <div class="info">
               <div class="title">
@@ -117,6 +117,8 @@ import closedIcon from '@/assets/icons/closed.svg?raw'
 import partialIcon from '@/assets/icons/partial.svg?raw'
 import cloneDeep from 'lodash/cloneDeep'
 
+const mouseMoved = useState('mouseMoved', () => false)
+
 import { useElementBounding } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
 const props = defineProps(['filters', 'version', 'hideFilters'])
@@ -138,6 +140,10 @@ watch(filters, (val) => {
     router.replace({ query: val })
   }
 }, { deep: true })
+
+function setOpenParam(item) {
+  if (mouseMoved.value) { open.value = item }
+}
 
 const models = computed(() => {
   const llms = cloneDeep(originalModels.value)
