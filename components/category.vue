@@ -6,7 +6,7 @@
       </scorebar>
     </div>
     <div class="params">
-      <div class="param" v-for="param in category.params">
+      <div class="param" v-for="param in category.params.filter(x => x.types.includes(model.system.type))">
         <div class="icon-frame">
           <div class='circle-icon open-icon' v-if="model[param.ref]?.class === 'open'" v-html="openIcon"></div>
           <div class='circle-icon closed-icon' v-if="model[param.ref]?.class === 'closed'" v-html="closedIcon">

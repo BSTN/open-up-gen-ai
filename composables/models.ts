@@ -50,9 +50,10 @@ function sortModels(ppp: any) {
   prs.map((x, k) => {
     x.categories = {}
     x.params = {}
+    const type = x.system.type
     categories.map(cat => {
       x.categories[cat.ref] = 0
-      cat.params.map(param => {
+      cat.params.filter(c => c.types.includes(type)).map(param => {
         let weight = 0
         if (!(param.ref in x) && x[param.ref] && x[param.ref].class) {
           x.params[param.ref] = 0
@@ -70,7 +71,7 @@ function sortModels(ppp: any) {
         }
       })
       // calculate categories (average of params)
-      x.categories[cat.ref] = cat.params.map(xx => x.params[xx.ref]).reduce((a, b) => a + b) / cat.params.length
+      x.categories[cat.ref] = cat.params.filter(c => c.types.includes(type)).map(xx => x.params[xx.ref]).reduce((a, b) => a + b) / cat.params.length
     })
     // calculate total average
     x.score = Object.values(x.params).reduce((a, b) => a + b) / Object.keys(x.params).length

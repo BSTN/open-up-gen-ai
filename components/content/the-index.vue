@@ -73,7 +73,8 @@
               <scorebar :score="item.score" :style="{ '--fg': color(item.score) }"></scorebar>
               <div class="subscore" v-if="!!open && open.filename === item.filename" @mouseleave="openParam = false">
                 <div class="params">
-                  <div class="param" v-for="param in params" @mouseenter="openParam = param.ref">
+                  <div class="param" v-for="param in params.filter(x => x.types.includes(item.system.type))"
+                    @mouseenter="openParam = param.ref">
                     <div class='circle-icon open-icon' v-if="item[param.ref]?.class === 'open'" v-html="openIcon">
                     </div>
                     <div class='circle-icon closed-icon' v-if="item[param.ref]?.class === 'closed'" v-html="closedIcon">
