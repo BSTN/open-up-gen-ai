@@ -7,13 +7,14 @@
 <script lang="ts" setup>
 import websiteInfo from '@/repos/website/.info.json'
 import dataInfo from '@/repos/data/.info.json'
-import moment from 'moment'
+import { useDateFormat } from '@vueuse/core'
+
 const data = computed(() => {
   return props.repo === 'website' ? websiteInfo : dataInfo
 })
 const props = defineProps(['repo'])
 const commitDate = computed(() => {
-  return moment(data.value.date).format('DD MMMM YYYY')
+  return useDateFormat(data.value.date, 'DD MMM YYYY')
 })
 </script>
 

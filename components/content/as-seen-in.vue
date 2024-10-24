@@ -16,13 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import moment from 'moment'
-// import {useDateFormat} from '@vueuse/core'
 import list from "@/website/as-seen-in.yml"
-import { Icon } from '@iconify/vue'
-function toDate(notation: string) {
-  return moment(notation, 'DD-MM-YYYY').format('LL')
-}
+
 </script>
 
 <style lang="less" scoped>

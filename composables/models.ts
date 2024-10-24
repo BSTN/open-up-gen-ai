@@ -2,7 +2,8 @@ import categories from '@/repos/data/_parameters.yml'
 import info from '@/repos/data/.info.json'
 import { Octokit } from 'octokit'
 import yaml from 'js-yaml'
-import moment from 'moment'
+import { useDateFormat } from '@vueuse/core'
+
 
 const cache = {}
 
@@ -137,7 +138,7 @@ export const useModels = (version?: string) => {
     downloadData(version).then(result => {
       models.value = result.data
       loading.value = false
-      date.value = moment(result.date).format('DD-MM-YYYY')
+      date.value = unref(useDateFormat(result.date, 'DD MMM YYYY'))
       url.value = result
       error.value = ''
     }).catch(err => {
@@ -149,7 +150,7 @@ export const useModels = (version?: string) => {
   } else {
     // use default
     models.value = latestModels.value
-    date.value = moment(info.date).format('DD-MM-YYYY')
+    date.value = unref(useDateFormat(info.date, 'DD MMM YYYY'))
     url.value = `https://github.com/${info.owner}/${info.repo}`
   }
 

@@ -137,11 +137,11 @@ watch(menuopen, (val) => {
   left: calc(50% - 5rem);
   text-align: center;
   font-size: 2rem;
-  transition: all 0.3s ease;
+  transition: all 1s @easeInOutExpo;
 
   .logo,
   .logoname {
-    transition: all 0.3s @easeInOutExpo;
+    transition: all 1s @easeInOutExpo;
   }
 
   .logo {
@@ -152,7 +152,7 @@ watch(menuopen, (val) => {
 
   .logoname {
     position: absolute;
-    top: 0;
+    top: .25rem;
     width: 4rem;
     height: auto;
     left: calc(50% - 2rem);

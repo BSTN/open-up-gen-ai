@@ -18,11 +18,14 @@
 </template>
 
 <script lang="ts" setup>
-import moment from 'moment'
+import { useDateFormat } from '@vueuse/core'
+
 import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types'
 const query: QueryBuilderParams = { path: '/news', limit: 10, sort: [{ date: -1 }] }
 function toDate(time: string) {
-  return moment(time, 'DD-MM-YYYY').format('LL')
+  // return time
+  const rep = time.split('-').reverse().join('-')
+  return useDateFormat(rep, 'DD MMMM YYYY')
 }
 </script>
 
