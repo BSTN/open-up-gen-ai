@@ -274,6 +274,10 @@ p+.the-index {
 
     .nottop.scroll-up & {
       top: 3.2rem;
+
+      @media (max-width: 60rem) {
+        top: 0;
+      }
     }
   }
 
@@ -924,7 +928,7 @@ div.stickycompare {
 
     .context {
       margin: 0;
-      padding: 0 1.5rem 1rem;
+      padding: 1rem 1.5rem 1rem;
       flex-direction: column;
 
       >* {

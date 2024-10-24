@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="[{ top: !nottop, nottop, mounted }, direction]" :path="$route.path">
+  <div class="app" :class="[{ top: !nottop, nottop, mounted }, direction]">
     <NuxtLoadingIndicator />
     <!-- menu -->
     <Mainmenu></Mainmenu>

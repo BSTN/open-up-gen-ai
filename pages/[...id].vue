@@ -1,5 +1,5 @@
 <template>
-  <div class="page" ref="element" path="/">
+  <div class="page" ref="element">
     <ContentDoc :path="finalPath">
       <template #not-found>
         <div class="not-found">Page not found.</div>
@@ -21,10 +21,8 @@ const finalPath = asyncComputed(async () => {
   return markdownPath.value
 })
 
-const element = ref<HTMLElement | null>(null)
-
 onMounted(() => {
-  if (element.value) element.value.setAttribute('path', route.path)
+  document.documentElement.setAttribute('path', route.path)
 })
 
 definePageMeta({
@@ -40,11 +38,14 @@ definePageMeta({
 </script>
 
 <style lang="less">
-.page:not([path='/']) & {
-  margin-top: 14rem !important;
+.page {
+  :root:not([path='/']) & {
 
-  @media (max-width: 60rem) {
     margin-top: 14rem !important;
+
+    @media (max-width: 60rem) {
+      margin-top: 14rem !important;
+    }
   }
 }
 </style>

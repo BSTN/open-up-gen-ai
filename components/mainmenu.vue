@@ -163,7 +163,7 @@ watch(menuopen, (val) => {
       transition: all 0.15s ease;
     }
 
-    div[path="/"] & {
+    :root[path="/"] & {
       top: 4rem;
       width: 10rem;
       left: calc(50% - 5rem);
@@ -380,7 +380,7 @@ a {
         fill: var(--fg);
       }
 
-      div[path="/"] & {
+      :root[path="/"] & {
         margin-top: 2rem;
         width: 12rem;
 
@@ -390,7 +390,7 @@ a {
       }
 
       .menuopen & {
-        div[path="/"] & {
+        :root[path="/"] & {
           width: 6rem !important;
         }
       }
