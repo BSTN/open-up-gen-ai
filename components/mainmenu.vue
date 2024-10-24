@@ -25,7 +25,8 @@
         </NuxtLink>
       </div>
       <div class='right'>
-        <NuxtLink :to="item.link" v-for="item in menu.right" :target="item.target" :class="{ withIcon: !!item.icon }">
+        <NuxtLink :to="item.link" v-for="item in menu.right" :target="item.target"
+          :class="{ withIcon: !!item.icon, exact: $route.fullPath === item.link }">
           <span v-if="item.name">{{ item.name }}</span>
           <Icon :icon="item.icon" v-if="item.icon"></Icon>
         </NuxtLink>
@@ -158,7 +159,7 @@ watch(menuopen, (val) => {
     transition-delay: 0.1s;
 
     :deep(path) {
-      fill: var(--fg2);
+      fill: var(--fg);
       transition: all 0.15s ease;
     }
 
@@ -174,7 +175,7 @@ watch(menuopen, (val) => {
 
     &:hover {
       :deep(path) {
-        fill: var(--fg);
+        fill: var(--link);
       }
     }
   }
@@ -288,14 +289,14 @@ button.darkmode {
 a {
   text-decoration: none;
   line-height: 1;
-  color: var(--fg2);
+  color: var(--fg);
 
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.75rem;
 
   &.exact {
-    color: var(--fg);
+    color: var(--link);
   }
 
   &.router-link-active {
@@ -369,9 +370,10 @@ a {
     pointer-events: auto;
 
     .mobile-logoname {
-      width: 6rem;
+      width: 5rem;
       height: auto;
       margin: 0 auto;
+      margin-top: 1rem;
       display: block;
 
       :deep(path) {
@@ -381,6 +383,10 @@ a {
       div[path="/"] & {
         margin-top: 2rem;
         width: 12rem;
+
+        :deep(path) {
+          fill: var(--fg);
+        }
       }
 
       .menuopen & {

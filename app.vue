@@ -1,5 +1,6 @@
 <template>
   <div class="app" :class="[{ top: !nottop, nottop, mounted }, direction]" :path="$route.path">
+    <NuxtLoadingIndicator />
     <!-- menu -->
     <Mainmenu></Mainmenu>
     <!-- page content -->
@@ -9,15 +10,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useWindowScroll, useEventListener } from '@vueuse/core'
-const store = useMyComparisonStore()
-const route = useRoute()
-const router = useRouter()
-const mouseMoved = useState('mouseMoved', () => false)
-
-useEventListener('mousemove', () => {
-  mouseMoved.value = true
-})
+import { useWindowScroll } from '@vueuse/core'
 
 // scroll directions
 const direction = ref('')

@@ -16,6 +16,14 @@
     <!-- context -->
     <div class="context" v-if="!props.hideFilters">
 
+      <div class="types">
+        <button :class="{ active: !filters.type }" @click="delete filters.type">All</button>
+        <button :class="{ active: filters.type === 'text' }" @click="filters.type = 'text'">Text</button>
+        <button :class="{ active: filters.type === 'image' }" @click="filters.type = 'image'">Image</button>
+        <button :class="{ active: filters.type === 'video' }" @click="filters.type = 'video'">Video</button>
+        <button :class="{ active: filters.type === 'sound' }" @click="filters.type = 'sound'">Sound</button>
+      </div>
+
       <!-- search box -->
       <div class="search">
         <div class="searchbox" :class="{ searchFocus }">
@@ -34,12 +42,12 @@
     <!-- content -->
     <div class="content">
       <Icon icon="eos-icons:three-dots-loading" v-if="loading"></Icon>
-      <div class="models" :class="{ somethingisopen: !!open }" v-if="models && models.length > 0">
+      <div class="models" ref="clickoutsidetarget" :class="{ somethingisopen: !!open }"
+        v-if="models && models.length > 0">
         <div class="model" v-for="(item, k) in models" :key="item.filename"
           :class="{ active: store.selected.includes(item.filename), open: !!open && item.filename === open.filename }">
-          <div class="content" @click="router.push(`/model/${item.filename}`)" @mouseenter="setOpenParam(item)"
-            @mouseleave="open = false; openParam = false">
-            <div class="info">
+          <div class="content" @mouseenter="setOpenParam(item)" @mouseleave="open = false; openParam = false">
+            <div class="info" @click="router.push(`/model/${item.filename}`)">
               <div class="title">
                 <div class="titlewrap">
                   <span class="org">
@@ -116,10 +124,7 @@ import openIcon from '@/assets/icons/open.svg?raw'
 import closedIcon from '@/assets/icons/closed.svg?raw'
 import partialIcon from '@/assets/icons/partial.svg?raw'
 import cloneDeep from 'lodash/cloneDeep'
-
-const mouseMoved = useState('mouseMoved', () => false)
-
-import { useElementBounding } from '@vueuse/core'
+import { useElementBounding, onClickOutside } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
 const props = defineProps(['filters', 'version', 'hideFilters'])
 const open = ref()
@@ -129,6 +134,10 @@ const { y } = useElementBounding(el)
 const isvisible = computed(() => y.value < 0)
 const route = useRoute();
 const router = useRouter();
+const clickoutsidetarget = ref(null)
+onClickOutside(clickoutsidetarget, event => {
+  open.value = false
+})
 
 const filters = ref({})
 const filterscreenOpen = ref(false)
@@ -142,7 +151,7 @@ watch(filters, (val) => {
 }, { deep: true })
 
 function setOpenParam(item) {
-  if (mouseMoved.value) { open.value = item }
+  open.value = item
 }
 
 const models = computed(() => {
@@ -224,9 +233,7 @@ p+.the-index {
 <style lang="less" scoped>
 .the-index {
   .row();
-  // display: flex;
   border-radius: 0.5rem;
-  // border: 1px solid var(--bc);
   padding: 0rem;
   position: relative;
   margin-bottom: 4rem;
@@ -245,17 +252,13 @@ p+.the-index {
     position: sticky;
     top: 0;
     transition: all 0.3s ease;
-
-    display: flex;
-    gap: 1rem;
     padding: 1rem 3rem 1rem;
     background: var(--bg2);
     z-index: 9;
-    // border-bottom: 1px solid var(--bg3);
     margin-bottom: 2rem;
-    // background: var(--bg3);
     border-radius: 0.5rem 0.5rem 0 0;
-    // background: color-mix(in srgb, var(--bg3) 50%, transparent);
+    display: flex;
+    gap: 1rem;
 
     .nottop & {
       border-bottom: 1px solid var(--bg3);
@@ -266,7 +269,7 @@ p+.the-index {
     }
 
     .search {
-      width: 16rem;
+      width: 100%;
     }
 
     .nottop.scroll-up & {
@@ -276,17 +279,6 @@ p+.the-index {
 
   >.content {
     flex: 1;
-  }
-
-  @media (max-width: 50rem) {
-    display: block;
-
-    >.context {
-      margin-bottom: 4rem;
-      width: 100%;
-      max-width: none;
-      position: relative;
-    }
   }
 }
 
@@ -338,7 +330,36 @@ p+.the-index {
       flex-shrink: 0;
     }
   }
+}
 
+.types {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--bg3);
+  border-radius: 0.25rem;
+  min-height: 2rem;
+
+  button {
+    background: transparent;
+    color: var(--fg2);
+    flex: 1;
+    margin: 0;
+    font-size: 0.75rem;
+    border-left: 1px solid var(--bg3);
+    border-radius: 0;
+
+    &:first-child {
+      border: 0;
+    }
+
+    &.active {
+      background: var(--bg3);
+    }
+
+    &:hover {
+      color: var(--fg);
+    }
+  }
 }
 
 .search {
@@ -357,7 +378,7 @@ p+.the-index {
 
     &.searchFocus {
       background: var(--bg);
-      border: 1px solid var(--bg);
+      border: 1px solid var(--bg3);
 
       .dark & {
         background: var(--bg3);
@@ -397,7 +418,7 @@ p+.the-index {
 
     &:hover {
       background: var(--bg);
-      border: 1px solid var(--bg);
+      border: 1px solid var(--bg3);
 
       .dark & {
         background: var(--bg3);
@@ -886,6 +907,11 @@ div.stickycompare {
   }
 }
 
+@media (max-width: 50rem) {
+  .the-index .context {
+    flex-direction: column;
+  }
+}
 
 @media (max-width: 40rem) {
   .the-index {
@@ -898,7 +924,7 @@ div.stickycompare {
 
     .context {
       margin: 0;
-      padding: 0 1.5rem;
+      padding: 0 1.5rem 1rem;
       flex-direction: column;
 
       >* {

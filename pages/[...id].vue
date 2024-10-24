@@ -16,10 +16,8 @@ const pageKey = computed(() => {
 })
 const { markdownPath } = useLanguage()
 const finalPath = asyncComputed(async () => {
-  const res = await queryContent(markdownPath.value).findOne().catch(err => {
-    //
-  })
-  if (!res) { return route.fullPath }
+  const res = await queryContent(markdownPath.value).findOne().catch(err => { })
+  if (!res) { return route.path }
   return markdownPath.value
 })
 

@@ -6,7 +6,9 @@ export const useLanguage = () => {
   })
   const markdownPath = computed(() => {
     const pad = route.path === '/' ? '/index' : route.path
-    return languageCode.value ? pad + '.' + languageCode.value : route.path
+    // disabled
+    return pad
+    // return languageCode.value ? pad + '.' + languageCode.value : route.path
   })
   return {
     markdownPath
