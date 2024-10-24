@@ -1,5 +1,4 @@
 import categories from '@/repos/data/_parameters.yml'
-// import categories from '@/website/categories.yml'
 import info from '@/repos/data/.info.json'
 import { Octokit } from 'octokit'
 import yaml from 'js-yaml'

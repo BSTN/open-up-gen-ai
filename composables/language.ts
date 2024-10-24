@@ -5,9 +5,9 @@ export const useLanguage = () => {
     return locale.value === 'en' ? '' : locale.value
   })
   const markdownPath = computed(() => {
-    const pad = route.path === '/' ? '/index' : route.path
     // disabled
-    return pad
+    return route.path
+    // const pad = route.path === '/' ? '/index' : route.path
     // return languageCode.value ? pad + '.' + languageCode.value : route.path
   })
   return {
