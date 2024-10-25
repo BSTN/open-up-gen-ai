@@ -43,20 +43,25 @@ export default defineNuxtModule({
         await getRepo(moduleOptions.repositories[i])
       }
 
-      fs.readdirSync('./repos/data/').forEach(file => {
-        console.log(file)
-        if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
-          const filename = file.replace('.yaml', '')
-          // extendPages
-          extendPages((pages) => {
-            pages.unshift({
-              name: `model-${filename}`,
-              path: `/model/${filename}`,
-              file: resolve('../pages/model/[model].vue')
+    })
+
+    nuxt.hook('modules:done', async () => {
+      if (fs.existsSync('./repos/data/')) {
+        fs.readdirSync('./repos/data/').forEach(file => {
+          console.log(file)
+          if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
+            const filename = file.replace('.yaml', '')
+            // extendPages
+            extendPages((pages) => {
+              pages.unshift({
+                name: `model-${filename}`,
+                path: `/model/${filename}`,
+                file: resolve('../pages/model/[model].vue')
+              })
             })
-          })
-        }
-      })
+          }
+        })
+      }
     })
 
     
