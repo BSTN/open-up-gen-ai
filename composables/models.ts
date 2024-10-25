@@ -4,7 +4,6 @@ import { Octokit } from 'octokit'
 import yaml from 'js-yaml'
 import { useDateFormat } from '@vueuse/core'
 
-
 const cache = {}
 
 const models: Ref<Array[any]> = ref([])
