@@ -44,6 +44,7 @@ export default defineNuxtModule({
       }
 
       fs.readdirSync('./repos/data/').forEach(file => {
+        console.log(file)
         if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
           const filename = file.replace('.yaml', '')
           // extendPages
