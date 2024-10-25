@@ -42,31 +42,32 @@ export default defineNuxtModule({
       for (let i in moduleOptions.repositories) {
         await getRepo(moduleOptions.repositories[i])
       }
-
+      extendPagesNow()
     })
-
-    nuxt.hook('modules:done', async () => {
-      if (fs.existsSync('./repos/data/')) {
-        fs.readdirSync('./repos/data/').forEach(file => {
-          console.log(file)
-          if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
-            const filename = file.replace('.yaml', '')
-            // extendPages
-            extendPages((pages) => {
-              pages.unshift({
-                name: `model-${filename}`,
-                path: `/model/${filename}`,
-                file: resolve('../pages/model/[model].vue')
-              })
-            })
-          }
-        })
-      }
-    })
-
+    
+    extendPagesNow()
     
   }
 })
+
+async function extendPagesNow() {
+  const { resolve } = createResolver(import.meta.url)
+
+  fs.readdirSync('./repos/data/').forEach(file => {
+      console.log(file)
+      if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
+        const filename = file.replace('.yaml', '')
+        // extendPages
+        extendPages((pages) => {
+          pages.unshift({
+            name: `model-${filename}`,
+            path: `/model/${filename}`,
+            file: resolve('../pages/model/[model].vue')
+          })
+        })
+      }
+    })
+}
 
 async function getRepo({ owner, repo, local, name }: { owner: string, repo: string, local?: string, name: string }) {
 
