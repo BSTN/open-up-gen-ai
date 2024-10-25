@@ -14,9 +14,10 @@
     <div class="projectlist">
       <div class="project" v-for="item in models" :key="item.path">
         <div class="info">
-          <NuxtLink :to="`/model/${item.filename}`" class="name">{{ item.system.name || '(undefined)' }}
+          <NuxtLink :to="`/model/${item.filename}`" class="org" v-if="item?.org?.name">{{ item.org.name }}</NuxtLink>
+          <NuxtLink :to="`/model/${item.filename}`" class="name" v-if="item?.system?.name">{{ item.system.name ||
+            '(undefined)' }}
           </NuxtLink>
-          <NuxtLink :to="`/model/${item.filename}`" class="org">by {{ item.org.name }}</NuxtLink>
         </div>
         <div class="data">
           <div class="category" v-for="category in categories">
@@ -80,7 +81,7 @@ const { models, categories, sortModels } = useModels()
       }
     }
 
-    .name {
+    .org {
       // background: var(--fg);
       // color: var(--bg);
       // padding: 0.25em 1em;
@@ -92,7 +93,7 @@ const { models, categories, sortModels } = useModels()
       line-height: 1.2;
     }
 
-    .org {
+    .name {
       font-size: 0.75rem;
       text-decoration: none;
     }

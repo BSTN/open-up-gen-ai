@@ -22,7 +22,7 @@
             <td class="name">
               {{ item.system.name || '(undefined)' }}
             </td>
-            <td class="org">
+            <td class="org" v-if="item?.org">
               {{ item.org.name || '(undefined)' }}
             </td>
             <td class="fold">

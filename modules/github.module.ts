@@ -118,19 +118,6 @@ export default defineNuxtModule({
       }
     })
 
-    fs.readdirSync(resolve('../repos/data/')).forEach(file => { 
-      if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
-        const filename = file.replace('.yaml', '')
-        // extendPages
-        extendPages((pages) => {
-          pages.unshift({
-            name: `model-${filename}`,
-            path: `/model/${filename}`,
-            file: resolve('../pages/model/[model].vue')
-          })
-        })
-      }
-    })
     
   }
 })

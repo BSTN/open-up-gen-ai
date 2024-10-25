@@ -50,7 +50,7 @@
             <div class="info" @click="router.push(`/model/${item.filename}`)">
               <div class="title">
                 <div class="titlewrap">
-                  <span class="org">
+                  <span class="org" v-if="item?.org">
                     {{ item.org.name || '(undefined)' }}
                   </span>
                   <span class="name">
@@ -70,7 +70,7 @@
               </button>
             </div>
             <div class="score" :class="{ open: !!open && open.filename === item.filename }">
-              <scorebar :score="item.score" :style="{ '--fg': color(item.score) }"></scorebar>
+              <scorebar :score="item.score" v-if="item?.score" :style="{ '--fg': color(item.score) }"></scorebar>
               <div class="subscore" v-if="!!open && open.filename === item.filename" @mouseleave="openParam = false">
                 <div class="params">
                   <div class="param" v-for="param in params.filter(x => x.types.includes(item.system.type))"
@@ -165,7 +165,7 @@ const models = computed(() => {
       if (searchQuery.value.length > 0) {
         const regex = new RegExp(searchQuery.value, 'i')
         if (!x.system?.name || !x.org?.name) return false
-        if (!(x.system.name.match(regex) || x.org.name.match(regex))) {
+        if (!(x.system.name.match(regex) || x.org?.name?.match(regex))) {
           return false
         }
       }

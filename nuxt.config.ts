@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     owner: 'BSTN',
     repo: 'open-up-gen-ai',
   }]
-  }], '@nuxt/content', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/sitemap'],
+  }], '@nuxt/content', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/sitemap', './modules/modelpages'],
   image: {
     dir: 'website',
   },

@@ -2,9 +2,9 @@
   <div class="model-info">
     <div class="frame">
       <div class="top-info">
-        <h1>{{ model.org.name || '(undefined)' }}</h1>
-        <h2>{{ model.system.name || '(undefined)' }}</h2>
-        <scorebar :score="model.score" :style="{ '--fg': color(model.score) }"></scorebar>
+        <h1 v-if="model?.org">{{ model.org.name || '(undefined)' }}</h1>
+        <h2 v-if="model?.system">{{ model.system.name || '(undefined)' }}</h2>
+        <scorebar :score="model.score" v-if="model?.score" :style="{ '--fg': color(model.score) }"></scorebar>
       </div>
       <ModelInfoFold :filename="route.params.model" :models="models" :categories="props.categories"></ModelInfoFold>
       <div class="contribute">

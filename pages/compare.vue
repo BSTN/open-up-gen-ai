@@ -5,8 +5,9 @@
         <div class="names">
           <div class="model-name" v-for="(model, k) in modelsList">
             <div class="count">{{ k + 1 }}/{{ modelsList.length }}</div>
-            <NuxtLink :to="`/model/${model.filename}`" class="name">{{ model.system.name || '(undefined)' }}</NuxtLink>
-            <div class="org">by {{ model.org.name || '(undefined)' }}</div>
+            <NuxtLink :to="`/model/${model.filename}`" class="name" v-if="model?.system">{{ model.system.name ||
+              '(undefined)' }}</NuxtLink>
+            <div class="org" v-if="model?.org">by {{ model.org.name || '(undefined)' }}</div>
           </div>
         </div>
         <div class="category" v-for="cat in categories">
