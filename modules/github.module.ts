@@ -10,27 +10,16 @@ dotenv.config();
 
 export default defineNuxtModule({
   meta: {
-    // Usually the npm package name of your module
     name: 'github module',
-    // The key in `nuxt.config` that holds your module options
     configKey: 'githuboptions',
-    // Compatibility constraints
     compatibility: {
-      // Semver version of supported nuxt versions
       nuxt: '>=3.0.0'
     }
   },
-  // Default configuration options for your module, can also be a function returning those
-  defaults: {},
-  // Shorthand sugar to register Nuxt hooks
-  hooks: {
-    // "build:before": 
-  },
-  // The function holding your module logic, it can be asynchronous
   setup(moduleOptions, nuxt) {
 
     const { resolve } = createResolver(import.meta.url)
-    // ...
+
     nuxt.hook('build:before', async () => {
       // check if github options are defined
       console.log(JSON.stringify(moduleOptions,null,' '))
@@ -42,32 +31,9 @@ export default defineNuxtModule({
       for (let i in moduleOptions.repositories) {
         await getRepo(moduleOptions.repositories[i])
       }
-      extendPagesNow()
     })
-    
-    extendPagesNow()
-    
   }
 })
-
-async function extendPagesNow() {
-  const { resolve } = createResolver(import.meta.url)
-
-  fs.readdirSync('./repos/data/').forEach(file => {
-      console.log(file)
-      if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
-        const filename = file.replace('.yaml', '')
-        // extendPages
-        extendPages((pages) => {
-          pages.unshift({
-            name: `model-${filename}`,
-            path: `/model/${filename}`,
-            file: resolve('../pages/model/[model].vue')
-          })
-        })
-      }
-    })
-}
 
 async function getRepo({ owner, repo, local, name }: { owner: string, repo: string, local?: string, name: string }) {
 

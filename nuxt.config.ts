@@ -2,6 +2,7 @@
 import ViteYaml from '@modyfi/vite-plugin-yaml';
 import ViteMarkdown from 'vite-plugin-markdown';
 import svgLoader from 'vite-svg-loader'
+import fs from 'fs'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
@@ -41,14 +42,22 @@ export default defineNuxtConfig({
     owner: 'BSTN',
     repo: 'open-up-gen-ai',
   }]
-  }], '@nuxt/content', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/sitemap'],
+    }], '@nuxt/content', '@pinia/nuxt', '@nuxt/image', '@nuxtjs/i18n', '@nuxtjs/sitemap'],
   image: {
     dir: 'website',
   },
   sitemap: {
-    routes: [
-
-    ]
+    urls: async () => {
+      const urls:Array<string> = []
+      fs.readdirSync('./repos/data/').forEach(file => {
+        if (!file.match('a_submission_template.yaml') && !file.match('_parameters.yml')) {
+          const filename = file.replace('.yaml', '')
+          // extendPages
+          urls.push(`/model/${filename}`)
+        }
+      })
+      return urls
+    },
   },
   vite: {
     css: {
